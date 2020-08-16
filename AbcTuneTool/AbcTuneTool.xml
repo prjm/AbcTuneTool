@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AbcTuneTool</name>
+    </assembly>
+    <members>
+        <member name="F:AbcTuneTool.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:AbcTuneTool.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.AbcCharacter">
+            <summary>
+                ABC character
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Model.AbcCharacter.Value">
+            <summary>
+                character value
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Model.AbcCharacter.Kind">
+            <summary>
+                character kind
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.AbcCharacterKind">
+            <summary>
+                abc character kind
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Undefined">
+            <summary>
+                undefined
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Char">
+            <summary>
+                standard character
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Mnenomic">
+            <summary>
+                mnemonic
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Entity">
+            <summary>
+                entity
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.FixedUnicody2Byte">
+            <summary>
+                fixed UNICODE 2 byte
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.FixedUnicode4Byte">
+            <summary>
+                fixed UNICODE 4 byte
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.InformationField">
+            <summary>
+                information fields for headers
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Undefined">
+            <summary>
+                undefined field
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Area">
+            <summary>
+                area label, deprecated
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Book">
+            <summary>
+                book label
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Composer">
+            <summary>
+                composer label
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Discography">
+            <summary>
+                discography label
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.FileUrl">
+            <summary>
+                file url label
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Group">
+            <summary>
+                instrument group
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.History">
+            <summary>
+                history info
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Instruction">
+            <summary>
+                instruction
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Key">
+            <summary>
+                key of the tune
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.UnitNoteLength">
+            <summary>
+                unit note length
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Meter">
+            <summary>
+                meter
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Macro">
+            <summary>
+                macro
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Notes">
+            <summary>
+                notes
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Parts">
+            <summary>
+                parts
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Tempo">
+            <summary>
+                tempo
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Rythm">
+            <summary>
+                rhythm kind
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Remark">
+            <summary>
+                remark
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Source">
+            <summary>
+                tune source
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.SymbolLine">
+            <summary>
+                symbol ine
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.TuneTitle">
+            <summary>
+                tune tile
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.UserDefined">
+            <summary>
+                user defined field
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Voice">
+            <summary>
+                voice
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.WordsAfterTune">
+            <summary>
+                words after tune
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.WordsInTune">
+            <summary>
+                words in tune
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.RefNumber">
+            <summary>
+                reference number
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.InformationField.Transcription">
+            <summary>
+                transcription by
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

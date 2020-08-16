@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcTuneTool", "AbcTuneTool\AbcTuneTool.csproj", "{2E2883C3-3C5D-4A7F-A78C-941D13EA749D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcTuneToolTests", "AbcTuneToolTests\AbcTuneToolTests.csproj", "{5F4A1406-668D-4F73-B8AB-01F9343B99D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E2883C3-3C5D-4A7F-A78C-941D13EA749D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E2883C3-3C5D-4A7F-A78C-941D13EA749D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E2883C3-3C5D-4A7F-A78C-941D13EA749D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E2883C3-3C5D-4A7F-A78C-941D13EA749D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F4A1406-668D-4F73-B8AB-01F9343B99D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F4A1406-668D-4F73-B8AB-01F9343B99D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F4A1406-668D-4F73-B8AB-01F9343B99D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F4A1406-668D-4F73-B8AB-01F9343B99D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {713B3460-8075-4055-8364-B0739C5281D3}
+	EndGlobalSection
+EndGlobal
