@@ -61,7 +61,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Common\CharHelper.cs" />
+    <Compile Include="src\Common\LogEntry.cs" />
+    <Compile Include="src\Common\Logger.cs" />
+    <Compile Include="src\Common\LoggerHelper.cs" />
+    <Compile Include="src\Common\LogMessage.cs" />
+    <Compile Include="src\Common\LogSeverity.cs" />
+    <Compile Include="src\Common\StringCache.cs" />
+    <Compile Include="src\Common\SystemStatus.cs" />
     <Compile Include="src\FileIo\AbcTokenizer.cs" />
+    <Compile Include="src\FileIo\Entities.cs" />
     <Compile Include="src\FileIo\Mnemonics.cs" />
     <Compile Include="src\Model\AbcCharacter.cs" />
     <Compile Include="src\Model\AbcCharacterKind.cs" />

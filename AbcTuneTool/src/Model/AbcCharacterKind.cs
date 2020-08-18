@@ -1,11 +1,9 @@
-﻿namespace AbcTuneTool.Model
-{
+﻿namespace AbcTuneTool.Model {
 
     /// <summary>
     ///     ABC character kind
     /// </summary>
-    public enum AbcCharacterKind
-    {
+    public enum AbcCharacterKind {
 
         /// <summary>
         ///     undefined
@@ -38,9 +36,38 @@
         FixedUnicode4Byte = 5,
 
         /// <summary>
-        ///     end of fle
+        ///     end of file
         /// </summary>
         Eof = 6,
 
+        /// <summary>
+        ///     backlash sign
+        /// </summary>
+        Backslash = 7,
+
+        /// <summary>
+        ///     percent sign
+        /// </summary>
+        Percent = 8,
+
+        /// <summary>
+        ///     ampersand sign
+        /// </summary>
+        Ampersand = 9,
+
+        /// <summary>
+        ///     dollar sign
+        /// </summary>
+        Dollar = 10,
+
+        /// <summary>
+        ///     font size
+        /// </summary>
+        FontSize = 11,
+
+        /// <summary>
+        ///     line of commenz
+        /// </summary>
+        Comment = 12,
     }
 }

@@ -26,14 +26,333 @@
             The main entry point for the application.
             </summary>
         </member>
+        <member name="T:AbcTuneTool.Common.CharHelper">
+            <summary>
+                char helper functions
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.IsHex(System.Char)">
+            <summary>
+                test if a char is a hexadecimal char
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AbcTuneTool.Common.LogEntry">
+            <summary>
+                log entry
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.LogEntry.#ctor(AbcTuneTool.Common.LogSeverity,System.Int32,System.Object[])">
+            <summary>
+                create a new log entry
+            </summary>
+            <param name="severity">severity</param>
+            <param name="messageNumber">message number</param>
+            <param name="messageParameters">message parameters</param>
+        </member>
+        <member name="P:AbcTuneTool.Common.LogEntry.Severity">
+            <summary>
+                message severity
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.LogEntry.MessageNumber">
+            <summary>
+                message number
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.LogEntry.MessageParameters">
+            <summary>
+                message parameters
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Common.Logger">
+            <summary>
+                simple logger
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.Logger.#ctor">
+            <summary>
+                create a new logger
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.Logger.Entries">
+            <summary>
+                list of log entries
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.Logger.EntryCount">
+            <summary>
+                number of entries
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.Logger.Log(AbcTuneTool.Common.LogEntry)">
+            <summary>
+                make a new log entry
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="T:AbcTuneTool.Common.LoggerHelper">
+            <summary>
+                helper functions for loggers
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.LoggerHelper.Error(AbcTuneTool.Common.Logger,System.Int32,System.Object[])">
+            <summary>
+                log an error
+            </summary>
+            <param name="logger"></param>
+            <param name="messageNumber"></param>
+            <param name="messageParameters"></param>
+        </member>
+        <member name="M:AbcTuneTool.Common.LoggerHelper.Info(AbcTuneTool.Common.Logger,System.Int32,System.Object[])">
+            <summary>
+                log an information
+            </summary>
+            <param name="logger"></param>
+            <param name="messageNumber"></param>
+            <param name="messageParameters"></param>
+        </member>
+        <member name="T:AbcTuneTool.Common.LogMessage">
+            <summary>
+                log message numbers
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidMnemo1">
+            <summary>
+                invalid mnemonic: only backslash
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidMnemo2">
+            <summary>
+                invalid mnemonic: only backslash
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.UnknownMemo">
+            <summary>
+                unknown memo
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidEntity">
+            <summary>
+                invalid entity
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.UnknownEntity">
+            <summary>
+                unknown entity
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidFontSize">
+            <summary>
+                invalid font size
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.CurrentWorkingSetSize">
+            <summary>
+                current working set size
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Common.LogSeverity">
+            <summary>
+                log message severity
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogSeverity.Undefined">
+            <summary>
+                undefined severity
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogSeverity.Information">
+            <summary>
+                information message
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogSeverity.Warning">
+            <summary>
+                warning message
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogSeverity.Error">
+            <summary>
+                error message
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Common.LogSeverityHelper">
+            <summary>
+                message severity helper
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.LogSeverityHelper.ToShortString(AbcTuneTool.Common.LogSeverity)">
+            <summary>
+                convert a message severity to a short string
+            </summary>
+            <param name="severity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AbcTuneTool.Common.StringCache">
+            <summary>
+                cache for allocated strings
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringCache.ForChar(System.Char)">
+            <summary>
+                get a string for a char
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringCache.ForStringBuilder(System.Text.StringBuilder)">
+            <summary>
+                get a string from a string builder
+            </summary>
+            <param name="stringBuilder">a string builder</param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringCache.ForChars(System.Char,System.Char)">
+            <summary>
+                cache a string for two chars
+            </summary>
+            <param name="c1"></param>
+            <param name="c2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringCache.ForChars(System.Char,System.Char,System.Char)">
+            <summary>
+                cache a string for two chars
+            </summary>
+            <param name="c1"></param>
+            <param name="c2"></param>
+            <param name="c3"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AbcTuneTool.Common.SystemStatus">
+            <summary>
+                system status information
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.SystemStatus.#ctor(System.Diagnostics.Process)">
+            <summary>
+                create a new system status
+            </summary>
+            <param name="process"></param>
+        </member>
+        <member name="M:AbcTuneTool.Common.SystemStatus.#ctor(AbcTuneTool.Common.SystemStatus,AbcTuneTool.Common.SystemStatus)">
+            <summary>
+                create a diff of two status points
+            </summary>
+            <param name="infoBefore"></param>
+            <param name="infoAfterRun"></param>
+        </member>
+        <member name="M:AbcTuneTool.Common.SystemStatus.ToLogger(AbcTuneTool.Common.Logger)">
+            <summary>
+                print the system status to a logger
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="P:AbcTuneTool.Common.SystemStatus.WorkingSet64">
+            <summary>
+                working set size
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.AbcTokenizer">
+            <summary>
+                tokenizer for ABC files
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.#ctor(System.IO.TextReader,AbcTuneTool.Common.StringCache,AbcTuneTool.Common.Logger)">
+            <summary>
+                create a new tokenizer
+            </summary>
+            <param name="reader">input</param>
+            <param name="logger">logger</param>
+            <param name="cache">string cache</param>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadChar">
+            <summary>
+                read a char
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.Reader">
+            <summary>
+                stream reader
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.Cache">
+            <summary>
+                string cache
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.Logger">
+            <summary>
+                logger
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.HasToken">
+            <summary>
+                check if there are token left
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.CurrentToken">
+            <summary>
+                current token
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadNextToken">
+            <summary>
+                read the next toke
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.Dispose(System.Boolean)">
+            <summary>
+                dispose this tokenizer
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.Dispose">
+            <summary>
+                dispose this tokenizer
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.Entities">
+            <summary>
+                entity utilities
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.Entities.Decode(System.String)">
+            <summary>
+                decode a entity
+            </summary>
+            <param name="v"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.Mnemonics">
+            <summary>
+                ABC mnemonics
+            </summary>
+        </member>
         <member name="T:AbcTuneTool.Model.AbcCharacter">
             <summary>
                 ABC character
             </summary>
         </member>
+        <member name="M:AbcTuneTool.Model.AbcCharacter.#ctor(AbcTuneTool.Model.AbcCharacterKind,System.Char,System.String)">
+            <summary>
+                create a new ABC character
+            </summary>
+            <param name="kind">token kind</param>
+            <param name="value">token value</param>
+            <param name="originalValue">original value</param>
+        </member>
         <member name="P:AbcTuneTool.Model.AbcCharacter.Value">
             <summary>
                 character value
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Model.AbcCharacter.OriginalValue">
+            <summary>
+                original value
             </summary>
         </member>
         <member name="P:AbcTuneTool.Model.AbcCharacter.Kind">
@@ -43,7 +362,7 @@
         </member>
         <member name="T:AbcTuneTool.Model.AbcCharacterKind">
             <summary>
-                abc character kind
+                ABC character kind
             </summary>
         </member>
         <member name="F:AbcTuneTool.Model.AbcCharacterKind.Undefined">
@@ -74,6 +393,56 @@
         <member name="F:AbcTuneTool.Model.AbcCharacterKind.FixedUnicode4Byte">
             <summary>
                 fixed UNICODE 4 byte
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Eof">
+            <summary>
+                end of file
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Backslash">
+            <summary>
+                backlash sign
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Percent">
+            <summary>
+                percent sign
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Ampersand">
+            <summary>
+                ampersand sign
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Dollar">
+            <summary>
+                dollar sign
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.FontSize">
+            <summary>
+                font size
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Comment">
+            <summary>
+                line of commenz
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.AbcCharacters">
+            <summary>
+                ABC character helpers
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacters.Undefined">
+            <summary>
+                undefined character
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacters.Eof">
+            <summary>
+                EOF character
             </summary>
         </member>
         <member name="T:AbcTuneTool.Model.InformationField">
