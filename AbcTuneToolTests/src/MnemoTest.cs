@@ -5,11 +5,11 @@ namespace AbcTuneToolTests {
 
         [TestMethod]
         public void TestSimpleMnemo() {
-            Assert.AreEqual(Mnemonics.Decode('A', 'E'), 'Æ');
-            Assert.AreEqual(Mnemonics.Encode('Æ'), ('A', 'E'));
+            Assert.AreEqual(Mnemonics.Decode('A', 'E'), "Æ");
+            Assert.AreEqual(Mnemonics.Encode("Æ"), ('A', 'E'));
 
-            Assert.AreEqual(Mnemonics.Decode('?', '?'), '\0');
-            Assert.AreEqual(Mnemonics.Encode('?'), ('\0', '\0'));
+            Assert.AreEqual(Mnemonics.Decode('?', '?'), string.Empty);
+            Assert.AreEqual(Mnemonics.Encode(string.Empty), ('\0', '\0'));
         }
 
     }

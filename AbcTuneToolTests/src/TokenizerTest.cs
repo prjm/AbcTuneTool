@@ -7,10 +7,10 @@ using AbcTuneTool.Model;
 namespace AbcTuneToolTests {
     public class TokenizerTest {
 
-        protected void RunTokenizerTest(string toTokenize, params (AbcCharacterKind kind, char value)[] tokens)
+        protected void RunTokenizerTest(string toTokenize, params (AbcCharacterKind kind, string value)[] tokens)
             => RunTokenizerTest(toTokenize, new int[0], tokens);
 
-        protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (AbcCharacterKind kind, char value)[] tokens) {
+        protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (AbcCharacterKind kind, string value)[] tokens) {
             var logger = new Logger();
             var cache = new StringCache();
             using var reader = new StringReader(toTokenize);
@@ -38,41 +38,45 @@ namespace AbcTuneToolTests {
 
         }
 
-        private (AbcCharacterKind kind, char value) Eof()
-            => (AbcCharacterKind.Eof, '\0');
+        private (AbcCharacterKind kind, string value) Eof()
+            => (AbcCharacterKind.Eof, string.Empty);
 
-        private (AbcCharacterKind kind, char value) Mnemo(char v)
-            => (AbcCharacterKind.Mnenomic, v);
+        private (AbcCharacterKind kind, string value) Mnemo(char v)
+            => (AbcCharacterKind.Mnenomic, new string(v, 1));
 
-        private (AbcCharacterKind kind, char value) FontSize(char v)
-            => (AbcCharacterKind.FontSize, v);
+        private (AbcCharacterKind kind, string value) FontSize(char v)
+            => (AbcCharacterKind.FontSize, new string(v, 1));
 
-        private (AbcCharacterKind kind, char value) Chr(char v)
-            => (AbcCharacterKind.Char, v);
+        private (AbcCharacterKind kind, string value) Chr(char v)
+            => (AbcCharacterKind.Char, new string(v, 1));
 
-        private (AbcCharacterKind kind, char value) U2(char v)
-            => (AbcCharacterKind.FixedUnicody2Byte, v);
+        private (AbcCharacterKind kind, string value) Chr(string v)
+        => (AbcCharacterKind.Char, v);
 
-        private (AbcCharacterKind kind, char value) U4(char v)
+
+        private (AbcCharacterKind kind, string value) U2(char v)
+            => (AbcCharacterKind.FixedUnicody2Byte, new string(v, 1));
+
+        private (AbcCharacterKind kind, string value) U4(string v)
             => (AbcCharacterKind.FixedUnicode4Byte, v);
 
-        private (AbcCharacterKind kind, char value) Entity(char v)
-            => (AbcCharacterKind.Entity, v);
+        private (AbcCharacterKind kind, string value) Entity(char v)
+            => (AbcCharacterKind.Entity, new string(v, 1));
 
-        private (AbcCharacterKind kind, char value) Backslash()
-            => (AbcCharacterKind.Backslash, '\\');
+        private (AbcCharacterKind kind, string value) Backslash()
+            => (AbcCharacterKind.Backslash, "\\");
 
-        private (AbcCharacterKind kind, char value) Percent()
-            => (AbcCharacterKind.Percent, '%');
+        private (AbcCharacterKind kind, string value) Percent()
+            => (AbcCharacterKind.Percent, "%");
 
-        private (AbcCharacterKind kind, char value) Ampersand()
-        => (AbcCharacterKind.Ampersand, '&');
+        private (AbcCharacterKind kind, string value) Ampersand()
+        => (AbcCharacterKind.Ampersand, "&");
 
-        private (AbcCharacterKind kind, char value) Dollar()
-            => (AbcCharacterKind.Dollar, '$');
+        private (AbcCharacterKind kind, string value) Dollar()
+            => (AbcCharacterKind.Dollar, "$");
 
-        private (AbcCharacterKind kind, char value) Comment()
-            => (AbcCharacterKind.Comment, '\0');
+        private (AbcCharacterKind kind, string value) Comment()
+            => (AbcCharacterKind.Comment, string.Empty);
 
         [TestMethod]
         public void TestSimple() {
@@ -84,16 +88,16 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void TestMnemos() {
             RunTokenizerTest("\\AE", Mnemo('Æ'), Eof());
-            RunTokenizerTest("\\", new[] { LogMessage.InvalidMnemo1 }, Chr('\0'), Eof());
-            RunTokenizerTest("\\A", new[] { LogMessage.InvalidMnemo2 }, Chr('\0'), Eof());
-            RunTokenizerTest("\\??", new[] { LogMessage.UnknownMnemo }, Chr('\0'), Eof());
+            RunTokenizerTest("\\", new[] { LogMessage.InvalidMnemo1 }, Chr(""), Eof());
+            RunTokenizerTest("\\A", new[] { LogMessage.InvalidMnemo2 }, Chr(""), Eof());
+            RunTokenizerTest("\\??", new[] { LogMessage.UnknownMnemo }, Chr(""), Eof());
         }
 
         [TestMethod]
         public void TestFontSize() {
             RunTokenizerTest("$1", FontSize('1'), Eof());
-            RunTokenizerTest("$", new[] { LogMessage.InvalidFontSize }, Chr('\0'), Eof());
-            RunTokenizerTest("$Q", new[] { LogMessage.InvalidFontSize }, Chr('\0'), Eof()); ;
+            RunTokenizerTest("$", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof());
+            RunTokenizerTest("$Q", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof()); ;
 
         }
 
@@ -110,9 +114,9 @@ namespace AbcTuneToolTests {
         public void TestEntities() {
             RunTokenizerTest("&copy;", Entity('©'), Eof());
             RunTokenizerTest("&larr;", Entity('⇐'), Eof());
-            RunTokenizerTest("&", new[] { LogMessage.InvalidEntity }, Chr('\0'), Eof());
-            RunTokenizerTest("&;", new[] { LogMessage.InvalidEntity }, Chr('\0'), Eof());
-            RunTokenizerTest("&???;", new[] { LogMessage.UnknownEntity }, Chr('\0'), Eof());
+            RunTokenizerTest("&", new[] { LogMessage.InvalidEntity }, Chr(""), Eof());
+            RunTokenizerTest("&;", new[] { LogMessage.InvalidEntity }, Chr(""), Eof());
+            RunTokenizerTest("&???;", new[] { LogMessage.UnknownEntity }, Chr(""), Eof());
         }
 
         [TestMethod]
@@ -120,10 +124,10 @@ namespace AbcTuneToolTests {
             RunTokenizerTest(@"\u0066", U2('f'), Eof());
             RunTokenizerTest(@"\u0066x", U2('f'), Chr('x'), Eof());
             RunTokenizerTest(@"\uE", Mnemo('Ĕ'), Eof());
-            RunTokenizerTest(@"\u0E", new[] { LogMessage.UnknownMnemo }, Chr('\0'), Chr('E'), Eof());
-            RunTokenizerTest(@"\u00E", new[] { LogMessage.UnknownMnemo }, Chr('\0'), Chr('0'), Chr('E'), Eof());
+            RunTokenizerTest(@"\u0E", new[] { LogMessage.UnknownMnemo }, Chr(""), Chr('E'), Eof());
+            RunTokenizerTest(@"\u00E", new[] { LogMessage.UnknownMnemo }, Chr(""), Chr('0'), Chr('E'), Eof());
 
-            RunTokenizerTest(@"\U00000066", U4('f'), Eof());
+            RunTokenizerTest(@"\U00000066", U4("f"), Eof());
             RunTokenizerTest(@"\U0000066", U2('\0'), Chr('0'), Chr('6'), Chr('6'), Eof());
 
         }

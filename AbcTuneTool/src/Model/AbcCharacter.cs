@@ -11,7 +11,7 @@
         /// <param name="kind">token kind</param>
         /// <param name="value">token value</param>
         /// <param name="originalValue">original value</param>
-        public AbcCharacter(AbcCharacterKind kind, char value, string originalValue) {
+        public AbcCharacter(string value, string originalValue, AbcCharacterKind kind) {
             Value = value;
             OriginalValue = originalValue;
             Kind = kind;
@@ -20,7 +20,7 @@
         /// <summary>
         ///     character value
         /// </summary>
-        public readonly char Value { get; }
+        public readonly string Value { get; }
 
         /// <summary>
         ///     original value

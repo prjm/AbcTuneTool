@@ -72,6 +72,16 @@ namespace AbcTuneTool.FileIo {
             => currentToken;
 
         /// <summary>
+        ///     get a token
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="originalValue"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        private AbcCharacter GetToken(string value, string originalValue, AbcCharacterKind kind)
+            => new AbcCharacter(value, originalValue, kind);
+
+        /// <summary>
         ///     read the next toke
         /// </summary>
         public void ReadNextToken() {
@@ -105,7 +115,8 @@ namespace AbcTuneTool.FileIo {
                 return;
             }
 
-            currentToken = new AbcCharacter(AbcCharacterKind.Char, value, Cache.ForChar(value));
+            var tokenValue = Cache.ForChar(value);
+            currentToken = GetToken(tokenValue, tokenValue, AbcCharacterKind.Char);
         }
 
         private void ReadComment() {
@@ -148,13 +159,13 @@ namespace AbcTuneTool.FileIo {
                         sb.Append(value);
                 }
             }
-            currentToken = new AbcCharacter(AbcCharacterKind.Comment, '\0', Cache.ForStringBuilder(sb));
+            currentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb), AbcCharacterKind.Comment);
         }
 
         private void ReadFontSize() {
             var c = ReadChar();
             if (c < 0) {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', "$");
+                currentToken = GetToken(string.Empty, "$", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize);
                 return;
             }
@@ -162,17 +173,17 @@ namespace AbcTuneTool.FileIo {
             var value = Cache.ForChar((char)c);
 
             if (value == "$") {
-                currentToken = new AbcCharacter(AbcCharacterKind.Dollar, '$', "$$");
+                currentToken = GetToken("$", "$$", AbcCharacterKind.Dollar);
                 return;
             }
 
             if (!int.TryParse(value, out var _)) {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', Cache.ForChars('$', (char)c));
+                currentToken = GetToken(string.Empty, Cache.ForChars('$', (char)c), AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize);
                 return;
             }
 
-            currentToken = new AbcCharacter(AbcCharacterKind.FontSize, value[0], Cache.ForChars('$', (char)c));
+            currentToken = GetToken(value, Cache.ForChars('$', (char)c), AbcCharacterKind.FontSize);
         }
 
         private void ReadEntity() {
@@ -183,14 +194,14 @@ namespace AbcTuneTool.FileIo {
             do {
                 c = ReadChar();
                 if (c < 0) {
-                    currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', "&");
+                    currentToken = GetToken(string.Empty, "&", AbcCharacterKind.Char);
                     Logger.Error(LogMessage.InvalidEntity);
                     return;
                 }
                 value = (char)c;
 
                 if (sb.Length == 1 && value == ' ') {
-                    currentToken = new AbcCharacter(AbcCharacterKind.Ampersand, '&', "&");
+                    currentToken = GetToken("&", "&", AbcCharacterKind.Ampersand);
                     buffer.Enqueue(' ');
                     return;
                 }
@@ -200,20 +211,20 @@ namespace AbcTuneTool.FileIo {
             var entityName = Cache.ForStringBuilder(sb);
 
             if (string.Equals("&;", entityName, StringComparison.Ordinal)) {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', "&;");
+                currentToken = GetToken(string.Empty, "&;", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidEntity);
                 return;
             }
 
             var charValue = Entities.Decode(entityName);
 
-            if (charValue == '\0') {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', entityName);
+            if (string.IsNullOrEmpty(charValue)) {
+                currentToken = GetToken(string.Empty, entityName, AbcCharacterKind.Char);
                 Logger.Error(LogMessage.UnknownEntity, entityName);
                 return;
             }
 
-            currentToken = new AbcCharacter(AbcCharacterKind.Entity, charValue, entityName);
+            currentToken = GetToken(charValue, entityName, AbcCharacterKind.Entity);
         }
 
         private void MarkEof()
@@ -222,24 +233,24 @@ namespace AbcTuneTool.FileIo {
         private void ReadMnemonic() {
             var c = ReadChar();
             if (c < 0) {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', "\\");
+                currentToken = GetToken(string.Empty, "\\", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo1);
                 return;
             }
 
             var decorator = (char)c;
             if (decorator == '\\') {
-                currentToken = new AbcCharacter(AbcCharacterKind.Backslash, '\\', "\\\\"); ;
+                currentToken = GetToken("\\", "\\\\", AbcCharacterKind.Backslash);
                 return;
             }
 
             if (decorator == '&') {
-                currentToken = new AbcCharacter(AbcCharacterKind.Ampersand, '&', "\\&"); ;
+                currentToken = GetToken("&", "\\&", AbcCharacterKind.Ampersand);
                 return;
             }
 
             if (decorator == '%') {
-                currentToken = new AbcCharacter(AbcCharacterKind.Percent, '%', "\\%");
+                currentToken = GetToken("%", "\\%", AbcCharacterKind.Percent);
                 return;
             }
 
@@ -247,7 +258,7 @@ namespace AbcTuneTool.FileIo {
 
             c = ReadChar();
             if (c < 0) {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', Cache.ForChars('\\', decorator));
+                currentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator), AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo2);
                 return;
             }
@@ -278,7 +289,7 @@ namespace AbcTuneTool.FileIo {
                 if (len == 8) {
                     var charString = new string(chars);
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    currentToken = new AbcCharacter(AbcCharacterKind.FixedUnicode4Byte, (char)charValue, "\\" + decorator + charString);
+                    currentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicode4Byte);
                     return;
                 }
 
@@ -294,7 +305,7 @@ namespace AbcTuneTool.FileIo {
                 if (len >= 4) {
                     var charString = new string(chars, 0, 4);
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    currentToken = new AbcCharacter(AbcCharacterKind.FixedUnicody2Byte, (char)charValue, "\\" + decorator + charString);
+                    currentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicody2Byte);
                     return;
                 }
 
@@ -307,13 +318,13 @@ namespace AbcTuneTool.FileIo {
 
             var value = Mnemonics.Decode(decorator, decoratedElement);
 
-            if (value == '\0') {
-                currentToken = new AbcCharacter(AbcCharacterKind.Char, '\0', Cache.ForChars('\\', decorator, decoratedElement));
+            if (string.IsNullOrEmpty(value)) {
+                currentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Char);
                 Logger.Error(LogMessage.UnknownMnemo, string.Concat('\\', decorator, decoratedElement));
                 return;
             }
 
-            currentToken = new AbcCharacter(AbcCharacterKind.Mnenomic, value, Cache.ForChars('\\', decorator, decoratedElement));
+            currentToken = GetToken(value, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Mnenomic);
         }
 
         /// <summary>

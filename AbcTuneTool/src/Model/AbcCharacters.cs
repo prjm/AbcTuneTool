@@ -9,12 +9,12 @@
         ///     undefined character
         /// </summary>
         public static readonly AbcCharacter Undefined
-            = new AbcCharacter(AbcCharacterKind.Undefined, '\0', string.Empty);
+            = new AbcCharacter(string.Empty, string.Empty, AbcCharacterKind.Undefined);
 
         /// <summary>
         ///     EOF character
         /// </summary>
         internal static readonly AbcCharacter Eof
-            = new AbcCharacter(AbcCharacterKind.Eof, '\0', string.Empty);
+            = new AbcCharacter(string.Empty, string.Empty, AbcCharacterKind.Eof);
     }
 }

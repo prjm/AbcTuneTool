@@ -4,6 +4,16 @@
         <name>AbcTuneTool</name>
     </assembly>
     <members>
+        <member name="T:AbcTuneTool.Form1">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:AbcTuneTool.Form1.#ctor">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="F:AbcTuneTool.Form1.components">
             <summary>
             Required designer variable.
@@ -128,7 +138,7 @@
                 invalid mnemonic: only backslash
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Common.LogMessage.UnknownMemo">
+        <member name="F:AbcTuneTool.Common.LogMessage.UnknownMnemo">
             <summary>
                 unknown memo
             </summary>
@@ -299,6 +309,15 @@
                 current token
             </summary>
         </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.GetToken(System.String,System.String,AbcTuneTool.Model.AbcCharacterKind)">
+            <summary>
+                get a token
+            </summary>
+            <param name="value"></param>
+            <param name="originalValue"></param>
+            <param name="kind"></param>
+            <returns></returns>
+        </member>
         <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadNextToken">
             <summary>
                 read the next toke
@@ -324,7 +343,7 @@
             <summary>
                 decode a entity
             </summary>
-            <param name="v"></param>
+            <param name="entityName"></param>
             <returns></returns>
         </member>
         <member name="T:AbcTuneTool.FileIo.Mnemonics">
@@ -337,7 +356,7 @@
                 ABC character
             </summary>
         </member>
-        <member name="M:AbcTuneTool.Model.AbcCharacter.#ctor(AbcTuneTool.Model.AbcCharacterKind,System.Char,System.String)">
+        <member name="M:AbcTuneTool.Model.AbcCharacter.#ctor(System.String,System.String,AbcTuneTool.Model.AbcCharacterKind)">
             <summary>
                 create a new ABC character
             </summary>
@@ -583,6 +602,11 @@
         <member name="F:AbcTuneTool.Model.InformationField.Transcription">
             <summary>
                 transcription by
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.Tune">
+            <summary>
+                tune
             </summary>
         </member>
         <member name="T:AbcTuneTool.Properties.Resources">

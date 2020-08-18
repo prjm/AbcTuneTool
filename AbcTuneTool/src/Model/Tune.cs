@@ -1,7 +1,9 @@
-﻿namespace AbcTuneTool.Model
-{
-    public class Tune
-    {
+﻿namespace AbcTuneTool.Model {
+
+    /// <summary>
+    ///     tune
+    /// </summary>
+    public class Tune {
 
     }
 }
