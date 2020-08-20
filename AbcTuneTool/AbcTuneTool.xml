@@ -45,7 +45,35 @@
             <summary>
                 test if a char is a hexadecimal char
             </summary>
-            <param name="c"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.IsLinebreak(System.Char)">
+            <summary>
+                test if a char is a line break char
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.IsCr(System.Char)">
+            <summary>
+                test if a char is a carriage return char
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.IsLf(System.Char)">
+            <summary>
+                test if a char is a linefeed character
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.MarksInfoField(System.Char)">
+            <summary>
+                test if a char marks a header field
+            </summary>
+            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="T:AbcTuneTool.Common.LogEntry">
@@ -200,6 +228,67 @@
             <param name="severity"></param>
             <returns></returns>
         </member>
+        <member name="T:AbcTuneTool.Common.ObjectPoolItem`1">
+            <summary>
+                object pool item
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:AbcTuneTool.Common.ObjectPoolItem`1.#ctor(AbcTuneTool.Common.ObjectPool{`0})">
+            <summary>
+                create a new item
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.ObjectPoolItem`1.Item">
+            <summary>
+                get the item
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.ObjectPoolItem`1.Parent">
+            <summary>
+                parent pool
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.ObjectPoolItem`1.Dispose">
+            <summary>
+                dispose this item
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Common.ObjectPool`1">
+            <summary>
+                pool of objects
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:AbcTuneTool.Common.ObjectPool`1.GetItem">
+            <summary>
+                get an item from the object pool
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.ObjectPool`1.ReturnItem(AbcTuneTool.Common.ObjectPoolItem{`0})">
+            <summary>
+                return this item
+            </summary>
+            <param name="objectPoolItem"></param>
+        </member>
+        <member name="M:AbcTuneTool.Common.ObjectPool`1.ClearItem(AbcTuneTool.Common.ObjectPoolItem{`0})">
+            <summary>
+                clear an item
+            </summary>
+            <param name="objectPoolItem"></param>
+        </member>
+        <member name="T:AbcTuneTool.Common.StringBuilderPool">
+            <summary>
+                string builder pool
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringBuilderPool.ClearItem(AbcTuneTool.Common.ObjectPoolItem{System.Text.StringBuilder})">
+            <summary>
+                clear an item
+            </summary>
+            <param name="objectPoolItem"></param>
+        </member>
         <member name="T:AbcTuneTool.Common.StringCache">
             <summary>
                 cache for allocated strings
@@ -265,20 +354,87 @@
                 working set size
             </summary>
         </member>
+        <member name="T:AbcTuneTool.FileIo.AbcCharacterCache">
+            <summary>
+                character cache
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcCharacterCache.FromCache(System.String,System.String,AbcTuneTool.Model.AbcCharacterKind)">
+            <summary>
+                get a char reference from the cache
+            </summary>
+            <param name="value"></param>
+            <param name="originalValue"></param>
+            <param name="kind"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.AbcCharacterReference">
+            <summary>
+                char reference
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcCharacterReference.#ctor(System.String,System.String,AbcTuneTool.Model.AbcCharacterKind)">
+            <summary>
+                create a new char reference
+            </summary>
+            <param name="value"></param>
+            <param name="originalValue"></param>
+            <param name="kind"></param>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcCharacterReference.AbcChar">
+            <summary>
+                current token
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.AbcParser">
+            <summary>
+                parser for ABC files
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcParser.#ctor(AbcTuneTool.FileIo.BufferedAbcTokenizer)">
+            <summary>
+                create a new ABC file parser
+            </summary>
+            <param name="tokenizer"></param>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcParser.Tokenizer">
+            <summary>
+                tokenizer
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcParser.ParseInformationField">
+            <summary>
+                parse an information field
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcParser.Dispose(System.Boolean)">
+            <summary>
+                dispose this parser
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcParser.Dispose">
+            <summary>
+                dispose this parser
+            </summary>
+        </member>
         <member name="T:AbcTuneTool.FileIo.AbcTokenizer">
             <summary>
                 tokenizer for ABC files
             </summary>
         </member>
-        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.#ctor(System.IO.TextReader,AbcTuneTool.Common.StringCache,AbcTuneTool.Common.Logger)">
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.#ctor(System.IO.TextReader,AbcTuneTool.Common.StringCache,AbcTuneTool.FileIo.AbcCharacterCache,AbcTuneTool.Common.StringBuilderPool,AbcTuneTool.Common.Logger)">
             <summary>
                 create a new tokenizer
             </summary>
             <param name="reader">input</param>
             <param name="logger">logger</param>
             <param name="cache">string cache</param>
+            <param name="charCache">char cache</param>
+            <param name="pool">string builder pool</param>
         </member>
-        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadChar">
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadChar(System.Char@)">
             <summary>
                 read a char
             </summary>
@@ -297,6 +453,16 @@
         <member name="P:AbcTuneTool.FileIo.AbcTokenizer.Logger">
             <summary>
                 logger
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.CharCache">
+            <summary>
+                char cache
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.AbcTokenizer.StringBuilderPool">
+            <summary>
+                string builder pool
             </summary>
         </member>
         <member name="P:AbcTuneTool.FileIo.AbcTokenizer.HasToken">
@@ -323,6 +489,19 @@
                 read the next toke
             </summary>
         </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadDefault(System.Char)">
+            <summary>
+                read a default char
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.AbcTokenizer.ReadComment">
+            <summary>
+                read a comment value
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:AbcTuneTool.FileIo.AbcTokenizer.Dispose(System.Boolean)">
             <summary>
                 dispose this tokenizer
@@ -330,6 +509,40 @@
             <param name="disposing"></param>
         </member>
         <member name="M:AbcTuneTool.FileIo.AbcTokenizer.Dispose">
+            <summary>
+                dispose this tokenizer
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.FileIo.BufferedAbcTokenizer">
+            <summary>
+                buffered tokenizer with lookahead
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.BufferedAbcTokenizer.#ctor(AbcTuneTool.FileIo.AbcTokenizer)">
+            <summary>
+                create a new buffered tokenizer
+            </summary>
+            <param name="tokenizer"></param>
+        </member>
+        <member name="P:AbcTuneTool.FileIo.BufferedAbcTokenizer.Tokenizer">
+            <summary>
+                base tokenizer
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.BufferedAbcTokenizer.Lookahead(System.Int32)">
+            <summary>
+                look a head a few symbols
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.BufferedAbcTokenizer.Dispose(System.Boolean)">
+            <summary>
+                dispose
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:AbcTuneTool.FileIo.BufferedAbcTokenizer.Dispose">
             <summary>
                 dispose this tokenizer
             </summary>
@@ -446,7 +659,27 @@
         </member>
         <member name="F:AbcTuneTool.Model.AbcCharacterKind.Comment">
             <summary>
-                line of commenz
+                line of comment
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.LineContinuation">
+            <summary>
+                line continuation
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.EmptyLine">
+            <summary>
+                empty line
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.Linebreak">
+            <summary>
+                line break
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Model.AbcCharacterKind.InformationFieldHeader">
+            <summary>
+                information field header
             </summary>
         </member>
         <member name="T:AbcTuneTool.Model.AbcCharacters">
@@ -466,142 +699,163 @@
         </member>
         <member name="T:AbcTuneTool.Model.InformationField">
             <summary>
+                information field
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Model.InformationField.#ctor(AbcTuneTool.FileIo.AbcCharacterReference)">
+            <summary>
+                create a new information field
+            </summary>
+            <param name="field"></param>
+        </member>
+        <member name="P:AbcTuneTool.Model.InformationField.FieldKind">
+            <summary>
+                field kind
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.InformationFieldKind">
+            <summary>
                 information fields for headers
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Undefined">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Undefined">
             <summary>
                 undefined field
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Area">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Area">
             <summary>
                 area label, deprecated
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Book">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Book">
             <summary>
                 book label
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Composer">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Composer">
             <summary>
                 composer label
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Discography">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Discography">
             <summary>
                 discography label
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.FileUrl">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.FileUrl">
             <summary>
                 file url label
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Group">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Group">
             <summary>
                 instrument group
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.History">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.History">
             <summary>
                 history info
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Instruction">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Instruction">
             <summary>
                 instruction
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Key">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Key">
             <summary>
                 key of the tune
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.UnitNoteLength">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.UnitNoteLength">
             <summary>
                 unit note length
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Meter">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Meter">
             <summary>
                 meter
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Macro">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Macro">
             <summary>
                 macro
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Notes">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Notes">
             <summary>
                 notes
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Parts">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Parts">
             <summary>
                 parts
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Tempo">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Tempo">
             <summary>
                 tempo
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Rythm">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Rythm">
             <summary>
                 rhythm kind
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Remark">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Remark">
             <summary>
                 remark
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Source">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Source">
             <summary>
                 tune source
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.SymbolLine">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.SymbolLine">
             <summary>
                 symbol ine
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.TuneTitle">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.TuneTitle">
             <summary>
                 tune tile
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.UserDefined">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.UserDefined">
             <summary>
                 user defined field
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Voice">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Voice">
             <summary>
                 voice
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.WordsAfterTune">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.WordsAfterTune">
             <summary>
                 words after tune
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.WordsInTune">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.WordsInTune">
             <summary>
                 words in tune
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.RefNumber">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.RefNumber">
             <summary>
                 reference number
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Model.InformationField.Transcription">
+        <member name="F:AbcTuneTool.Model.InformationFieldKind.Transcription">
             <summary>
                 transcription by
+            </summary>
+        </member>
+        <member name="T:AbcTuneTool.Model.TuneBook">
+            <summary>
+                model for a tune book
             </summary>
         </member>
         <member name="T:AbcTuneTool.Model.Tune">

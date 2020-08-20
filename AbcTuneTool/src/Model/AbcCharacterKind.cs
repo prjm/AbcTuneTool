@@ -66,8 +66,28 @@
         FontSize = 11,
 
         /// <summary>
-        ///     line of commenz
+        ///     line of comment
         /// </summary>
         Comment = 12,
+
+        /// <summary>
+        ///     line continuation
+        /// </summary>
+        LineContinuation = 13,
+
+        /// <summary>
+        ///     empty line
+        /// </summary>
+        EmptyLine = 14,
+
+        /// <summary>
+        ///     line break
+        /// </summary>
+        Linebreak = 15,
+
+        /// <summary>
+        ///     information field header
+        /// </summary>
+        InformationFieldHeader = 16,
     }
 }

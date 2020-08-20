@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 
@@ -13,7 +12,6 @@ namespace AbcTuneTool.FileIo {
     /// </summary>
     public class AbcTokenizer : IDisposable {
 
-        private AbcCharacter currentToken;
         private bool disposedValue;
 
 
@@ -23,23 +21,37 @@ namespace AbcTuneTool.FileIo {
         /// <param name="reader">input</param>
         /// <param name="logger">logger</param>
         /// <param name="cache">string cache</param>
-        public AbcTokenizer(TextReader reader, StringCache cache, Logger logger) {
-            currentToken = AbcCharacters.Undefined;
+        /// <param name="charCache">char cache</param>
+        /// <param name="pool">string builder pool</param>
+        public AbcTokenizer(TextReader reader, StringCache cache, AbcCharacterCache charCache, StringBuilderPool pool, Logger logger) {
             Reader = reader;
             Cache = cache;
             Logger = logger;
-            buffer = new Queue<int>();
+            CharCache = charCache;
+            StringBuilderPool = pool;
+            buffer = new Queue<char>();
+            CurrentToken = CharCache.FromCache(string.Empty, string.Empty, AbcCharacterKind.Undefined);
         }
 
         /// <summary>
         ///     read a char
         /// </summary>
         /// <returns></returns>
-        public int ReadChar() {
-            if (buffer.Count > 0)
-                return buffer.Dequeue();
+        public bool ReadChar(out char c) {
+            if (buffer.Count > 0) {
+                c = buffer.Dequeue();
+                return true;
+            }
 
-            return Reader.Read();
+            var value = Reader.Read();
+
+            if (value < 0) {
+                c = '\0';
+                return false;
+            }
+
+            c = (char)value;
+            return true;
         }
 
         /// <summary>
@@ -57,19 +69,28 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         public Logger Logger { get; }
 
-        private readonly Queue<int> buffer;
+        /// <summary>
+        ///     char cache
+        /// </summary>
+        public AbcCharacterCache CharCache { get; }
+
+        /// <summary>
+        ///     string builder pool
+        /// </summary>
+        public StringBuilderPool StringBuilderPool { get; }
+
+        private readonly Queue<char> buffer;
 
         /// <summary>
         ///     check if there are token left
         /// </summary>
         public bool HasToken
-            => currentToken.Kind != AbcCharacterKind.Eof;
+            => CurrentToken.AbcChar.Kind != AbcCharacterKind.Eof;
 
         /// <summary>
         ///     current token
         /// </summary>
-        public AbcCharacter CurrentToken
-            => currentToken;
+        public AbcCharacterReference CurrentToken { get; private set; }
 
         /// <summary>
         ///     get a token
@@ -78,219 +99,243 @@ namespace AbcTuneTool.FileIo {
         /// <param name="originalValue"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        private AbcCharacter GetToken(string value, string originalValue, AbcCharacterKind kind)
-            => new AbcCharacter(value, originalValue, kind);
+        private AbcCharacterReference GetToken(string value, string originalValue, AbcCharacterKind kind)
+            => CharCache.FromCache(value, originalValue, kind);
+
+        private bool isEmptyLine = true;
 
         /// <summary>
         ///     read the next toke
         /// </summary>
-        public void ReadNextToken() {
+        public bool ReadNextToken() {
             if (!HasToken)
-                return;
+                return false;
 
-            var c = ReadChar();
-            if (c < 0) {
-                MarkEof();
-                return;
+            if (!ReadChar(out var value))
+                return MarkEof();
+
+            if (value.IsLinebreak())
+                return ReadLinebreak(value);
+
+            if (isEmptyLine && value.MarksInfoField() && ReadChar(out var seperator)) {
+                if (seperator == ':') {
+                    var field = Cache.ForChars(value, seperator);
+                    CurrentToken = GetToken(field, field, AbcCharacterKind.InformationFieldHeader);
+                    return true;
+                }
+                buffer.Enqueue(seperator);
             }
 
-            var value = (char)c;
-            if (value == '\\') {
-                ReadMnemonic();
-                return;
-            }
+            isEmptyLine = false;
 
-            if (value == '&') {
-                ReadEntity();
-                return;
-            }
-
-            if (value == '$') {
-                ReadFontSize();
-                return;
-            }
-
-            if (value == '%') {
-                ReadComment();
-                return;
-            }
-
-            var tokenValue = Cache.ForChar(value);
-            currentToken = GetToken(tokenValue, tokenValue, AbcCharacterKind.Char);
+            return value switch
+            {
+                '\\' => ReadMnemonic(),
+                '&' => ReadEntity(),
+                '$' => ReadFontSize(),
+                '%' => ReadComment(),
+                _ => ReadDefault(value)
+            };
         }
 
-        private void ReadComment() {
-            bool hasEof;
-            var isLinebreakChar = false;
-            var sb = new StringBuilder();
-            var value = '\0';
-            int c;
+        private bool ReadLinebreak(char value) {
+            var kind = isEmptyLine ? AbcCharacterKind.EmptyLine : AbcCharacterKind.Linebreak;
 
-            sb.Append("%");
+            if (ReadChar(out var lf)) {
+                if (lf.IsLf())
+                    CurrentToken = GetToken(string.Empty, Cache.ForChars(value, lf), kind);
+                else {
+                    buffer.Enqueue(lf);
+                    CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
+                }
+            }
+            else
+                CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
+
+            return true;
+        }
+
+        /// <summary>
+        ///     read a default char
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool ReadDefault(char value) {
+            var tokenValue = Cache.ForChar(value);
+            CurrentToken = GetToken(tokenValue, tokenValue, AbcCharacterKind.Char);
+            return true;
+        }
+
+        /// <summary>
+        ///     read a comment value
+        /// </summary>
+        /// <returns></returns>
+        private bool ReadComment() {
+            bool isLinebreakChar;
+            char value;
+
+            using var sb = StringBuilderPool.GetItem();
+            sb.Item.Append("%");
 
             do {
-                c = ReadChar();
-                hasEof = c < 0;
-                if (!hasEof) {
-                    value = (char)c;
-                    sb.Append(value);
-                    isLinebreakChar =
-                        value == '\x000A' ||
-                        value == '\x000B' ||
-                        value == '\x000C' ||
-                        value == '\x000D' ||
-                        value == '\x0085' ||
-                        value == '\x2028' ||
-                        value == '\x2029';
-                }
+                if (!ReadChar(out value))
+                    break;
+                sb.Item.Append(value);
+                isLinebreakChar = value.IsLinebreak();
+            } while (!isLinebreakChar);
 
-            } while (!hasEof && !isLinebreakChar);
-
-            var isCr = value == '\x000D';
-            if (!hasEof && isCr) {
-                c = ReadChar();
-                hasEof = c < 0;
-                if (!hasEof) {
-                    value = (char)c;
-                    var isLf = value == '\x000A';
-                    if (!isLf)
-                        buffer.Enqueue(c);
+            if (value.IsCr()) {
+                if (ReadChar(out value))
+                    if (!value.IsLf())
+                        buffer.Enqueue(value);
                     else
-                        sb.Append(value);
-                }
+                        sb.Item.Append(value);
             }
-            currentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb), AbcCharacterKind.Comment);
+
+            CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), AbcCharacterKind.Comment);
+            return true;
         }
 
-        private void ReadFontSize() {
-            var c = ReadChar();
-            if (c < 0) {
-                currentToken = GetToken(string.Empty, "$", AbcCharacterKind.Char);
+        private bool ReadFontSize() {
+            if (!ReadChar(out var c)) {
+                CurrentToken = GetToken(string.Empty, "$", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize);
-                return;
+                return false;
             }
 
-            var value = Cache.ForChar((char)c);
+            var value = Cache.ForChar(c);
 
             if (value == "$") {
-                currentToken = GetToken("$", "$$", AbcCharacterKind.Dollar);
-                return;
+                CurrentToken = GetToken("$", "$$", AbcCharacterKind.Dollar);
+                return true;
             }
 
             if (!int.TryParse(value, out var _)) {
-                currentToken = GetToken(string.Empty, Cache.ForChars('$', (char)c), AbcCharacterKind.Char);
+                CurrentToken = GetToken(string.Empty, Cache.ForChars('$', (char)c), AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize);
-                return;
+                return false;
             }
 
-            currentToken = GetToken(value, Cache.ForChars('$', (char)c), AbcCharacterKind.FontSize);
+            CurrentToken = GetToken(value, Cache.ForChars('$', (char)c), AbcCharacterKind.FontSize);
+            return true;
         }
 
-        private void ReadEntity() {
-            int c;
+        private bool ReadEntity() {
             char value;
-            var sb = new StringBuilder();
-            sb.Append("&");
+            using var sb = StringBuilderPool.GetItem();
+            sb.Item.Append("&");
             do {
-                c = ReadChar();
-                if (c < 0) {
-                    currentToken = GetToken(string.Empty, "&", AbcCharacterKind.Char);
+                if (!ReadChar(out value)) {
+                    CurrentToken = GetToken(string.Empty, "&", AbcCharacterKind.Char);
                     Logger.Error(LogMessage.InvalidEntity);
-                    return;
+                    return false;
                 }
-                value = (char)c;
 
-                if (sb.Length == 1 && value == ' ') {
-                    currentToken = GetToken("&", "&", AbcCharacterKind.Ampersand);
+                if (sb.Item.Length == 1 && value == ' ') {
+                    CurrentToken = GetToken("&", "&", AbcCharacterKind.Ampersand);
                     buffer.Enqueue(' ');
-                    return;
+                    return false;
                 }
 
-                sb.Append(value);
-            } while (c != ';');
-            var entityName = Cache.ForStringBuilder(sb);
+                sb.Item.Append(value);
+            } while (value != ';');
+            var entityName = Cache.ForStringBuilder(sb.Item);
 
             if (string.Equals("&;", entityName, StringComparison.Ordinal)) {
-                currentToken = GetToken(string.Empty, "&;", AbcCharacterKind.Char);
+                CurrentToken = GetToken(string.Empty, "&;", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidEntity);
-                return;
+                return false;
             }
 
             var charValue = Entities.Decode(entityName);
 
             if (string.IsNullOrEmpty(charValue)) {
-                currentToken = GetToken(string.Empty, entityName, AbcCharacterKind.Char);
+                CurrentToken = GetToken(string.Empty, entityName, AbcCharacterKind.Char);
                 Logger.Error(LogMessage.UnknownEntity, entityName);
-                return;
+                return false;
             }
 
-            currentToken = GetToken(charValue, entityName, AbcCharacterKind.Entity);
+            CurrentToken = GetToken(charValue, entityName, AbcCharacterKind.Entity);
+            return true;
         }
 
-        private void MarkEof()
-            => currentToken = AbcCharacters.Eof;
+        private bool MarkEof() {
+            CurrentToken = CharCache.FromCache(string.Empty, string.Empty, AbcCharacterKind.Eof);
+            return false;
+        }
 
-        private void ReadMnemonic() {
-            var c = ReadChar();
-            if (c < 0) {
-                currentToken = GetToken(string.Empty, "\\", AbcCharacterKind.Char);
+        private bool ReadMnemonic() {
+            if (!ReadChar(out var decorator)) {
+                CurrentToken = GetToken(string.Empty, "\\", AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo1);
-                return;
+                return false;
             }
 
-            var decorator = (char)c;
+            if (decorator.IsLinebreak() || decorator == ' ' || char.IsWhiteSpace(decorator)) {
+                using var sb = StringBuilderPool.GetItem();
+                sb.Item.Append("\\");
+                sb.Item.Append(decorator);
+
+                while (!decorator.IsLinebreak()) {
+                    if (ReadChar(out decorator))
+                        sb.Item.Append(decorator);
+                    else
+                        break;
+                }
+
+                if (ReadChar(out var lf)) {
+                    if (lf.IsLf())
+                        sb.Item.Append(lf);
+                    else
+                        buffer.Enqueue(lf);
+                }
+
+                CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), AbcCharacterKind.LineContinuation);
+                return true;
+            }
+
             if (decorator == '\\') {
-                currentToken = GetToken("\\", "\\\\", AbcCharacterKind.Backslash);
-                return;
+                CurrentToken = GetToken("\\", "\\\\", AbcCharacterKind.Backslash);
+                return true;
             }
 
             if (decorator == '&') {
-                currentToken = GetToken("&", "\\&", AbcCharacterKind.Ampersand);
-                return;
+                CurrentToken = GetToken("&", "\\&", AbcCharacterKind.Ampersand);
+                return true;
             }
 
             if (decorator == '%') {
-                currentToken = GetToken("%", "\\%", AbcCharacterKind.Percent);
-                return;
+                CurrentToken = GetToken("%", "\\%", AbcCharacterKind.Percent);
+                return true;
             }
 
             var canBeUnicode = decorator == 'u' || decorator == 'U';
 
-            c = ReadChar();
-            if (c < 0) {
-                currentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator), AbcCharacterKind.Char);
+            if (!ReadChar(out var decoratedElement)) {
+                CurrentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator), AbcCharacterKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo2);
-                return;
+                return false;
             }
-
-            var decoratedElement = (char)c;
 
             if (canBeUnicode && decoratedElement.IsHex()) {
                 var len = 1;
-                var hasEof = false;
-                var chars = new char[8];
+                Span<char> chars = stackalloc char[8];
                 chars[0] = decoratedElement;
-                while (len < 8 && !hasEof && canBeUnicode) {
-                    c = ReadChar();
-                    if (c < 0) {
-                        hasEof = true;
+                while (len < 8 && canBeUnicode && ReadChar(out var value)) {
+                    canBeUnicode = value.IsHex();
+                    if (canBeUnicode) {
+                        chars[len] = value;
+                        len++;
                     }
-                    else {
-                        canBeUnicode = ((char)c).IsHex();
-                        if (canBeUnicode) {
-                            chars[len] = (char)c;
-                            len++;
-                        }
-                        else
-                            buffer.Enqueue(c);
-                    }
-                }
+                    else
+                        buffer.Enqueue(value);
+                };
 
                 if (len == 8) {
-                    var charString = new string(chars);
+                    var charString = chars.ToString();
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    currentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicode4Byte);
-                    return;
+                    CurrentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicode4Byte);
+                    return true;
                 }
 
                 if (len >= 5)
@@ -303,10 +348,10 @@ namespace AbcTuneTool.FileIo {
                     buffer.Enqueue(chars[6]);
 
                 if (len >= 4) {
-                    var charString = new string(chars, 0, 4);
+                    var charString = chars.Slice(0, 4).ToString();
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    currentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicody2Byte);
-                    return;
+                    CurrentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, AbcCharacterKind.FixedUnicody2Byte);
+                    return true;
                 }
 
                 if (len >= 2)
@@ -316,15 +361,16 @@ namespace AbcTuneTool.FileIo {
                     buffer.Enqueue(chars[2]);
             }
 
-            var value = Mnemonics.Decode(decorator, decoratedElement);
+            var mnemo = Mnemonics.Decode(decorator, decoratedElement);
 
-            if (string.IsNullOrEmpty(value)) {
-                currentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Char);
-                Logger.Error(LogMessage.UnknownMnemo, string.Concat('\\', decorator, decoratedElement));
-                return;
+            if (string.IsNullOrEmpty(mnemo)) {
+                CurrentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Char);
+                Logger.Error(LogMessage.UnknownMnemo, Cache.ForChars('\\', decorator, decoratedElement));
+                return false;
             }
 
-            currentToken = GetToken(value, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Mnenomic);
+            CurrentToken = GetToken(mnemo, Cache.ForChars('\\', decorator, decoratedElement), AbcCharacterKind.Mnenomic);
+            return true;
         }
 
         /// <summary>

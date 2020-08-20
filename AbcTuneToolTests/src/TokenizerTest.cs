@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
@@ -11,31 +12,43 @@ namespace AbcTuneToolTests {
             => RunTokenizerTest(toTokenize, new int[0], tokens);
 
         protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (AbcCharacterKind kind, string value)[] tokens) {
+
+            void tester(AbcTokenizer tokenizer) {
+                var sb = new StringBuilder();
+
+                var counter = 0;
+                while (tokenizer.HasToken) {
+                    tokenizer.ReadNextToken();
+                    var currentToken = tokenizer.CurrentToken;
+                    sb.Append(currentToken.AbcChar.OriginalValue);
+                    var (kind, value) = tokens[counter];
+                    counter++;
+                    Assert.AreEqual(kind, currentToken.AbcChar.Kind);
+                    Assert.AreEqual(value, currentToken.AbcChar.Value);
+                }
+
+                Assert.AreEqual(toTokenize, sb.ToString());
+                var logger = tokenizer.Logger;
+
+                Assert.AreEqual(messageNumbers.Length, logger.EntryCount);
+                for (var i = 0; i < messageNumbers.Length; i++) {
+                    Assert.AreEqual(messageNumbers[i], logger.Entries[i].MessageNumber);
+                }
+            }
+
+            RunTokenizerTest(toTokenize, tester);
+        }
+
+
+        protected void RunTokenizerTest(string toTokenize, Action<AbcTokenizer> tester) {
             var logger = new Logger();
             var cache = new StringCache();
+            var charCache = new AbcCharacterCache();
+            var sbPool = new StringBuilderPool();
             using var reader = new StringReader(toTokenize);
-            using var tokenizer = new AbcTokenizer(reader, cache, logger);
+            using var tokenizer = new AbcTokenizer(reader, cache, charCache, sbPool, logger);
 
-            var sb = new StringBuilder();
-
-            var counter = 0;
-            while (tokenizer.HasToken) {
-                tokenizer.ReadNextToken();
-                var currentToken = tokenizer.CurrentToken;
-                sb.Append(currentToken.OriginalValue);
-                var (kind, value) = tokens[counter];
-                counter++;
-                Assert.AreEqual(kind, currentToken.Kind);
-                Assert.AreEqual(value, currentToken.Value);
-            }
-
-            Assert.AreEqual(toTokenize, sb.ToString());
-
-            Assert.AreEqual(messageNumbers.Length, logger.EntryCount);
-            for (var i = 0; i < messageNumbers.Length; i++) {
-                Assert.AreEqual(messageNumbers[i], logger.Entries[i].MessageNumber);
-            }
-
+            tester(tokenizer);
         }
 
         private (AbcCharacterKind kind, string value) Eof()
@@ -51,8 +64,19 @@ namespace AbcTuneToolTests {
             => (AbcCharacterKind.Char, new string(v, 1));
 
         private (AbcCharacterKind kind, string value) Chr(string v)
-        => (AbcCharacterKind.Char, v);
+            => (AbcCharacterKind.Char, v);
 
+        private (AbcCharacterKind kind, string value) InfoField(string v)
+            => (AbcCharacterKind.InformationFieldHeader, v);
+
+        private (AbcCharacterKind kind, string value) EmptyLine()
+            => (AbcCharacterKind.EmptyLine, string.Empty);
+
+        private (AbcCharacterKind kind, string value) Linebreak()
+            => (AbcCharacterKind.Linebreak, string.Empty);
+
+        private (AbcCharacterKind kind, string value) Cnt()
+            => (AbcCharacterKind.LineContinuation, string.Empty);
 
         private (AbcCharacterKind kind, string value) U2(char v)
             => (AbcCharacterKind.FixedUnicody2Byte, new string(v, 1));
@@ -98,7 +122,6 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("$1", FontSize('1'), Eof());
             RunTokenizerTest("$", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof());
             RunTokenizerTest("$Q", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof()); ;
-
         }
 
         [TestMethod]
@@ -108,6 +131,11 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("\\&", Ampersand(), Eof());
             RunTokenizerTest("g & t", Chr('g'), Chr(' '), Ampersand(), Chr(' '), Chr('t'), Eof());
             RunTokenizerTest("$$", Dollar(), Eof());
+
+            RunTokenizerTest("K:", InfoField("K:"), Eof());
+            RunTokenizerTest("+:", InfoField("+:"), Eof());
+            RunTokenizerTest(" K:", Chr(' '), Chr('K'), Chr(':'), Eof());
+            RunTokenizerTest("K", Chr("K"), Eof());
         }
 
         [TestMethod]
@@ -133,6 +161,20 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
+        public void TestEmptyLine() {
+            RunTokenizerTest("\n", EmptyLine(), Eof());
+            RunTokenizerTest("\r\n", EmptyLine(), Eof());
+            RunTokenizerTest("x\r\n", Chr("x"), Linebreak(), Eof());
+        }
+
+        [TestMethod]
+        public void TestContinuations() {
+            RunTokenizerTest("a\\\nb", Chr("a"), Cnt(), Chr("b"), Eof());
+            RunTokenizerTest("a\\ \nb", Chr("a"), Cnt(), Chr("b"), Eof());
+            RunTokenizerTest("a\\ %dummy \nb", Chr("a"), Cnt(), Chr("b"), Eof());
+        }
+
+        [TestMethod]
         public void TestComment() {
             RunTokenizerTest("%", Comment(), Eof());
             RunTokenizerTest("a%b", Chr('a'), Comment(), Eof());
@@ -146,7 +188,21 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("%x\u0085x", Comment(), Chr('x'), Eof());
             RunTokenizerTest("%x\u2028x", Comment(), Chr('x'), Eof());
             RunTokenizerTest("%x\u2029x", Comment(), Chr('x'), Eof());
+        }
 
+        [TestMethod]
+        public void TestBufferedTokenizer() {
+            static void tester(AbcTokenizer tokenizer) {
+                using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
+                Assert.AreEqual(AbcCharacterKind.Char, bufferedTokenizer.Lookahead(0).AbcChar.Kind);
+                Assert.AreEqual(AbcCharacterKind.Char, bufferedTokenizer.Lookahead(1).AbcChar.Kind);
+                Assert.AreEqual(AbcCharacterKind.Comment, bufferedTokenizer.Lookahead(2).AbcChar.Kind);
+                Assert.AreEqual(AbcCharacterKind.Eof, bufferedTokenizer.Lookahead(3).AbcChar.Kind);
+                Assert.AreEqual(AbcCharacterKind.Eof, bufferedTokenizer.Lookahead(4).AbcChar.Kind);
+
+            };
+
+            RunTokenizerTest("a % dd", tester);
         }
 
     }
