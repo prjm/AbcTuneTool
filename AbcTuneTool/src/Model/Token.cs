@@ -3,7 +3,7 @@
     /// <summary>
     ///     ABC character
     /// </summary>
-    public readonly struct AbcCharacter {
+    public readonly struct Token {
 
         /// <summary>
         ///     create a new ABC character
@@ -11,7 +11,7 @@
         /// <param name="kind">token kind</param>
         /// <param name="value">token value</param>
         /// <param name="originalValue">original value</param>
-        public AbcCharacter(string value, string originalValue, AbcCharacterKind kind) {
+        public Token(string value, string originalValue, TokenKind kind) {
             Value = value;
             OriginalValue = originalValue;
             Kind = kind;
@@ -30,7 +30,7 @@
         /// <summary>
         ///     character kind
         /// </summary>
-        public readonly AbcCharacterKind Kind { get; }
+        public readonly TokenKind Kind { get; }
 
     }
 }

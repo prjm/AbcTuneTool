@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace AbcTuneTool.Common {
@@ -86,4 +88,76 @@ namespace AbcTuneTool.Common {
         public override void ClearItem(ObjectPoolItem<StringBuilder> objectPoolItem)
             => objectPoolItem.Item.Clear();
     }
+
+    /// <summary>
+    ///     list pool
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ListPool<T> : ObjectPool<List<T>> {
+
+        /// <summary>
+        ///     clear the list
+        /// </summary>
+        /// <param name="objectPoolItem"></param>
+        public override void ClearItem(ObjectPoolItem<List<T>> objectPoolItem)
+            => objectPoolItem.Item.Clear();
+    }
+
+    /// <summary>
+    ///     list pools
+    /// </summary>
+    public class ListPools {
+
+        /// <summary>
+        ///     object list
+        /// </summary>
+        public ListPool<object> ObjectLists { get; }
+            = new ListPool<object>();
+
+        /// <summary>
+        ///     get an object list
+        /// </summary>
+        /// <returns></returns>
+        public ObjectPoolItem<List<object>> GetList()
+            => ObjectLists.GetItem();
+    }
+
+    /// <summary>
+    ///     helper class for object pools
+    /// </summary>
+    public static class ObjectPoolHelpers {
+
+        /// <summary>
+        ///     add an item to the list pool
+        /// </summary>
+        /// <param name="pool"></param>
+        /// <param name="item"></param>
+        public static void Add(this ObjectPoolItem<List<object>> pool, object item)
+            => pool.Item.Add(item);
+
+        /// <summary>
+        ///     convert this list to an immutable array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        public static ImmutableArray<T> ToImmutableArray<T>(this ObjectPoolItem<List<object>> list) {
+
+            var l = list.Item;
+
+            return l.Count switch
+            {
+                0 => ImmutableArray<T>.Empty,
+                1 => ImmutableArray.Create((T)l[0]),
+                2 => ImmutableArray.Create((T)l[0], (T)l[1]),
+                3 => ImmutableArray.Create((T)l[0], (T)l[1], (T)l[2]),
+                4 => ImmutableArray.Create((T)l[0], (T)l[1], (T)l[2], (T)l[3]),
+                5 => ImmutableArray.Create((T)l[0], (T)l[1], (T)l[2], (T)l[3], (T)l[4]),
+                6 => ImmutableArray.Create((T)l[0], (T)l[1], (T)l[2], (T)l[3], (T)l[4], (T)l[5]),
+                7 => ImmutableArray.Create((T)l[0], (T)l[1], (T)l[2], (T)l[3], (T)l[4], (T)l[5], (T)l[6]),
+                _ => l.Cast<T>().ToImmutableArray()
+            };
+        }
+
+    }
+
 }

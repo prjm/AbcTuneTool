@@ -8,10 +8,10 @@ using AbcTuneTool.Model;
 namespace AbcTuneToolTests {
     public class TokenizerTest {
 
-        protected void RunTokenizerTest(string toTokenize, params (AbcCharacterKind kind, string value)[] tokens)
+        protected void RunTokenizerTest(string toTokenize, params (TokenKind kind, string value)[] tokens)
             => RunTokenizerTest(toTokenize, new int[0], tokens);
 
-        protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (AbcCharacterKind kind, string value)[] tokens) {
+        protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (TokenKind kind, string value)[] tokens) {
 
             void tester(AbcTokenizer tokenizer) {
                 var sb = new StringBuilder();
@@ -51,56 +51,56 @@ namespace AbcTuneToolTests {
             tester(tokenizer);
         }
 
-        private (AbcCharacterKind kind, string value) Eof()
-            => (AbcCharacterKind.Eof, string.Empty);
+        private (TokenKind kind, string value) Eof()
+            => (TokenKind.Eof, string.Empty);
 
-        private (AbcCharacterKind kind, string value) Mnemo(char v)
-            => (AbcCharacterKind.Mnenomic, new string(v, 1));
+        private (TokenKind kind, string value) Mnemo(char v)
+            => (TokenKind.Mnenomic, new string(v, 1));
 
-        private (AbcCharacterKind kind, string value) FontSize(char v)
-            => (AbcCharacterKind.FontSize, new string(v, 1));
+        private (TokenKind kind, string value) FontSize(char v)
+            => (TokenKind.FontSize, new string(v, 1));
 
-        private (AbcCharacterKind kind, string value) Chr(char v)
-            => (AbcCharacterKind.Char, new string(v, 1));
+        private (TokenKind kind, string value) Chr(char v)
+            => (TokenKind.Char, new string(v, 1));
 
-        private (AbcCharacterKind kind, string value) Chr(string v)
-            => (AbcCharacterKind.Char, v);
+        private (TokenKind kind, string value) Chr(string v)
+            => (TokenKind.Char, v);
 
-        private (AbcCharacterKind kind, string value) InfoField(string v)
-            => (AbcCharacterKind.InformationFieldHeader, v);
+        private (TokenKind kind, string value) InfoField(string v)
+            => (TokenKind.InformationFieldHeader, v);
 
-        private (AbcCharacterKind kind, string value) EmptyLine()
-            => (AbcCharacterKind.EmptyLine, string.Empty);
+        private (TokenKind kind, string value) EmptyLine()
+            => (TokenKind.EmptyLine, string.Empty);
 
-        private (AbcCharacterKind kind, string value) Linebreak()
-            => (AbcCharacterKind.Linebreak, string.Empty);
+        private (TokenKind kind, string value) Linebreak()
+            => (TokenKind.Linebreak, string.Empty);
 
-        private (AbcCharacterKind kind, string value) Cnt()
-            => (AbcCharacterKind.LineContinuation, string.Empty);
+        private (TokenKind kind, string value) Cnt()
+            => (TokenKind.LineContinuation, string.Empty);
 
-        private (AbcCharacterKind kind, string value) U2(char v)
-            => (AbcCharacterKind.FixedUnicody2Byte, new string(v, 1));
+        private (TokenKind kind, string value) U2(char v)
+            => (TokenKind.FixedUnicody2Byte, new string(v, 1));
 
-        private (AbcCharacterKind kind, string value) U4(string v)
-            => (AbcCharacterKind.FixedUnicode4Byte, v);
+        private (TokenKind kind, string value) U4(string v)
+            => (TokenKind.FixedUnicode4Byte, v);
 
-        private (AbcCharacterKind kind, string value) Entity(char v)
-            => (AbcCharacterKind.Entity, new string(v, 1));
+        private (TokenKind kind, string value) Entity(char v)
+            => (TokenKind.Entity, new string(v, 1));
 
-        private (AbcCharacterKind kind, string value) Backslash()
-            => (AbcCharacterKind.Backslash, "\\");
+        private (TokenKind kind, string value) Backslash()
+            => (TokenKind.Backslash, "\\");
 
-        private (AbcCharacterKind kind, string value) Percent()
-            => (AbcCharacterKind.Percent, "%");
+        private (TokenKind kind, string value) Percent()
+            => (TokenKind.Percent, "%");
 
-        private (AbcCharacterKind kind, string value) Ampersand()
-        => (AbcCharacterKind.Ampersand, "&");
+        private (TokenKind kind, string value) Ampersand()
+        => (TokenKind.Ampersand, "&");
 
-        private (AbcCharacterKind kind, string value) Dollar()
-            => (AbcCharacterKind.Dollar, "$");
+        private (TokenKind kind, string value) Dollar()
+            => (TokenKind.Dollar, "$");
 
-        private (AbcCharacterKind kind, string value) Comment()
-            => (AbcCharacterKind.Comment, string.Empty);
+        private (TokenKind kind, string value) Comment()
+            => (TokenKind.Comment, string.Empty);
 
         [TestMethod]
         public void TestSimple() {
@@ -136,6 +136,8 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("+:", InfoField("+:"), Eof());
             RunTokenizerTest(" K:", Chr(' '), Chr('K'), Chr(':'), Eof());
             RunTokenizerTest("K", Chr("K"), Eof());
+
+            RunTokenizerTest("A:\nB:", InfoField("A:"), Linebreak(), InfoField("B:"), Eof());
         }
 
         [TestMethod]
@@ -194,11 +196,11 @@ namespace AbcTuneToolTests {
         public void TestBufferedTokenizer() {
             static void tester(AbcTokenizer tokenizer) {
                 using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
-                Assert.AreEqual(AbcCharacterKind.Char, bufferedTokenizer.Lookahead(0).AbcChar.Kind);
-                Assert.AreEqual(AbcCharacterKind.Char, bufferedTokenizer.Lookahead(1).AbcChar.Kind);
-                Assert.AreEqual(AbcCharacterKind.Comment, bufferedTokenizer.Lookahead(2).AbcChar.Kind);
-                Assert.AreEqual(AbcCharacterKind.Eof, bufferedTokenizer.Lookahead(3).AbcChar.Kind);
-                Assert.AreEqual(AbcCharacterKind.Eof, bufferedTokenizer.Lookahead(4).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(0).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(1).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Comment, bufferedTokenizer.Lookahead(2).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(3).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(4).AbcChar.Kind);
 
             };
 

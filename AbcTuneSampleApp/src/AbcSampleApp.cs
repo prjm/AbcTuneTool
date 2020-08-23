@@ -14,6 +14,7 @@ namespace AbcTuneSampleApp {
             CharCache = new AbcCharacterCache();
             StringBuilderPool = new StringBuilderPool();
             ResMgr = new ResourceManager("AbcTuneSampleApp.MessageTexts", typeof(AbcSampleApp).Assembly);
+            ListPools = new ListPools();
         }
 
         public Logger Logger { get; }
@@ -21,6 +22,7 @@ namespace AbcTuneSampleApp {
         public AbcCharacterCache CharCache { get; }
         public StringBuilderPool StringBuilderPool { get; }
         public ResourceManager ResMgr { get; }
+        public ListPools ListPools { get; }
 
         protected abstract void Run();
 

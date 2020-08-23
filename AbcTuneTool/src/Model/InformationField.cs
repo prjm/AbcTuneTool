@@ -1,4 +1,5 @@
-﻿using AbcTuneTool.FileIo;
+﻿using System.Collections.Immutable;
+using AbcTuneTool.FileIo;
 
 namespace AbcTuneTool.Model {
 
@@ -11,12 +12,20 @@ namespace AbcTuneTool.Model {
         ///     create a new information field
         /// </summary>
         /// <param name="field"></param>
-        public InformationField(AbcCharacterReference field)
-            => FieldKind = field;
+        /// <param name="fieldValue"></param>
+        public InformationField(AbcCharacterReference field, ImmutableArray<AbcCharacterReference> fieldValue) {
+            FieldKind = field;
+            FieldValue = fieldValue;
+        }
 
         /// <summary>
         ///     field kind
         /// </summary>
         public AbcCharacterReference FieldKind { get; }
+
+        /// <summary>
+        ///     field value
+        /// </summary>
+        public ImmutableArray<AbcCharacterReference> FieldValue { get; }
     }
 }

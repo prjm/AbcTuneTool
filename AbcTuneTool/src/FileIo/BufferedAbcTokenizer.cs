@@ -42,7 +42,7 @@ namespace AbcTuneTool.FileIo {
                 FetchToken();
 
             if (index >= tokens.Count)
-                return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.AbcCharacterKind.Eof);
+                return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.TokenKind.Eof);
 
             var i = 0;
             foreach (var item in tokens) {
@@ -51,7 +51,7 @@ namespace AbcTuneTool.FileIo {
                 i++;
             }
 
-            return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.AbcCharacterKind.Eof);
+            return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.TokenKind.Eof);
         }
 
         internal void NextToken()

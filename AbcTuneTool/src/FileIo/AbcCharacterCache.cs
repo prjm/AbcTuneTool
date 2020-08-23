@@ -5,10 +5,10 @@ using AbcTuneTool.Model;
 namespace AbcTuneTool.FileIo {
 
     internal struct AbcCharCacheKey : IEquatable<AbcCharCacheKey> {
-        private readonly AbcCharacterKind kind;
+        private readonly TokenKind kind;
         private readonly string originalValue;
 
-        public AbcCharCacheKey(AbcCharacterKind kind, string originalValue) {
+        public AbcCharCacheKey(TokenKind kind, string originalValue) {
             this.kind = kind;
             this.originalValue = originalValue;
         }
@@ -38,7 +38,7 @@ namespace AbcTuneTool.FileIo {
         /// <param name="originalValue"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        public AbcCharacterReference FromCache(string value, string originalValue, AbcCharacterKind kind) {
+        public AbcCharacterReference FromCache(string value, string originalValue, TokenKind kind) {
             var key = new AbcCharCacheKey(kind, originalValue);
 
             if (!cache.TryGetValue(key, out var result)) {

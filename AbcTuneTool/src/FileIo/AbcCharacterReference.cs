@@ -14,15 +14,15 @@ namespace AbcTuneTool.FileIo {
         /// <param name="value"></param>
         /// <param name="originalValue"></param>
         /// <param name="kind"></param>
-        public AbcCharacterReference(string value, string originalValue, AbcCharacterKind kind)
-            => AbcChar = new AbcCharacter(value, originalValue, kind);
+        public AbcCharacterReference(string value, string originalValue, TokenKind kind)
+            => AbcChar = new Token(value, originalValue, kind);
 
-        private AbcCharacter token;
+        private Token token;
 
         /// <summary>
         ///     current token
         /// </summary>
-        public ref AbcCharacter AbcChar
+        public ref Token AbcChar
             => ref token;
 
     }

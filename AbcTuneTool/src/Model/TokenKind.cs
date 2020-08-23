@@ -3,10 +3,10 @@
     /// <summary>
     ///     ABC character kind
     /// </summary>
-    public enum AbcCharacterKind {
+    public enum TokenKind {
 
         /// <summary>
-        ///     undefined
+        ///     undefined kind of token
         /// </summary>
         Undefined = 0,
 
@@ -16,12 +16,12 @@
         Char = 1,
 
         /// <summary>
-        ///     mnemonic
+        ///     character encoded by mnemonic
         /// </summary>
         Mnenomic = 2,
 
         /// <summary>
-        ///     entity
+        ///     character encoded by entity
         /// </summary>
         Entity = 3,
 
@@ -66,7 +66,7 @@
         FontSize = 11,
 
         /// <summary>
-        ///     line of comment
+        ///     line of comment / end of line comment
         /// </summary>
         Comment = 12,
 
