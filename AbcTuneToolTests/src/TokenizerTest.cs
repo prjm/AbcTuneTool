@@ -87,6 +87,9 @@ namespace AbcTuneToolTests {
         private (TokenKind kind, string value) Entity(char v)
             => (TokenKind.Entity, new string(v, 1));
 
+        private (TokenKind kind, string value) Entity(string v)
+            => (TokenKind.Entity, v);
+
         private (TokenKind kind, string value) Backslash()
             => (TokenKind.Backslash, "\\");
 
@@ -143,10 +146,13 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void TestEntities() {
             RunTokenizerTest("&copy;", Entity('©'), Eof());
-            RunTokenizerTest("&larr;", Entity('⇐'), Eof());
-            RunTokenizerTest("&", new[] { LogMessage.InvalidEntity }, Chr(""), Eof());
-            RunTokenizerTest("&;", new[] { LogMessage.InvalidEntity }, Chr(""), Eof());
-            RunTokenizerTest("&???;", new[] { LogMessage.UnknownEntity }, Chr(""), Eof());
+            RunTokenizerTest("&larr;", Entity('←'), Eof());
+            RunTokenizerTest("&", new[] { LogMessage.InvalidEntity1 }, Chr(""), Eof());
+            RunTokenizerTest("&;", new[] { LogMessage.InvalidEntity1 }, Chr(""), Eof());
+            RunTokenizerTest("&?;", new[] { LogMessage.InvalidEntity2 }, Entity(""), Chr("?"), Chr(";"), Eof());
+
+            // special case: invalid entity and newline
+            RunTokenizerTest("&c.\nx", new[] { LogMessage.InvalidEntity2 }, Entity(""), Chr("."), Linebreak(), Chr("x"), Eof());
         }
 
         [TestMethod]

@@ -231,7 +231,7 @@ namespace AbcTuneTool.FileIo {
             do {
                 if (!ReadChar(out value)) {
                     CurrentToken = GetToken(string.Empty, "&", TokenKind.Char);
-                    Logger.Error(LogMessage.InvalidEntity);
+                    Logger.Error(LogMessage.InvalidEntity1);
                     return false;
                 }
 
@@ -241,13 +241,21 @@ namespace AbcTuneTool.FileIo {
                     return false;
                 }
 
+                if (value.IsLinebreak() || value != ';' && !value.IsAsciiLetter()) {
+                    CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.Entity);
+                    Logger.Error(LogMessage.InvalidEntity2, Cache.ForStringBuilder(sb.Item));
+                    buffer.Enqueue(value);
+                    return false;
+                }
+
                 sb.Item.Append(value);
+
             } while (value != ';');
             var entityName = Cache.ForStringBuilder(sb.Item);
 
             if (string.Equals("&;", entityName, StringComparison.Ordinal)) {
                 CurrentToken = GetToken(string.Empty, "&;", TokenKind.Char);
-                Logger.Error(LogMessage.InvalidEntity);
+                Logger.Error(LogMessage.InvalidEntity1);
                 return false;
             }
 

@@ -23,7 +23,7 @@
         /// <summary>
         ///     invalid entity
         /// </summary>
-        public const int InvalidEntity = 103;
+        public const int InvalidEntity1 = 103;
 
         /// <summary>
         ///     unknown entity
@@ -38,6 +38,17 @@
         /// <summary>
         ///     current working set size
         /// </summary>
-        public const int CurrentWorkingSetSize = 106;
+        public const int RequiredWorkingSetMemory = 106;
+
+        /// <summary>
+        ///     required duration
+        /// </summary>
+        public const int RequiredDuration = 107;
+
+        /// <summary>
+        ///     invalid entity
+        /// </summary>
+        public const int InvalidEntity2 = 108;
+
     }
 }

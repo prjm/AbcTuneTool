@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -35,7 +34,7 @@ namespace AbcTuneTool {
             var tunes = parser.ParseTuneBook();
 
             foreach (var tune in tunes.Tunes) {
-                Func<IEnumerable<InformationField>, string> c = (q) => q.FirstOrDefault()?.FieldValue.Select(t => t.AbcChar.Value).Aggregate((x, y) => string.Concat(x, y));
+                static string c(IEnumerable<InformationField> q) => q.FirstOrDefault()?.FieldValue.Select(t => t.AbcChar.Value).Aggregate((x, y) => string.Concat(x, y));
                 var title = c(tune.Header.Fields.Where(t => t.FieldKind.AbcChar.Value == "T:"));
 
                 if (string.IsNullOrWhiteSpace(title))

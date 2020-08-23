@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="M_100" xml:space="preserve">
+    <value>Invalid mnemo: unexpected end of file</value>
+  </data>
+  <data name="M_101" xml:space="preserve">
+    <value>Invalid mnemo: unexpected end of file</value>
+  </data>
   <data name="M_102" xml:space="preserve">
     <value>Unknown mnemo: {0}</value>
   </data>
+  <data name="M_103" xml:space="preserve">
+    <value>Invalid entity</value>
+  </data>
+  <data name="M_104" xml:space="preserve">
+    <value>Unknown entity: {0}</value>
+  </data>
+  <data name="M_105" xml:space="preserve">
+    <value>Invalid font size: unexpected end of file</value>
+  </data>
   <data name="M_106" xml:space="preserve">
     <value>Working set size: {0}</value>
+  </data>
+  <data name="M_107" xml:space="preserve">
+    <value>Required duration: {0}</value>
+  </data>
+  <data name="M_108" xml:space="preserve">
+    <value>Invalid entity: {0}</value>
   </data>
 </root>

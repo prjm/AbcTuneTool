@@ -5,7 +5,7 @@ using System.Threading;
 namespace AbcTuneTool.FileIo {
 
     internal class EntityLookup {
-        internal Dictionary<string, string> lookup = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        internal Dictionary<string, string> lookup = new Dictionary<string, string>(StringComparer.Ordinal);
         internal Dictionary<string, string> reverseLookup = new Dictionary<string, string>();
     }
 

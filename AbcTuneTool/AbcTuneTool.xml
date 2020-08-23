@@ -55,6 +55,13 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:AbcTuneTool.Common.CharHelper.IsAsciiLetter(System.Char)">
+            <summary>
+                test if a char is an ASCII letter
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="M:AbcTuneTool.Common.CharHelper.IsCr(System.Char)">
             <summary>
                 test if a char is a carriage return char
@@ -171,7 +178,7 @@
                 unknown memo
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Common.LogMessage.InvalidEntity">
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidEntity1">
             <summary>
                 invalid entity
             </summary>
@@ -186,9 +193,19 @@
                 invalid font size
             </summary>
         </member>
-        <member name="F:AbcTuneTool.Common.LogMessage.CurrentWorkingSetSize">
+        <member name="F:AbcTuneTool.Common.LogMessage.RequiredWorkingSetMemory">
             <summary>
                 current working set size
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.RequiredDuration">
+            <summary>
+                required duration
+            </summary>
+        </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidEntity2">
+            <summary>
+                invalid entity
             </summary>
         </member>
         <member name="T:AbcTuneTool.Common.LogSeverity">
@@ -385,7 +402,7 @@
         </member>
         <member name="M:AbcTuneTool.Common.SystemStatus.#ctor(AbcTuneTool.Common.SystemStatus,AbcTuneTool.Common.SystemStatus)">
             <summary>
-                create a diff of two status points
+                create a difference of two status points
             </summary>
             <param name="infoBefore"></param>
             <param name="infoAfterRun"></param>
@@ -399,6 +416,21 @@
         <member name="P:AbcTuneTool.Common.SystemStatus.WorkingSet64">
             <summary>
                 working set size
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.SystemStatus.StatusTime">
+            <summary>
+                status time
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.SystemStatus.RequiredWorkingSet">
+            <summary>
+                required working set
+            </summary>
+        </member>
+        <member name="P:AbcTuneTool.Common.SystemStatus.Duration">
+            <summary>
+                required durtion
             </summary>
         </member>
         <member name="T:AbcTuneTool.FileIo.AbcCharacterCache">

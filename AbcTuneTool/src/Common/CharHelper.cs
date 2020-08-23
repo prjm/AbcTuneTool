@@ -29,6 +29,16 @@
                 value == '\x2028' ||
                 value == '\x2029';
 
+
+        /// <summary>
+        ///     test if a char is an ASCII letter
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsAsciiLetter(this char value) =>
+                value >= 'A' && value <= 'Z' ||
+                value >= 'a' && value <= 'z';
+
         /// <summary>
         ///     test if a char is a carriage return char
         /// </summary>
