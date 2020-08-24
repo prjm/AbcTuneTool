@@ -144,4 +144,7 @@
   <data name="M_108" xml:space="preserve">
     <value>Invalid entity: {0}</value>
   </data>
+  <data name="M_109" xml:space="preserve">
+    <value>Invalid font size: {0}</value>
+  </data>
 </root>

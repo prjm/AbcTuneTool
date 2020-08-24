@@ -1,8 +1,11 @@
-﻿namespace AbcTuneTool.Model {
+﻿using System.Diagnostics;
+
+namespace AbcTuneTool.Model {
 
     /// <summary>
     ///     ABC character
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct Token {
 
         /// <summary>
@@ -31,6 +34,9 @@
         ///     character kind
         /// </summary>
         public readonly TokenKind Kind { get; }
+
+        internal string DebuggerDisplay
+            => $"{Kind}: {OriginalValue}";
 
     }
 }

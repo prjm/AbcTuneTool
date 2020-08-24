@@ -105,6 +105,7 @@ namespace AbcTuneTool.FileIo {
             => CharCache.FromCache(value, originalValue, kind);
 
         private bool isEmptyLine = true;
+        private bool isInInfoField = false;
 
         /// <summary>
         ///     read the next toke
@@ -119,11 +120,12 @@ namespace AbcTuneTool.FileIo {
             if (value.IsLinebreak())
                 return ReadLinebreak(value);
 
-            if (isEmptyLine && value.MarksInfoField() && ReadChar(out var seperator)) {
+            if (isEmptyLine && value.IsAsciiLetter() && ReadChar(out var seperator)) {
                 if (seperator == ':') {
                     isEmptyLine = false;
                     var field = Cache.ForChars(value, seperator);
                     CurrentToken = GetToken(field, field, TokenKind.InformationFieldHeader);
+                    isInInfoField = true;
                     return true;
                 }
                 buffer.Enqueue(seperator);
@@ -149,11 +151,37 @@ namespace AbcTuneTool.FileIo {
                     CurrentToken = GetToken(string.Empty, Cache.ForChars(value, lf), kind);
                 else {
                     buffer.Enqueue(lf);
+                    lf = '\0';
                     CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
                 }
             }
             else
                 CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
+
+            if (isInInfoField) {
+                if (ReadChar(out var letter)) {
+                    if (ReadChar(out var colon)) {
+                        if (letter == '+' && colon == ':') {
+                            if (lf != '\0')
+                                CurrentToken = GetToken(string.Empty, Cache.ForChars(value, lf, letter, colon), TokenKind.HeaderContinuation);
+                            else
+                                CurrentToken = GetToken(string.Empty, Cache.ForChars(value, letter, colon), TokenKind.HeaderContinuation);
+
+                            return true;
+                        }
+                        isInInfoField = false;
+                        buffer.Enqueue(letter);
+                        buffer.Enqueue(colon);
+                        isEmptyLine = true;
+                        return true;
+                    }
+
+                    isInInfoField = false;
+                    buffer.Enqueue(letter);
+                    isEmptyLine = true;
+                    return true;
+                }
+            }
 
             isEmptyLine = true;
             return true;
@@ -216,7 +244,7 @@ namespace AbcTuneTool.FileIo {
 
             if (!int.TryParse(value, out var _)) {
                 CurrentToken = GetToken(string.Empty, Cache.ForChars('$', (char)c), TokenKind.Char);
-                Logger.Error(LogMessage.InvalidFontSize);
+                Logger.Error(LogMessage.InvalidFontSize2, value);
                 return false;
             }
 

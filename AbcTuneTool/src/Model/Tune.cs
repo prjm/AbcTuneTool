@@ -16,6 +16,9 @@
             this.Header = header;
         }
 
+        /// <summary>
+        ///     field header
+        /// </summary>
         public InformationFields Header { get; }
     }
 }

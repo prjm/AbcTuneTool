@@ -208,6 +208,11 @@
                 invalid entity
             </summary>
         </member>
+        <member name="F:AbcTuneTool.Common.LogMessage.InvalidFontSize2">
+            <summary>
+                invalid font size
+            </summary>
+        </member>
         <member name="T:AbcTuneTool.Common.LogSeverity">
             <summary>
                 log message severity
@@ -353,6 +358,18 @@
             <typeparam name="T"></typeparam>
             <param name="list"></param>
         </member>
+        <member name="P:AbcTuneTool.Common.StringBuilderCacheEntry.Data">
+            <summary>
+                string data
+            </summary>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringBuilderCacheEntry.Equals(System.Object)">
+            <summary>
+                check for equality
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
         <member name="T:AbcTuneTool.Common.StringCache">
             <summary>
                 cache for allocated strings
@@ -382,7 +399,16 @@
         </member>
         <member name="M:AbcTuneTool.Common.StringCache.ForChars(System.Char,System.Char,System.Char)">
             <summary>
-                cache a string for two chars
+                cache a string for three chars
+            </summary>
+            <param name="c1"></param>
+            <param name="c2"></param>
+            <param name="c3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AbcTuneTool.Common.StringCache.ForChars(System.Char,System.Char,System.Char,System.Char)">
+            <summary>
+                cache a string for four chars
             </summary>
             <param name="c1"></param>
             <param name="c2"></param>
@@ -801,6 +827,11 @@
                 information field header
             </summary>
         </member>
+        <member name="F:AbcTuneTool.Model.TokenKind.HeaderContinuation">
+            <summary>
+                header continuation
+            </summary>
+        </member>
         <member name="T:AbcTuneTool.Model.InformationField">
             <summary>
                 information field
@@ -1016,6 +1047,11 @@
                 create a new tune
             </summary>
             <param name="header"></param>
+        </member>
+        <member name="P:AbcTuneTool.Model.Tune.Header">
+            <summary>
+                field header
+            </summary>
         </member>
         <member name="T:AbcTuneTool.Properties.Resources">
             <summary>

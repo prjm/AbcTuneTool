@@ -89,5 +89,10 @@
         ///     information field header
         /// </summary>
         InformationFieldHeader = 16,
+
+        /// <summary>
+        ///     header continuation
+        /// </summary>
+        HeaderContinuation = 17,
     }
 }

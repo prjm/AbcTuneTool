@@ -50,5 +50,10 @@
         /// </summary>
         public const int InvalidEntity2 = 108;
 
+        /// <summary>
+        ///     invalid font size
+        /// </summary>
+        public const int InvalidFontSize2 = 109;
+
     }
 }

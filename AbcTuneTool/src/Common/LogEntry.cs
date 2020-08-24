@@ -1,8 +1,11 @@
-﻿namespace AbcTuneTool.Common {
+﻿using System.Diagnostics;
+
+namespace AbcTuneTool.Common {
 
     /// <summary>
     ///     log entry
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class LogEntry {
 
         /// <summary>
@@ -31,6 +34,9 @@
         ///     message parameters
         /// </summary>
         public object[] MessageParameters { get; }
+
+        internal string DebuggerDisplay
+            => $"{Severity.ToShortString()}{MessageNumber}: {MessageParameters}";
 
     }
 }

@@ -1,10 +1,12 @@
-﻿using AbcTuneTool.Model;
+﻿using System.Diagnostics;
+using AbcTuneTool.Model;
 
 namespace AbcTuneTool.FileIo {
 
     /// <summary>
     ///     char reference
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class AbcCharacterReference {
 
 
@@ -24,6 +26,9 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         public ref Token AbcChar
             => ref token;
+
+        internal string DebuggerDisplay
+            => token.DebuggerDisplay;
 
     }
 }

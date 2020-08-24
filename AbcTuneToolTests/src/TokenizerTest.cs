@@ -54,6 +54,9 @@ namespace AbcTuneToolTests {
         private (TokenKind kind, string value) Eof()
             => (TokenKind.Eof, string.Empty);
 
+        private (TokenKind kind, string value) HdrCnt()
+            => (TokenKind.HeaderContinuation, string.Empty);
+
         private (TokenKind kind, string value) Mnemo(char v)
             => (TokenKind.Mnenomic, new string(v, 1));
 
@@ -124,7 +127,7 @@ namespace AbcTuneToolTests {
         public void TestFontSize() {
             RunTokenizerTest("$1", FontSize('1'), Eof());
             RunTokenizerTest("$", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof());
-            RunTokenizerTest("$Q", new[] { LogMessage.InvalidFontSize }, Chr(""), Eof()); ;
+            RunTokenizerTest("$Q", new[] { LogMessage.InvalidFontSize2 }, Chr(""), Eof()); ;
         }
 
         [TestMethod]
@@ -136,7 +139,7 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("$$", Dollar(), Eof());
 
             RunTokenizerTest("K:", InfoField("K:"), Eof());
-            RunTokenizerTest("+:", InfoField("+:"), Eof());
+            RunTokenizerTest("A:", InfoField("A:"), Eof());
             RunTokenizerTest(" K:", Chr(' '), Chr('K'), Chr(':'), Eof());
             RunTokenizerTest("K", Chr("K"), Eof());
 
@@ -180,6 +183,7 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("a\\\nb", Chr("a"), Cnt(), Chr("b"), Eof());
             RunTokenizerTest("a\\ \nb", Chr("a"), Cnt(), Chr("b"), Eof());
             RunTokenizerTest("a\\ %dummy \nb", Chr("a"), Cnt(), Chr("b"), Eof());
+            RunTokenizerTest("A:x\n+:x", InfoField("A:"), Chr("x"), HdrCnt(), Chr("x"), Eof());
         }
 
         [TestMethod]
