@@ -30,7 +30,7 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         public ListPools ListPools { get; }
 
-        private AbcCharacterReference CurrentToken
+        private Token CurrentToken
             => Tokenizer.Lookahead(0);
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace AbcTuneTool.FileIo {
                 if (Matches(TokenKind.Linebreak))
                     values.Add(GetCurrentTokenAndFetchNext());
 
-                return new InformationField(field, values.ToImmutableArray<AbcCharacterReference>());
+                return new InformationField(new Terminal(field), new Terminal(values.ToImmutableArray<Token>()));
             }
 
             return default;
         }
 
-        private AbcCharacterReference GetCurrentTokenAndFetchNext() {
+        private Token GetCurrentTokenAndFetchNext() {
             var result = CurrentToken;
             NextToken();
             return result;
@@ -82,7 +82,7 @@ namespace AbcTuneTool.FileIo {
             while (!Matches(TokenKind.Eof, TokenKind.InformationFieldHeader)) {
                 values.Add(GetCurrentTokenAndFetchNext());
             }
-            return new OtherLines(values.ToImmutableArray<AbcCharacterReference>());
+            return new OtherLines(values.ToImmutableArray<Token>());
         }
 
         /// <summary>
@@ -104,6 +104,13 @@ namespace AbcTuneTool.FileIo {
             return new Tune(otherLines, header);
         }
 
+        internal string ExtractVersion(Token token) {
+            var dashIndex = token.OriginalValue.IndexOf("-") + 1;
+            if (dashIndex != KnownStrings.VersionComment.Length)
+                return KnownStrings.UndefinedVersion;
+            return token.OriginalValue.Substring(dashIndex);
+        }
+
         /// <summary>
         ///     parse a tune book
         /// </summary>
@@ -114,8 +121,8 @@ namespace AbcTuneTool.FileIo {
             var fileHeader = InformationFields.Empty;
             using var list = ListPools.ObjectLists.GetItem();
 
-            if (Matches(TokenKind.Comment) && CurrentToken.StartsWith(KnownStrings.VersionComment)) {
-                version = CurrentToken.ExtractVersion();
+            if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
+                version = ExtractVersion(CurrentToken);
             }
 
             while (!Matches(TokenKind.Eof)) {
@@ -137,10 +144,10 @@ namespace AbcTuneTool.FileIo {
         }
 
         private bool Matches(TokenKind kind1, TokenKind kind2)
-            => CurrentToken.AbcChar.Kind == kind1 || CurrentToken.AbcChar.Kind == kind2;
+            => CurrentToken.Kind == kind1 || CurrentToken.Kind == kind2;
 
         private bool Matches(TokenKind kind)
-            => CurrentToken.AbcChar.Kind == kind;
+            => CurrentToken.Kind == kind;
 
         private void NextToken()
             => Tokenizer.NextToken();

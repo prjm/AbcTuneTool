@@ -10,12 +10,11 @@ namespace AbcTuneToolTests {
 
         protected T RunParserTest<T>(string toParse, Func<AbcParser, T> tester) {
             var cache = new StringCache();
-            var charCache = new AbcCharacterCache();
             var pool = new StringBuilderPool();
             var logger = new Logger();
             var listPool = new ListPools();
             using var reader = new StringReader(toParse);
-            using var tokenizer = new AbcTokenizer(reader, cache, charCache, pool, logger);
+            using var tokenizer = new Tokenizer(reader, cache, pool, logger);
             using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
             using var parser = new AbcParser(bufferedTokenizer, listPool);
             return tester(parser);
@@ -43,7 +42,7 @@ namespace AbcTuneToolTests {
             var source = "K:test";
             var field = Symbol(source, (AbcParser p) => p.ParseInformationField());
             Assert.NotNull(field);
-            Assert.AreEqual("K:", field.FieldKind.AbcChar.Value);
+            Assert.AreEqual("K:", field.FieldKind.ToNewString());
         }
 
         [TestMethod]
@@ -52,8 +51,8 @@ namespace AbcTuneToolTests {
             var fields = Symbol(source, (AbcParser p) => p.ParseInformationFields());
             Assert.NotNull(fields);
             Assert.AreEqual(2, fields.Fields.Length);
-            Assert.AreEqual("B:", fields.Fields[0].FieldKind.AbcChar.Value);
-            Assert.AreEqual("A:", fields.Fields[1].FieldKind.AbcChar.Value);
+            Assert.AreEqual("B:", fields.Fields[0].FieldKind.ToNewString());
+            Assert.AreEqual("A:", fields.Fields[1].FieldKind.ToNewString());
         }
 
     }

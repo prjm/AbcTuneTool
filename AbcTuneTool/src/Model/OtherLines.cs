@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using AbcTuneTool.FileIo;
 
 namespace AbcTuneTool.Model {
 
@@ -13,12 +12,12 @@ namespace AbcTuneTool.Model {
         ///     create a new set of other lines
         /// </summary>
         /// <param name="lines"></param>
-        public OtherLines(ImmutableArray<AbcCharacterReference> lines)
+        public OtherLines(ImmutableArray<Token> lines)
             => Lines = lines;
 
         /// <summary>
         ///     lines
         /// </summary>
-        public ImmutableArray<AbcCharacterReference> Lines { get; }
+        public ImmutableArray<Token> Lines { get; }
     }
 }

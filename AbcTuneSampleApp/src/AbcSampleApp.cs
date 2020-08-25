@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Resources;
 using AbcTuneTool.Common;
-using AbcTuneTool.FileIo;
 
 namespace AbcTuneSampleApp {
 
@@ -11,7 +10,6 @@ namespace AbcTuneSampleApp {
         public AbcSampleApp() {
             Logger = new Logger();
             Cache = new StringCache();
-            CharCache = new AbcCharacterCache();
             StringBuilderPool = new StringBuilderPool();
             ResMgr = new ResourceManager("AbcTuneSampleApp.resources.MessageTexts", typeof(AbcSampleApp).Assembly);
             ListPools = new ListPools();
@@ -19,7 +17,6 @@ namespace AbcTuneSampleApp {
 
         public Logger Logger { get; }
         public StringCache Cache { get; }
-        public AbcCharacterCache CharCache { get; }
         public StringBuilderPool StringBuilderPool { get; }
         public ResourceManager ResMgr { get; }
         public ListPools ListPools { get; }

@@ -10,10 +10,9 @@ namespace AbcTuneTool.FileIo {
     /// <summary>
     ///     tokenizer for ABC files
     /// </summary>
-    public class AbcTokenizer : IDisposable {
+    public class Tokenizer : IDisposable {
 
         private bool disposedValue;
-
         private readonly HashSet<(char, char)> skippedMnemeos
             = new HashSet<(char, char)>();
 
@@ -23,16 +22,14 @@ namespace AbcTuneTool.FileIo {
         /// <param name="reader">input</param>
         /// <param name="logger">logger</param>
         /// <param name="cache">string cache</param>
-        /// <param name="charCache">char cache</param>
         /// <param name="pool">string builder pool</param>
-        public AbcTokenizer(TextReader reader, StringCache cache, AbcCharacterCache charCache, StringBuilderPool pool, Logger logger) {
+        public Tokenizer(TextReader reader, StringCache cache, StringBuilderPool pool, Logger logger) {
             Reader = reader;
             Cache = cache;
             Logger = logger;
-            CharCache = charCache;
             StringBuilderPool = pool;
             buffer = new Queue<char>();
-            CurrentToken = CharCache.FromCache(string.Empty, string.Empty, TokenKind.Undefined);
+            currentToken = new Token(string.Empty, string.Empty, TokenKind.Undefined);
         }
 
         /// <summary>
@@ -72,27 +69,28 @@ namespace AbcTuneTool.FileIo {
         public Logger Logger { get; }
 
         /// <summary>
-        ///     char cache
-        /// </summary>
-        public AbcCharacterCache CharCache { get; }
-
-        /// <summary>
         ///     string builder pool
         /// </summary>
         public StringBuilderPool StringBuilderPool { get; }
 
+        /// <summary>
+        ///     unread, buffered chars
+        /// </summary>
         private readonly Queue<char> buffer;
 
         /// <summary>
         ///     check if there are token left
         /// </summary>
         public bool HasToken
-            => CurrentToken.AbcChar.Kind != TokenKind.Eof;
+            => CurrentToken.Kind != TokenKind.Eof;
 
         /// <summary>
         ///     current token
         /// </summary>
-        public AbcCharacterReference CurrentToken { get; private set; }
+        public ref Token CurrentToken
+            => ref currentToken;
+
+        private Token currentToken;
 
         /// <summary>
         ///     get a token
@@ -101,8 +99,8 @@ namespace AbcTuneTool.FileIo {
         /// <param name="originalValue"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        private AbcCharacterReference GetToken(string value, string originalValue, TokenKind kind)
-            => CharCache.FromCache(value, originalValue, kind);
+        private void SetToken(string value, string originalValue, TokenKind kind)
+            => currentToken = new Token(value, originalValue, kind);
 
         private bool isEmptyLine = true;
         private bool isInInfoField = false;
@@ -124,7 +122,7 @@ namespace AbcTuneTool.FileIo {
                 if (seperator == ':') {
                     isEmptyLine = false;
                     var field = Cache.ForChars(value, seperator);
-                    CurrentToken = GetToken(field, field, TokenKind.InformationFieldHeader);
+                    SetToken(field, field, TokenKind.InformationFieldHeader);
                     isInInfoField = true;
                     return true;
                 }
@@ -148,24 +146,24 @@ namespace AbcTuneTool.FileIo {
 
             if (ReadChar(out var lf)) {
                 if (lf.IsLf())
-                    CurrentToken = GetToken(string.Empty, Cache.ForChars(value, lf), kind);
+                    SetToken(string.Empty, Cache.ForChars(value, lf), kind);
                 else {
                     buffer.Enqueue(lf);
                     lf = '\0';
-                    CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
+                    SetToken(string.Empty, Cache.ForChar(value), kind);
                 }
             }
             else
-                CurrentToken = GetToken(string.Empty, Cache.ForChar(value), kind);
+                SetToken(string.Empty, Cache.ForChar(value), kind);
 
             if (isInInfoField) {
                 if (ReadChar(out var letter)) {
                     if (ReadChar(out var colon)) {
                         if (letter == '+' && colon == ':') {
                             if (lf != '\0')
-                                CurrentToken = GetToken(string.Empty, Cache.ForChars(value, lf, letter, colon), TokenKind.HeaderContinuation);
+                                SetToken(string.Empty, Cache.ForChars(value, lf, letter, colon), TokenKind.HeaderContinuation);
                             else
-                                CurrentToken = GetToken(string.Empty, Cache.ForChars(value, letter, colon), TokenKind.HeaderContinuation);
+                                SetToken(string.Empty, Cache.ForChars(value, letter, colon), TokenKind.HeaderContinuation);
 
                             return true;
                         }
@@ -194,7 +192,7 @@ namespace AbcTuneTool.FileIo {
         /// <returns></returns>
         private bool ReadDefault(char value) {
             var tokenValue = Cache.ForChar(value);
-            CurrentToken = GetToken(tokenValue, tokenValue, TokenKind.Char);
+            SetToken(tokenValue, tokenValue, TokenKind.Char);
             return true;
         }
 
@@ -224,13 +222,13 @@ namespace AbcTuneTool.FileIo {
                         sb.Item.Append(value);
             }
 
-            CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.Comment);
+            SetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.Comment);
             return true;
         }
 
         private bool ReadFontSize() {
             if (!ReadChar(out var c)) {
-                CurrentToken = GetToken(string.Empty, "$", TokenKind.Char);
+                SetToken(string.Empty, "$", TokenKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize);
                 return false;
             }
@@ -238,17 +236,17 @@ namespace AbcTuneTool.FileIo {
             var value = Cache.ForChar(c);
 
             if (value == "$") {
-                CurrentToken = GetToken("$", "$$", TokenKind.Dollar);
+                SetToken("$", "$$", TokenKind.Dollar);
                 return true;
             }
 
             if (!int.TryParse(value, out var _)) {
-                CurrentToken = GetToken(string.Empty, Cache.ForChars('$', (char)c), TokenKind.Char);
+                SetToken(string.Empty, Cache.ForChars('$', (char)c), TokenKind.Char);
                 Logger.Error(LogMessage.InvalidFontSize2, value);
                 return false;
             }
 
-            CurrentToken = GetToken(value, Cache.ForChars('$', (char)c), TokenKind.FontSize);
+            SetToken(value, Cache.ForChars('$', (char)c), TokenKind.FontSize);
             return true;
         }
 
@@ -258,19 +256,19 @@ namespace AbcTuneTool.FileIo {
             sb.Item.Append("&");
             do {
                 if (!ReadChar(out value)) {
-                    CurrentToken = GetToken(string.Empty, "&", TokenKind.Char);
+                    SetToken(string.Empty, "&", TokenKind.Char);
                     Logger.Error(LogMessage.InvalidEntity1);
                     return false;
                 }
 
                 if (sb.Item.Length == 1 && value == ' ') {
-                    CurrentToken = GetToken("&", "&", TokenKind.Ampersand);
+                    SetToken("&", "&", TokenKind.Ampersand);
                     buffer.Enqueue(' ');
                     return false;
                 }
 
                 if (value.IsLinebreak() || value != ';' && !value.IsAsciiLetter()) {
-                    CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.Entity);
+                    SetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.Entity);
                     Logger.Error(LogMessage.InvalidEntity2, Cache.ForStringBuilder(sb.Item));
                     buffer.Enqueue(value);
                     return false;
@@ -282,7 +280,7 @@ namespace AbcTuneTool.FileIo {
             var entityName = Cache.ForStringBuilder(sb.Item);
 
             if (string.Equals("&;", entityName, StringComparison.Ordinal)) {
-                CurrentToken = GetToken(string.Empty, "&;", TokenKind.Char);
+                SetToken(string.Empty, "&;", TokenKind.Char);
                 Logger.Error(LogMessage.InvalidEntity1);
                 return false;
             }
@@ -290,23 +288,23 @@ namespace AbcTuneTool.FileIo {
             var charValue = Entities.Decode(entityName);
 
             if (string.IsNullOrEmpty(charValue)) {
-                CurrentToken = GetToken(string.Empty, entityName, TokenKind.Char);
+                SetToken(string.Empty, entityName, TokenKind.Char);
                 Logger.Error(LogMessage.UnknownEntity, entityName);
                 return false;
             }
 
-            CurrentToken = GetToken(charValue, entityName, TokenKind.Entity);
+            SetToken(charValue, entityName, TokenKind.Entity);
             return true;
         }
 
         private bool MarkEof() {
-            CurrentToken = CharCache.FromCache(string.Empty, string.Empty, TokenKind.Eof);
+            CurrentToken = new Token(string.Empty, string.Empty, TokenKind.Eof);
             return false;
         }
 
         private bool ReadMnemonic() {
             if (!ReadChar(out var decorator)) {
-                CurrentToken = GetToken(string.Empty, "\\", TokenKind.Char);
+                SetToken(string.Empty, "\\", TokenKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo1);
                 return false;
             }
@@ -330,29 +328,29 @@ namespace AbcTuneTool.FileIo {
                         buffer.Enqueue(lf);
                 }
 
-                CurrentToken = GetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.LineContinuation);
+                SetToken(string.Empty, Cache.ForStringBuilder(sb.Item), TokenKind.LineContinuation);
                 return true;
             }
 
             if (decorator == '\\') {
-                CurrentToken = GetToken("\\", "\\\\", TokenKind.Backslash);
+                SetToken("\\", "\\\\", TokenKind.Backslash);
                 return true;
             }
 
             if (decorator == '&') {
-                CurrentToken = GetToken("&", "\\&", TokenKind.Ampersand);
+                SetToken("&", "\\&", TokenKind.Ampersand);
                 return true;
             }
 
             if (decorator == '%') {
-                CurrentToken = GetToken("%", "\\%", TokenKind.Percent);
+                SetToken("%", "\\%", TokenKind.Percent);
                 return true;
             }
 
             var canBeUnicode = decorator == 'u' || decorator == 'U';
 
             if (!ReadChar(out var decoratedElement)) {
-                CurrentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator), TokenKind.Char);
+                SetToken(string.Empty, Cache.ForChars('\\', decorator), TokenKind.Char);
                 Logger.Error(LogMessage.InvalidMnemo2);
                 return false;
             }
@@ -374,7 +372,7 @@ namespace AbcTuneTool.FileIo {
                 if (len == 8) {
                     var charString = chars.ToString();
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    CurrentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, TokenKind.FixedUnicode4Byte);
+                    SetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, TokenKind.FixedUnicode4Byte);
                     return true;
                 }
 
@@ -390,7 +388,7 @@ namespace AbcTuneTool.FileIo {
                 if (len >= 4) {
                     var charString = chars.Slice(0, 4).ToString();
                     var charValue = int.Parse(charString, NumberStyles.HexNumber);
-                    CurrentToken = GetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, TokenKind.FixedUnicody2Byte);
+                    SetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, TokenKind.FixedUnicody2Byte);
                     return true;
                 }
 
@@ -404,7 +402,7 @@ namespace AbcTuneTool.FileIo {
             var mnemo = Mnemonics.Decode(decorator, decoratedElement);
 
             if (string.IsNullOrEmpty(mnemo)) {
-                CurrentToken = GetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), TokenKind.Char);
+                SetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), TokenKind.Char);
 
                 if (!skippedMnemeos.Contains((decorator, decoratedElement))) {
                     skippedMnemeos.Add((decorator, decoratedElement));
@@ -414,7 +412,7 @@ namespace AbcTuneTool.FileIo {
                 return false;
             }
 
-            CurrentToken = GetToken(mnemo, Cache.ForChars('\\', decorator, decoratedElement), TokenKind.Mnenomic);
+            SetToken(mnemo, Cache.ForChars('\\', decorator, decoratedElement), TokenKind.Mnenomic);
             return true;
         }
 

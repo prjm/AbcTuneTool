@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AbcTuneTool.Model;
 
 namespace AbcTuneTool.FileIo {
 
@@ -9,8 +10,8 @@ namespace AbcTuneTool.FileIo {
     public class BufferedAbcTokenizer : IDisposable {
 
 
-        private readonly Queue<AbcCharacterReference> tokens =
-            new Queue<AbcCharacterReference>();
+        private readonly Queue<Token> tokens =
+            new Queue<Token>();
 
         bool disposedValue;
 
@@ -18,13 +19,13 @@ namespace AbcTuneTool.FileIo {
         ///     create a new buffered tokenizer
         /// </summary>
         /// <param name="tokenizer"></param>
-        public BufferedAbcTokenizer(AbcTokenizer tokenizer)
+        public BufferedAbcTokenizer(Tokenizer tokenizer)
             => Tokenizer = tokenizer;
 
         /// <summary>
         ///     base tokenizer
         /// </summary>
-        public AbcTokenizer Tokenizer { get; }
+        public Tokenizer Tokenizer { get; }
 
         private void FetchToken() {
             if (Tokenizer.HasToken)
@@ -37,12 +38,12 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public AbcCharacterReference Lookahead(int index) {
+        public Token Lookahead(int index) {
             while (tokens.Count <= index + 1)
                 FetchToken();
 
             if (index >= tokens.Count)
-                return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.TokenKind.Eof);
+                return new Token(string.Empty, string.Empty, Model.TokenKind.Eof);
 
             var i = 0;
             foreach (var item in tokens) {
@@ -51,7 +52,7 @@ namespace AbcTuneTool.FileIo {
                 i++;
             }
 
-            return Tokenizer.CharCache.FromCache(string.Empty, string.Empty, Model.TokenKind.Eof);
+            return new Token(string.Empty, string.Empty, Model.TokenKind.Eof);
         }
 
         internal void NextToken()

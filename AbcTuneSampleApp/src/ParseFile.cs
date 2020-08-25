@@ -7,7 +7,7 @@ namespace AbcTuneSampleApp {
 
         protected override void Run() {
             using var reader = new StreamReader(@"d:\temp\1.abc", Encoding.UTF8);
-            using var tokenizer = new AbcTokenizer(reader, Cache, CharCache, StringBuilderPool, Logger);
+            using var tokenizer = new Tokenizer(reader, Cache, StringBuilderPool, Logger);
             using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
             using var parser = new AbcParser(bufferedTokenizer, ListPools);
 

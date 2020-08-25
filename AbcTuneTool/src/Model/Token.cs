@@ -38,5 +38,12 @@ namespace AbcTuneTool.Model {
         internal string DebuggerDisplay
             => $"{Kind}: {OriginalValue}";
 
+        /// <summary>
+        ///     gets the original value of this token
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+            => OriginalValue;
+
     }
 }

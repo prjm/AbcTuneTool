@@ -13,18 +13,18 @@ namespace AbcTuneToolTests {
 
         protected void RunTokenizerTest(string toTokenize, int[] messageNumbers, params (TokenKind kind, string value)[] tokens) {
 
-            void tester(AbcTokenizer tokenizer) {
+            void tester(Tokenizer tokenizer) {
                 var sb = new StringBuilder();
 
                 var counter = 0;
                 while (tokenizer.HasToken) {
                     tokenizer.ReadNextToken();
                     var currentToken = tokenizer.CurrentToken;
-                    sb.Append(currentToken.AbcChar.OriginalValue);
+                    sb.Append(currentToken.OriginalValue);
                     var (kind, value) = tokens[counter];
                     counter++;
-                    Assert.AreEqual(kind, currentToken.AbcChar.Kind);
-                    Assert.AreEqual(value, currentToken.AbcChar.Value);
+                    Assert.AreEqual(kind, currentToken.Kind);
+                    Assert.AreEqual(value, currentToken.Value);
                 }
 
                 Assert.AreEqual(toTokenize, sb.ToString());
@@ -40,13 +40,12 @@ namespace AbcTuneToolTests {
         }
 
 
-        protected void RunTokenizerTest(string toTokenize, Action<AbcTokenizer> tester) {
+        protected void RunTokenizerTest(string toTokenize, Action<Tokenizer> tester) {
             var logger = new Logger();
             var cache = new StringCache();
-            var charCache = new AbcCharacterCache();
             var sbPool = new StringBuilderPool();
             using var reader = new StringReader(toTokenize);
-            using var tokenizer = new AbcTokenizer(reader, cache, charCache, sbPool, logger);
+            using var tokenizer = new Tokenizer(reader, cache, sbPool, logger);
 
             tester(tokenizer);
         }
@@ -204,13 +203,13 @@ namespace AbcTuneToolTests {
 
         [TestMethod]
         public void TestBufferedTokenizer() {
-            static void tester(AbcTokenizer tokenizer) {
+            static void tester(Tokenizer tokenizer) {
                 using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
-                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(0).AbcChar.Kind);
-                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(1).AbcChar.Kind);
-                Assert.AreEqual(TokenKind.Comment, bufferedTokenizer.Lookahead(2).AbcChar.Kind);
-                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(3).AbcChar.Kind);
-                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(4).AbcChar.Kind);
+                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(0).Kind);
+                Assert.AreEqual(TokenKind.Char, bufferedTokenizer.Lookahead(1).Kind);
+                Assert.AreEqual(TokenKind.Comment, bufferedTokenizer.Lookahead(2).Kind);
+                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(3).Kind);
+                Assert.AreEqual(TokenKind.Eof, bufferedTokenizer.Lookahead(4).Kind);
 
             };
 

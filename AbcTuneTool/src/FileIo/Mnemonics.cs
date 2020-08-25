@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace AbcTuneTool.FileIo {
 
     internal class MnemonicLookup {
-        public Dictionary<(char, char), string> lookup = new Dictionary<(char, char), string>();
-        public Dictionary<string, (char, char)> inverseLookup = new Dictionary<string, (char, char)>();
+        public Dictionary<(char, char), string> lookup = new Dictionary<(char, char), string>(79);
+        public Dictionary<string, (char, char)> inverseLookup = new Dictionary<string, (char, char)>(79);
     }
 
     /// <summary>
