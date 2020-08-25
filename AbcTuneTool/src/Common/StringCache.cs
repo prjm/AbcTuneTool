@@ -67,7 +67,7 @@ namespace AbcTuneTool.Common {
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is StringBuilderCacheEntry entry && Equals(entry);
 
         public override int GetHashCode()

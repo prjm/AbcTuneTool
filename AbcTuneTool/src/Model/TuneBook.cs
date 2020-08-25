@@ -12,10 +12,14 @@ namespace AbcTuneTool.Model {
         /// </summary>
         /// <param name="fileHeader"></param>
         /// <param name="immutableArrays"></param>
-        public TuneBook(InformationFields fileHeader, ImmutableArray<Tune> immutableArrays) {
+        /// <param name="version">tunebook version</param>
+        public TuneBook(string version, InformationFields fileHeader, ImmutableArray<Tune> immutableArrays) {
+            Version = version;
             FileHeader = fileHeader;
             Tunes = immutableArrays;
         }
+
+        public string Version { get; }
 
         /// <summary>
         ///     file header

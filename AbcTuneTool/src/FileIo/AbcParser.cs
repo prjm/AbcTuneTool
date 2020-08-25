@@ -105,13 +105,18 @@ namespace AbcTuneTool.FileIo {
         }
 
         /// <summary>
-        ///     parse a tune booke
+        ///     parse a tune book
         /// </summary>
         /// <returns></returns>
         public TuneBook ParseTuneBook() {
             var hasFileHeader = false;
+            var version = KnownStrings.UndefinedVersion;
             var fileHeader = InformationFields.Empty;
             using var list = ListPools.ObjectLists.GetItem();
+
+            if (Matches(TokenKind.Comment) && CurrentToken.StartsWith(KnownStrings.VersionComment)) {
+                version = CurrentToken.ExtractVersion();
+            }
 
             while (!Matches(TokenKind.Eof)) {
 
@@ -128,7 +133,7 @@ namespace AbcTuneTool.FileIo {
 
             }
 
-            return new TuneBook(fileHeader, list.ToImmutableArray<Tune>());
+            return new TuneBook(version, fileHeader, list.ToImmutableArray<Tune>());
         }
 
         private bool Matches(TokenKind kind1, TokenKind kind2)

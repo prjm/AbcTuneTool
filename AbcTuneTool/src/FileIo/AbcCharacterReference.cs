@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using AbcTuneTool.Model;
 
 namespace AbcTuneTool.FileIo {
@@ -30,5 +31,14 @@ namespace AbcTuneTool.FileIo {
         internal string DebuggerDisplay
             => token.DebuggerDisplay;
 
+        internal bool StartsWith(string aText)
+            => token.OriginalValue.StartsWith(aText, StringComparison.Ordinal);
+
+        internal string ExtractVersion() {
+            var dashIndex = token.OriginalValue.IndexOf("-") + 1;
+            if (dashIndex != KnownStrings.VersionComment.Length)
+                return KnownStrings.UndefinedVersion;
+            return token.OriginalValue.Substring(dashIndex);
+        }
     }
 }

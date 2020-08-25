@@ -2,6 +2,7 @@
 using System.IO;
 using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
+using AbcTuneTool.Model;
 using AbcTuneToolTest;
 
 namespace AbcTuneToolTests {
@@ -22,6 +23,20 @@ namespace AbcTuneToolTests {
 
         protected T Symbol<T>(string toParse, Func<AbcParser, T> f)
             => RunParserTest(toParse, (AbcParser p) => f(p));
+
+        [TestMethod]
+        public void TestParseVersion() {
+            var source = "%abc-2.1";
+            var tunebook = Symbol(source, (AbcParser p) => p.ParseTuneBook());
+            Assert.NotNull(tunebook);
+            Assert.AreEqual("2.1", tunebook.Version);
+
+            source = "dfsfsf";
+            tunebook = Symbol(source, (AbcParser p) => p.ParseTuneBook());
+            Assert.NotNull(tunebook);
+            Assert.AreEqual(KnownStrings.UndefinedVersion, tunebook.Version);
+        }
+
 
         [TestMethod]
         public void TestParseInfoField() {

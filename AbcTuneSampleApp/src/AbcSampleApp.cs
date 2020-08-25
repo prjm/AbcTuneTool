@@ -13,7 +13,7 @@ namespace AbcTuneSampleApp {
             Cache = new StringCache();
             CharCache = new AbcCharacterCache();
             StringBuilderPool = new StringBuilderPool();
-            ResMgr = new ResourceManager("AbcTuneSampleApp.MessageTexts", typeof(AbcSampleApp).Assembly);
+            ResMgr = new ResourceManager("AbcTuneSampleApp.resources.MessageTexts", typeof(AbcSampleApp).Assembly);
             ListPools = new ListPools();
         }
 
