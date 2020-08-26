@@ -14,7 +14,7 @@ namespace AbcTuneTool.Model {
         /// <param name="kind">token kind</param>
         /// <param name="value">token value</param>
         /// <param name="originalValue">original value</param>
-        public Token(string value, string originalValue, TokenKind kind) {
+        public Token(string value, string originalValue, in TokenKind kind) {
             Value = value;
             OriginalValue = originalValue;
             Kind = kind;
@@ -35,14 +35,14 @@ namespace AbcTuneTool.Model {
         /// </summary>
         public readonly TokenKind Kind { get; }
 
-        internal string DebuggerDisplay
+        internal readonly string DebuggerDisplay
             => $"{Kind}: {OriginalValue}";
 
         /// <summary>
         ///     gets the original value of this token
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
+        public override readonly string ToString()
             => OriginalValue;
 
     }

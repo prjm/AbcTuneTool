@@ -143,9 +143,106 @@
         /// </summary>
         Transcription = 26,
 
+    }
 
+    /// <summary>
+    ///     helper methods for information fields
+    /// </summary>
+    public static class InformationFieldKindHelper {
 
+        /// <summary>
+        ///     test if this symbol can occur in the file header
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool InFileHeader(this InformationFieldKind kind) =>
+            kind switch
+            {
+                InformationFieldKind.Area => true,
+                InformationFieldKind.Book => true,
+                InformationFieldKind.Composer => true,
+                InformationFieldKind.Discography => true,
+                InformationFieldKind.FileUrl => true,
+                InformationFieldKind.Group => true,
+                InformationFieldKind.History => true,
+                _ => false,
+            };
 
+        /// <summary>
+        ///     test if this symbol can occur in the tune header
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool InTuneHeader(this InformationFieldKind kind) =>
+            kind switch
+            {
+                InformationFieldKind.Area => true,
+                InformationFieldKind.Book => true,
+                InformationFieldKind.Composer => true,
+                InformationFieldKind.Discography => true,
+                InformationFieldKind.FileUrl => true,
+                InformationFieldKind.Group => true,
+                InformationFieldKind.History => true,
+
+                _ => false,
+            };
+
+        /// <summary>
+        ///     test if this symbol can occur in the tune body
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool InTuneBody(this InformationFieldKind kind) =>
+            kind switch
+            {
+                InformationFieldKind.Area => false,
+                InformationFieldKind.Book => false,
+                InformationFieldKind.Composer => false,
+                InformationFieldKind.Discography => false,
+                InformationFieldKind.FileUrl => false,
+                InformationFieldKind.Group => false,
+                InformationFieldKind.History => false,
+                _ => false,
+            };
+
+        /// <summary>
+        ///     test if this symbol can occur inline
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool InInline(this InformationFieldKind kind) =>
+            kind switch
+            {
+                InformationFieldKind.Area => false,
+                InformationFieldKind.Book => false,
+                InformationFieldKind.Composer => false,
+                InformationFieldKind.Discography => false,
+                InformationFieldKind.FileUrl => false,
+                InformationFieldKind.Group => false,
+                InformationFieldKind.History => false,
+
+                _ => false,
+            };
+
+        /// <summary>
+        ///     get the possible content type for an header
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static InformationFieldContent GetContentType(this InformationFieldKind kind) =>
+            kind switch
+            {
+                InformationFieldKind.Area => InformationFieldContent.StringContent,
+                InformationFieldKind.Book => InformationFieldContent.StringContent,
+                InformationFieldKind.Composer => InformationFieldContent.StringContent,
+                InformationFieldKind.Discography => InformationFieldContent.StringContent,
+                InformationFieldKind.FileUrl => InformationFieldContent.StringContent,
+                InformationFieldKind.Group => InformationFieldContent.StringContent,
+                InformationFieldKind.History => InformationFieldContent.StringContent,
+
+                _ => InformationFieldContent.Undefined,
+            };
 
     }
+
 }

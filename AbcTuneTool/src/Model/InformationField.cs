@@ -11,18 +11,37 @@
         /// <param name="fieldHeader">header value</param>
         /// <param name="fieldValues">header values</param>
         public InformationField(Terminal fieldHeader, Terminal fieldValues) {
-            FieldKind = fieldHeader;
-            FieldValue = fieldValues;
+            Header = fieldHeader;
+            Value = fieldValues;
+            Kind = GetKindFor(fieldHeader.FirstChar);
         }
+
+        private static InformationFieldKind GetKindFor(char firstChar) =>
+            firstChar switch
+            {
+                'A' => InformationFieldKind.Area,
+                'B' => InformationFieldKind.Book,
+                'C' => InformationFieldKind.Composer,
+                'D' => InformationFieldKind.Discography,
+                'F' => InformationFieldKind.FileUrl,
+                'G' => InformationFieldKind.Group,
+                'H' => InformationFieldKind.History,
+                _ => InformationFieldKind.Undefined,
+            };
 
         /// <summary>
         ///     field header
         /// </summary>
-        public Terminal FieldKind { get; }
+        public Terminal Header { get; }
 
         /// <summary>
         ///     field values
         /// </summary>
-        public Terminal FieldValue { get; }
+        public Terminal Value { get; }
+
+        /// <summary>
+        ///     field kind
+        /// </summary>
+        public InformationFieldKind Kind { get; }
     }
 }

@@ -11,9 +11,10 @@
         ///     create a new tune
         /// </summary>
         /// <param name="header"></param>
+        /// <param name="otherLines"></param>
         public Tune(OtherLines otherLines, InformationFields header) {
             this.otherLines = otherLines;
-            this.Header = header;
+            Header = header;
         }
 
         /// <summary>

@@ -176,6 +176,7 @@ namespace AbcTuneTool.Common {
         /// <param name="c1"></param>
         /// <param name="c2"></param>
         /// <param name="c3"></param>
+        /// <param name="c4"></param>
         /// <returns></returns>
         public string ForChars(char c1, char c2, char c3, char c4) {
             if (!quadrupleChars.TryGetValue((c1, c2, c3, c4), out var result)) {

@@ -42,14 +42,14 @@ namespace AbcTuneTool.FileIo {
                 var field = CurrentToken;
                 NextToken();
 
-                using var values = ListPools.GetList();
+                using var values = ListPools.GetTokenList();
                 while (!Matches(TokenKind.Eof, TokenKind.Linebreak))
                     values.Add(GetCurrentTokenAndFetchNext());
 
                 if (Matches(TokenKind.Linebreak))
                     values.Add(GetCurrentTokenAndFetchNext());
 
-                return new InformationField(new Terminal(field), new Terminal(values.ToImmutableArray<Token>()));
+                return new InformationField(new Terminal(field), new Terminal(values));
             }
 
             return default;
@@ -66,7 +66,7 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <returns></returns>
         public InformationFields ParseInformationFields() {
-            using var values = ListPools.GetList();
+            using var values = ListPools.GetObjectList();
             while (Matches(TokenKind.InformationFieldHeader)) {
                 var field = ParseInformationField();
                 if (!(field is null))
@@ -76,8 +76,12 @@ namespace AbcTuneTool.FileIo {
             return new InformationFields(values.ToImmutableArray<InformationField>());
         }
 
+        /// <summary>
+        ///     parse the lines before the header
+        /// </summary>
+        /// <returns></returns>
         public OtherLines ParseLinesBeforeHeader() {
-            using var values = ListPools.GetList();
+            using var values = ListPools.GetObjectList();
 
             while (!Matches(TokenKind.Eof, TokenKind.InformationFieldHeader)) {
                 values.Add(GetCurrentTokenAndFetchNext());

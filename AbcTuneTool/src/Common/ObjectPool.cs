@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using AbcTuneTool.Model;
 
 namespace AbcTuneTool.Common {
 
@@ -115,11 +116,25 @@ namespace AbcTuneTool.Common {
             = new ListPool<object>();
 
         /// <summary>
+        ///     token lists
+        /// </summary>
+        public ListPool<Token> TokenLists { get; }
+            = new ListPool<Token>();
+
+        /// <summary>
         ///     get an object list
         /// </summary>
         /// <returns></returns>
-        public ObjectPoolItem<List<object>> GetList()
+        public ObjectPoolItem<List<object>> GetObjectList()
             => ObjectLists.GetItem();
+
+
+        /// <summary>
+        ///     get an token list
+        /// </summary>
+        /// <returns></returns>
+        public ObjectPoolItem<List<Token>> GetTokenList()
+            => TokenLists.GetItem();
     }
 
     /// <summary>
@@ -133,6 +148,14 @@ namespace AbcTuneTool.Common {
         /// <param name="pool"></param>
         /// <param name="item"></param>
         public static void Add(this ObjectPoolItem<List<object>> pool, object item)
+            => pool.Item.Add(item);
+
+        /// <summary>
+        ///     add an item to the token list pool
+        /// </summary>
+        /// <param name="pool"></param>
+        /// <param name="item"></param>
+        public static void Add(this ObjectPoolItem<List<Token>> pool, in Token item)
             => pool.Item.Add(item);
 
         /// <summary>
@@ -158,6 +181,27 @@ namespace AbcTuneTool.Common {
             };
         }
 
-    }
+        /// <summary>
+        ///     convert this list to an immutable array
+        /// </summary>
+        /// <param name="list"></param>
+        public static ImmutableArray<Token> ToImmutableArray(this ObjectPoolItem<List<Token>> list) {
 
+            var l = list.Item;
+
+            return l.Count switch
+            {
+                0 => ImmutableArray<Token>.Empty,
+                1 => ImmutableArray.Create(l[0]),
+                2 => ImmutableArray.Create(l[0], l[1]),
+                3 => ImmutableArray.Create(l[0], l[1], l[2]),
+                4 => ImmutableArray.Create(l[0], l[1], l[2], l[3]),
+                5 => ImmutableArray.Create(l[0], l[1], l[2], l[3], l[4]),
+                6 => ImmutableArray.Create(l[0], l[1], l[2], l[3], l[4], l[5]),
+                7 => ImmutableArray.Create(l[0], l[1], l[2], l[3], l[4], l[5], l[6]),
+                _ => l.ToImmutableArray()
+            };
+        }
+
+    }
 }

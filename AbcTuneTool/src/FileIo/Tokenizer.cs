@@ -82,7 +82,7 @@ namespace AbcTuneTool.FileIo {
         ///     check if there are token left
         /// </summary>
         public bool HasToken
-            => CurrentToken.Kind != TokenKind.Eof;
+            => currentToken.Kind != TokenKind.Eof;
 
         /// <summary>
         ///     current token
@@ -99,14 +99,14 @@ namespace AbcTuneTool.FileIo {
         /// <param name="originalValue"></param>
         /// <param name="kind"></param>
         /// <returns></returns>
-        private void SetToken(string value, string originalValue, TokenKind kind)
+        private void SetToken(string value, string originalValue, in TokenKind kind)
             => currentToken = new Token(value, originalValue, kind);
 
         private bool isEmptyLine = true;
         private bool isInInfoField = false;
 
         /// <summary>
-        ///     read the next toke
+        ///     read the next token
         /// </summary>
         public bool ReadNextToken() {
             if (!HasToken)
@@ -119,13 +119,9 @@ namespace AbcTuneTool.FileIo {
                 return ReadLinebreak(value);
 
             if (isEmptyLine && value.IsAsciiLetter() && ReadChar(out var seperator)) {
-                if (seperator == ':') {
-                    isEmptyLine = false;
-                    var field = Cache.ForChars(value, seperator);
-                    SetToken(field, field, TokenKind.InformationFieldHeader);
-                    isInInfoField = true;
-                    return true;
-                }
+                if (seperator == ':')
+                    return ReadInformationFieldHeader(value, seperator);
+
                 buffer.Enqueue(seperator);
             }
 
@@ -139,6 +135,14 @@ namespace AbcTuneTool.FileIo {
                 '%' => ReadComment(),
                 _ => ReadDefault(value)
             };
+        }
+
+        private bool ReadInformationFieldHeader(char value, char seperator) {
+            isEmptyLine = false;
+            var field = Cache.ForChars(value, seperator);
+            SetToken(field, field, TokenKind.InformationFieldHeader);
+            isInInfoField = true;
+            return true;
         }
 
         private bool ReadLinebreak(char value) {

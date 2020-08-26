@@ -1,27 +1,8 @@
-﻿using System;
-using System.IO;
-using AbcTuneTool.Common;
-using AbcTuneTool.FileIo;
+﻿using AbcTuneTool.FileIo;
 using AbcTuneTool.Model;
-using AbcTuneToolTest;
 
 namespace AbcTuneToolTests {
     public class ParserTest : CommonTest {
-
-        protected T RunParserTest<T>(string toParse, Func<AbcParser, T> tester) {
-            var cache = new StringCache();
-            var pool = new StringBuilderPool();
-            var logger = new Logger();
-            var listPool = new ListPools();
-            using var reader = new StringReader(toParse);
-            using var tokenizer = new Tokenizer(reader, cache, pool, logger);
-            using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
-            using var parser = new AbcParser(bufferedTokenizer, listPool);
-            return tester(parser);
-        }
-
-        protected T Symbol<T>(string toParse, Func<AbcParser, T> f)
-            => RunParserTest(toParse, (AbcParser p) => f(p));
 
         [TestMethod]
         public void TestParseVersion() {
@@ -36,13 +17,11 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(KnownStrings.UndefinedVersion, tunebook.Version);
         }
 
-
         [TestMethod]
         public void TestParseInfoField() {
-            var source = "K:test";
-            var field = Symbol(source, (AbcParser p) => p.ParseInformationField());
-            Assert.NotNull(field);
-            Assert.AreEqual("K:", field.FieldKind.ToNewString());
+            var field = ParseInfoField("K:test");
+            Assert.AreEqual("K:", field.Header.ToNewString());
+            Assert.AreEqual("test", field.Value.ToNewString());
         }
 
         [TestMethod]
@@ -51,8 +30,8 @@ namespace AbcTuneToolTests {
             var fields = Symbol(source, (AbcParser p) => p.ParseInformationFields());
             Assert.NotNull(fields);
             Assert.AreEqual(2, fields.Fields.Length);
-            Assert.AreEqual("B:", fields.Fields[0].FieldKind.ToNewString());
-            Assert.AreEqual("A:", fields.Fields[1].FieldKind.ToNewString());
+            Assert.AreEqual("B:", fields.Fields[0].Header.ToNewString());
+            Assert.AreEqual("A:", fields.Fields[1].Header.ToNewString());
         }
 
     }
