@@ -81,6 +81,21 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
         }
 
+        [TestMethod]
+        public void Test_I_Instruction() {
+            var field = ParseInstructionField("I:abc-charset utf-8");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Instruction);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Instruction);
+
+            field = ParseInstructionField("I:abc-version 2.0");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Version, field.InstrKind);
+            Assert.AreEqual("2.0", field.InstrValue);
+        }
 
     }
 }

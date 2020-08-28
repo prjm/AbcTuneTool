@@ -77,71 +77,76 @@
         Notes = 13,
 
         /// <summary>
+        ///     origin
+        /// </summary>
+        Origin = 14,
+
+        /// <summary>
         ///     parts
         /// </summary>
-        Parts = 14,
+        Parts = 15,
 
         /// <summary>
         ///     tempo
         /// </summary>
-        Tempo = 15,
+        Tempo = 16,
 
         /// <summary>
         ///     rhythm kind
         /// </summary>
-        Rythm = 16,
+        Rythm = 17,
 
         /// <summary>
         ///     remark
         /// </summary>
-        Remark = 17,
+        Remark = 18,
 
         /// <summary>
         ///     tune source
         /// </summary>
-        Source = 18,
+        Source = 19,
 
         /// <summary>
-        ///     symbol ine
+        ///     symbol line
         /// </summary>
-        SymbolLine = 19,
+        SymbolLine = 20,
 
         /// <summary>
         ///     tune tile
         /// </summary>
-        TuneTitle = 20,
+        TuneTitle = 21,
 
         /// <summary>
         ///     user defined field
         /// </summary>
-        UserDefined = 21,
+        UserDefined = 22,
 
         /// <summary>
         ///     voice
         /// </summary>
-        Voice = 22,
+        Voice = 23,
 
         /// <summary>
         ///     words after tune
         /// </summary>
-        WordsAfterTune = 23,
+        WordsAfterTune = 24,
 
 
         /// <summary>
         ///     words in tune
         /// </summary>
-        WordsInTune = 24,
+        WordsInTune = 25,
 
 
         /// <summary>
         ///     reference number
         /// </summary>
-        RefNumber = 25,
+        RefNumber = 26,
 
         /// <summary>
         ///     transcription by
         /// </summary>
-        Transcription = 26,
+        Transcription = 27,
 
     }
 
@@ -165,6 +170,7 @@
                 InformationFieldKind.FileUrl => true,
                 InformationFieldKind.Group => true,
                 InformationFieldKind.History => true,
+                InformationFieldKind.Instruction => true,
                 _ => false,
             };
 
@@ -183,7 +189,7 @@
                 InformationFieldKind.FileUrl => true,
                 InformationFieldKind.Group => true,
                 InformationFieldKind.History => true,
-
+                InformationFieldKind.Instruction => true,
                 _ => false,
             };
 
@@ -202,6 +208,7 @@
                 InformationFieldKind.FileUrl => false,
                 InformationFieldKind.Group => false,
                 InformationFieldKind.History => false,
+                InformationFieldKind.Instruction => true,
                 _ => false,
             };
 
@@ -220,7 +227,7 @@
                 InformationFieldKind.FileUrl => false,
                 InformationFieldKind.Group => false,
                 InformationFieldKind.History => false,
-
+                InformationFieldKind.Instruction => true,
                 _ => false,
             };
 
@@ -239,7 +246,7 @@
                 InformationFieldKind.FileUrl => InformationFieldContent.StringContent,
                 InformationFieldKind.Group => InformationFieldContent.StringContent,
                 InformationFieldKind.History => InformationFieldContent.StringContent,
-
+                InformationFieldKind.Instruction => InformationFieldContent.Instruction,
                 _ => InformationFieldContent.Undefined,
             };
 

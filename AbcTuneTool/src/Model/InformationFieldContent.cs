@@ -15,6 +15,10 @@
         /// </summary>
         StringContent = 1,
 
+        /// <summary>
+        ///     instruction content
+        /// </summary>
+        Instruction = 2,
     }
 
 

@@ -14,5 +14,10 @@
         ///     undefined version
         /// </summary>
         public const string UndefinedVersion = "undefined";
+
+        /// <summary>
+        /// version instruction
+        /// </summary>
+        public const string AbcVersion = "abc-version";
     }
 }

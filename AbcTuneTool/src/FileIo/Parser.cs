@@ -7,7 +7,7 @@ namespace AbcTuneTool.FileIo {
     /// <summary>
     ///     parser for ABC files
     /// </summary>
-    public class AbcParser : IDisposable {
+    public class Parser : IDisposable {
         bool disposedValue;
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <param name="tokenizer"></param>
         /// <param name="listPools">list pools</param>
-        public AbcParser(BufferedAbcTokenizer tokenizer, ListPools listPools) {
+        public Parser(BufferedAbcTokenizer tokenizer, ListPools listPools) {
             Tokenizer = tokenizer;
             ListPools = listPools;
         }
@@ -49,7 +49,17 @@ namespace AbcTuneTool.FileIo {
                 if (Matches(TokenKind.Linebreak))
                     values.Add(GetCurrentTokenAndFetchNext());
 
-                return new InformationField(new Terminal(field), new Terminal(values));
+                var header = new Terminal(field);
+                var kind = InformationField.GetKindFor(header.FirstChar);
+                var cache = Tokenizer.Tokenizer.Cache;
+                var pool = Tokenizer.Tokenizer.StringBuilderPool;
+                return kind switch
+                {
+                    InformationFieldKind.Instruction
+                        => new InstructionField(header, new Terminal(values), cache, pool),
+
+                    _ => new InformationField(header, new Terminal(values), kind),
+                };
             }
 
             return default;

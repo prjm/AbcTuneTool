@@ -103,7 +103,7 @@ namespace AbcTuneTool.FileIo {
             => currentToken = new Token(value, originalValue, kind);
 
         private bool isEmptyLine = true;
-        private bool isInInfoField = false;
+        private InformationFieldKind isInInfoField = InformationFieldKind.Undefined;
 
         /// <summary>
         ///     read the next token
@@ -141,7 +141,7 @@ namespace AbcTuneTool.FileIo {
             isEmptyLine = false;
             var field = Cache.ForChars(value, seperator);
             SetToken(field, field, TokenKind.InformationFieldHeader);
-            isInInfoField = true;
+            isInInfoField = InformationField.GetKindFor(value);
             return true;
         }
 
@@ -160,7 +160,7 @@ namespace AbcTuneTool.FileIo {
             else
                 SetToken(string.Empty, Cache.ForChar(value), kind);
 
-            if (isInInfoField) {
+            if (isInInfoField != InformationFieldKind.Undefined) {
                 if (ReadChar(out var letter)) {
                     if (ReadChar(out var colon)) {
                         if (letter == '+' && colon == ':') {
@@ -171,14 +171,14 @@ namespace AbcTuneTool.FileIo {
 
                             return true;
                         }
-                        isInInfoField = false;
+                        isInInfoField = InformationFieldKind.Undefined;
                         buffer.Enqueue(letter);
                         buffer.Enqueue(colon);
                         isEmptyLine = true;
                         return true;
                     }
 
-                    isInInfoField = false;
+                    isInInfoField = InformationFieldKind.Undefined;
                     buffer.Enqueue(letter);
                     isEmptyLine = true;
                     return true;
@@ -205,8 +205,8 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <returns></returns>
         private bool ReadComment() {
-            bool isLinebreakChar;
             char value;
+            bool isLinebreak;
 
             using var sb = StringBuilderPool.GetItem();
             sb.Item.Append("%");
@@ -214,9 +214,9 @@ namespace AbcTuneTool.FileIo {
             do {
                 if (!ReadChar(out value))
                     break;
+                isLinebreak = value.IsLinebreak();
                 sb.Item.Append(value);
-                isLinebreakChar = value.IsLinebreak();
-            } while (!isLinebreakChar);
+            } while (!isLinebreak);
 
             if (value.IsCr()) {
                 if (ReadChar(out value))
