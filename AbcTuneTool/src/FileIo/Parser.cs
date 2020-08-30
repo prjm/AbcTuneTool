@@ -133,7 +133,7 @@ namespace AbcTuneTool.FileIo {
             var hasFileHeader = false;
             var version = KnownStrings.UndefinedVersion;
             var fileHeader = InformationFields.Empty;
-            using var list = ListPools.ObjectLists.GetItem();
+            using var list = ListPools.ObjectLists.Rent();
 
             if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
                 version = ExtractVersion(CurrentToken);

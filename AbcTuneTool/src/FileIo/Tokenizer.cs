@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 
@@ -13,7 +14,7 @@ namespace AbcTuneTool.FileIo {
     public class Tokenizer : IDisposable {
 
         private bool disposedValue;
-        private readonly HashSet<(char, char)> skippedMnemeos
+        private readonly HashSet<(char, char)> skippedMnemos
             = new HashSet<(char, char)>();
 
         /// <summary>
@@ -102,6 +103,7 @@ namespace AbcTuneTool.FileIo {
         private void SetToken(string value, string originalValue, in TokenKind kind)
             => currentToken = new Token(value, originalValue, kind);
 
+        // flags..
         private bool isEmptyLine = true;
         private InformationFieldKind isInInfoField = InformationFieldKind.Undefined;
 
@@ -116,7 +118,10 @@ namespace AbcTuneTool.FileIo {
                 return MarkEof();
 
             if (value.IsLinebreak())
-                return ReadLinebreak(value);
+                return ReadLinebreak(value, default);
+
+            if (isEmptyLine && value.IsWhitespace() && TryReadEmptyLine(value))
+                return true;
 
             if (isEmptyLine && value.IsAsciiLetter() && ReadChar(out var seperator)) {
                 if (seperator == ':')
@@ -145,22 +150,94 @@ namespace AbcTuneTool.FileIo {
             return true;
         }
 
-        private bool ReadLinebreak(char value) {
-            var kind = isEmptyLine ? TokenKind.EmptyLine : TokenKind.Linebreak;
+        private bool TryReadEmptyLine(char value) {
+            using var sb = StringBuilderPool.Rent();
+            sb.Item.Append(value);
 
-            if (ReadChar(out var lf)) {
+            while (ReadChar(out value)) {
+
+                if (value.IsLinebreak()) {
+                    ReadLinebreak(value, sb);
+                    return true;
+                }
+
+                sb.Item.Append(value);
+
+                if (!value.IsWhitespace()) {
+                    for (var i = 1; i < sb.Item.Length; i++)
+                        buffer.Enqueue(sb.Item[i]);
+                    return false;
+                }
+            }
+
+            ReadLinebreak(value, sb);
+            return true;
+        }
+
+        private bool ReadDefaultInfoField(char value) {
+            using var sb = StringBuilderPool.Rent();
+            sb.Item.Append(value);
+
+            while (ReadChar(out var nextValue)) {
+
+                if (nextValue.IsLinebreak()) {
+                    buffer.Enqueue(nextValue);
+                    break;
+                }
+                else {
+                    sb.Item.Append(nextValue);
+                }
+            }
+
+            var headerData = Cache.ForStringBuilder(sb.Item);
+            SetToken(headerData, headerData, TokenKind.Char);
+            return true;
+        }
+
+        private bool ReadWhitespaceSeparatedInfoField(char value) {
+            using var sb = StringBuilderPool.Rent();
+            var wasWhitespace = value.IsWhitespace();
+
+            sb.Item.Append(value);
+
+            while (ReadChar(out var nextValue)) {
+
+                var isWhitespace = nextValue.IsWhitespace();
+
+                if (nextValue.IsLinebreak() || isWhitespace != wasWhitespace) {
+                    buffer.Enqueue(nextValue);
+                    break;
+                }
+                else {
+                    sb.Item.Append(nextValue);
+                }
+            }
+
+            var headerData = Cache.ForStringBuilder(sb.Item);
+            SetToken(headerData, headerData, TokenKind.Char);
+            return true;
+        }
+
+        private bool ReadLinebreak(char value, ObjectPoolItem<StringBuilder>? sb) {
+            var kind = isEmptyLine ? TokenKind.EmptyLine : TokenKind.Linebreak;
+            string cr() => sb == default ? Cache.ForChar(value) : Cache.ForStringBuilder(sb, value);
+            string crlf(char lf) => sb == default ? Cache.ForChars(value, lf) : Cache.ForStringBuilder(sb, value, lf);
+
+            if (value.IsCr() && ReadChar(out var lf)) {
                 if (lf.IsLf())
-                    SetToken(string.Empty, Cache.ForChars(value, lf), kind);
+                    SetToken(string.Empty, crlf(lf), kind);
                 else {
                     buffer.Enqueue(lf);
                     lf = '\0';
-                    SetToken(string.Empty, Cache.ForChar(value), kind);
+                    SetToken(string.Empty, cr(), kind);
                 }
             }
-            else
-                SetToken(string.Empty, Cache.ForChar(value), kind);
+            else {
+                lf = '\0';
+                SetToken(string.Empty, cr(), kind);
+            }
 
-            if (isInInfoField != InformationFieldKind.Undefined) {
+            if (isInInfoField != InformationFieldKind.Undefined && sb == default) {
                 if (ReadChar(out var letter)) {
                     if (ReadChar(out var colon)) {
                         if (letter == '+' && colon == ':') {
@@ -195,6 +272,14 @@ namespace AbcTuneTool.FileIo {
         /// <param name="value"></param>
         /// <returns></returns>
         private bool ReadDefault(char value) {
+            if (isInInfoField != InformationFieldKind.Undefined) {
+                return isInInfoField.GetContentType() switch
+                {
+                    InformationFieldContent.Instruction => ReadWhitespaceSeparatedInfoField(value),
+                    _ => ReadDefaultInfoField(value),
+                };
+            }
+
             var tokenValue = Cache.ForChar(value);
             SetToken(tokenValue, tokenValue, TokenKind.Char);
             return true;
@@ -208,7 +293,7 @@ namespace AbcTuneTool.FileIo {
             char value;
             bool isLinebreak;
 
-            using var sb = StringBuilderPool.GetItem();
+            using var sb = StringBuilderPool.Rent();
             sb.Item.Append("%");
 
             do {
@@ -256,7 +341,7 @@ namespace AbcTuneTool.FileIo {
 
         private bool ReadEntity() {
             char value;
-            using var sb = StringBuilderPool.GetItem();
+            using var sb = StringBuilderPool.Rent();
             sb.Item.Append("&");
             do {
                 if (!ReadChar(out value)) {
@@ -314,7 +399,7 @@ namespace AbcTuneTool.FileIo {
             }
 
             if (decorator.IsLinebreak() || decorator == ' ' || char.IsWhiteSpace(decorator)) {
-                using var sb = StringBuilderPool.GetItem();
+                using var sb = StringBuilderPool.Rent();
                 sb.Item.Append("\\");
                 sb.Item.Append(decorator);
 
@@ -408,8 +493,8 @@ namespace AbcTuneTool.FileIo {
             if (string.IsNullOrEmpty(mnemo)) {
                 SetToken(string.Empty, Cache.ForChars('\\', decorator, decoratedElement), TokenKind.Char);
 
-                if (!skippedMnemeos.Contains((decorator, decoratedElement))) {
-                    skippedMnemeos.Add((decorator, decoratedElement));
+                if (!skippedMnemos.Contains((decorator, decoratedElement))) {
+                    skippedMnemos.Add((decorator, decoratedElement));
                     Logger.Error(LogMessage.UnknownMnemo, Cache.ForChars('\\', decorator, decoratedElement));
                 }
 

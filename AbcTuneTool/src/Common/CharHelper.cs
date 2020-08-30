@@ -22,7 +22,6 @@
         /// <returns></returns>
         public static bool IsLinebreak(this char value) =>
                 value == '\x000A' ||
-                value == '\x000B' ||
                 value == '\x000C' ||
                 value == '\x000D' ||
                 value == '\x0085' ||
@@ -38,6 +37,14 @@
         public static bool IsAsciiLetter(this char value) =>
                 value >= 'A' && value <= 'Z' ||
                 value >= 'a' && value <= 'z';
+
+        /// <summary>
+        ///     test if a char is a simple whitespace char
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsWhitespace(this char value) =>
+                value == ' ' || value == '\t' || value == '\v' || value.IsLinebreak();
 
         /// <summary>
         ///     test if a char is a carriage return char

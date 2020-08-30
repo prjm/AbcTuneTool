@@ -117,7 +117,26 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(InstructionKind.Linebreak, field.InstrKind);
             Assert.AreEqual("<EOL>", field.InstrValue);
 
+            field = ParseInstructionField("I:reverse");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Otherwise, field.InstrKind);
+            Assert.AreEqual("reverse", field.InstrValue);
+
         }
+
+        /*
+        [TestMethod]
+        public void Test_I_Instruction() {
+            var field = ParseInstructionField("I:abc-charset utf-8");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Instruction);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Instruction);
+            Assert.AreEqual("utf-8", field.InstrValue);
+        }
+        */
 
     }
 }

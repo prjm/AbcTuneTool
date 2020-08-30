@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Text;
 using AbcTuneTool.Common;
 
 namespace AbcTuneTool.Model {
@@ -63,24 +62,32 @@ namespace AbcTuneTool.Model {
         ///     add the content of this terminal to a string builder
         /// </summary>
         /// <param name="startPos"></param>
-        /// <param name="target">target string builder</param>
-        public void ToStringBuilder(int startPos, StringBuilder target) {
+        /// <param name="cache">string cache</param>
+        /// <param name="pool">string builder pool</param>
+        public string ToString(int startPos, StringBuilderPool pool, StringCache cache) {
             var tokenCharIndex = 0;
+            using var target = pool.Rent();
 
             if (tokens.Length < 1)
-                return;
+                return string.Empty;
 
             for (var tokenIndex = 0; tokenIndex < tokens.Length; tokenIndex++) {
                 ref readonly var token = ref tokens.ItemRef(tokenIndex);
 
                 for (var charIndex = 0; charIndex < token.Value.Length; charIndex++) {
 
-                    if (tokenCharIndex >= startPos)
-                        target.Append(token.Value[charIndex]);
+                    if (tokenCharIndex >= startPos) {
+                        if (charIndex == 0 && tokenIndex == tokens.Length - 1)
+                            return token.Value;
+
+                        target.Item.Append(token.Value[charIndex]);
+                    }
 
                     tokenCharIndex++;
                 }
             }
+
+            return cache.ForStringBuilder(target);
         }
 
         /// <summary>

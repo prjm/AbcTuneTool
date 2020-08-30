@@ -50,7 +50,7 @@ namespace AbcTuneTool.Common {
         ///     get an item from the object pool
         /// </summary>
         /// <returns></returns>
-        public ObjectPoolItem<T> GetItem() {
+        public ObjectPoolItem<T> Rent() {
             if (poolItems.Count > 0)
                 return poolItems.Dequeue();
 
@@ -126,7 +126,7 @@ namespace AbcTuneTool.Common {
         /// </summary>
         /// <returns></returns>
         public ObjectPoolItem<List<object>> GetObjectList()
-            => ObjectLists.GetItem();
+            => ObjectLists.Rent();
 
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace AbcTuneTool.Common {
         /// </summary>
         /// <returns></returns>
         public ObjectPoolItem<List<Token>> GetTokenList()
-            => TokenLists.GetItem();
+            => TokenLists.Rent();
     }
 
     /// <summary>

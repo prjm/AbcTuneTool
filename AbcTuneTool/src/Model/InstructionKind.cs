@@ -39,5 +39,10 @@
         ///     linebreak instruction
         /// </summary>
         Linebreak = 6,
+
+        /// <summary>
+        ///     other instruction
+        /// </summary>
+        Otherwise = 7,
     }
 }

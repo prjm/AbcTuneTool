@@ -173,7 +173,11 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void TestEmptyLine() {
             RunTokenizerTest("\n", EmptyLine(), Eof());
+            RunTokenizerTest("\n\n", EmptyLine(), EmptyLine(), Eof());
             RunTokenizerTest("\r\n", EmptyLine(), Eof());
+            RunTokenizerTest("   \r\n", EmptyLine(), Eof());
+            RunTokenizerTest("\t\t\r\n", EmptyLine(), Eof());
+            RunTokenizerTest("\v  \v  \t  \r\n", EmptyLine(), Eof());
             RunTokenizerTest("x\r\n", Chr("x"), Linebreak(), Eof());
         }
 
@@ -192,7 +196,7 @@ namespace AbcTuneToolTests {
             RunTokenizerTest("a\\AE%", Chr('a'), Mnemo('Æ'), Comment(), Eof());
 
             RunTokenizerTest("%x\u000Ax", Comment(), Chr('x'), Eof());
-            RunTokenizerTest("%x\u000Bx", Comment(), Chr('x'), Eof());
+            RunTokenizerTest("%x\u000Bx", Comment(), Eof());
             RunTokenizerTest("%x\u000Cx", Comment(), Chr('x'), Eof());
             RunTokenizerTest("%x\u000Dx", Comment(), Chr('x'), Eof());
             RunTokenizerTest("%x\u000D\u000Ax", Comment(), Chr('x'), Eof());

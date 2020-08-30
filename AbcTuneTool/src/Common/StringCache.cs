@@ -89,6 +89,14 @@ namespace AbcTuneTool.Common {
         private readonly Dictionary<(char, char, char), string> tripleChars
             = new Dictionary<(char, char, char), string>();
 
+        /// <summary>
+        ///     returns a cache string for string builder pool item
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public string ForStringBuilder(ObjectPoolItem<StringBuilder> target)
+            => ForStringBuilder(target.Item);
+
         private readonly Dictionary<(char, char, char, char), string> quadrupleChars
             = new Dictionary<(char, char, char, char), string>();
 
@@ -187,5 +195,28 @@ namespace AbcTuneTool.Common {
             return result;
         }
 
+        /// <summary>
+        ///     add a char to a pooled string builder an get the cached string version
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string ForStringBuilder(ObjectPoolItem<StringBuilder> sb, char value) {
+            sb.Item.Append(value);
+            return ForStringBuilder(sb.Item);
+        }
+
+        /// <summary>
+        ///     add two chars to a pooled string builder an get the cached string
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="value"></param>
+        /// <param name="lf"></param>
+        /// <returns></returns>
+        public string ForStringBuilder(ObjectPoolItem<StringBuilder> sb, char value, char lf) {
+            sb.Item.Append(value);
+            sb.Item.Append(lf);
+            return ForStringBuilder(sb.Item);
+        }
     }
 }

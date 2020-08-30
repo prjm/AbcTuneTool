@@ -30,7 +30,7 @@ namespace AbcTuneTool.Model {
             else if (values.Matches(KnownStrings.Decoration))
                 InstrKind = InstructionKind.Decoration;
             else
-                InstrKind = InstructionKind.Undefied;
+                InstrKind = InstructionKind.Otherwise;
 
             InstrValue = ReadInstructionValue(cache, pool);
         }
@@ -44,15 +44,14 @@ namespace AbcTuneTool.Model {
                 InstructionKind.Creator => KnownStrings.AbcCreator.Length + 1,
                 InstructionKind.Decoration => KnownStrings.Decoration.Length + 1,
                 InstructionKind.Linebreak => KnownStrings.Linebreak.Length + 1,
+                InstructionKind.Otherwise => 0,
                 _ => -1,
             };
 
             if (startPos < 0)
                 return string.Empty;
 
-            using var sb = pool.GetItem();
-            Value.ToStringBuilder(startPos, sb.Item);
-            return cache.ForStringBuilder(sb.Item);
+            return Value.ToString(startPos, pool, cache);
         }
 
 
