@@ -19,5 +19,30 @@
         /// version instruction
         /// </summary>
         public const string AbcVersion = "abc-version";
+
+        /// <summary>
+        ///     abc charset
+        /// </summary>
+        public const string AbcCharset = "abc-charset";
+
+        /// <summary>
+        ///     abc include
+        /// </summary>
+        public const string AbcInclude = "abc-include";
+
+        /// <summary>
+        ///     abc creator
+        /// </summary>
+        public const string AbcCreator = "abc-creator";
+
+        /// <summary>
+        ///     decoration
+        /// </summary>
+        public const string Decoration = "decoration";
+
+        /// <summary>
+        ///     linebreak
+        /// </summary>
+        public const string Linebreak = "linebreak";
     }
 }

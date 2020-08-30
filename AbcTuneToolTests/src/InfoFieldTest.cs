@@ -90,11 +90,33 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.InTuneBody(), true);
             Assert.AreEqual(field.Kind.InInline(), true);
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Instruction);
+            Assert.AreEqual("utf-8", field.InstrValue);
 
             field = ParseInstructionField("I:abc-version 2.0");
             Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
             Assert.AreEqual(InstructionKind.Version, field.InstrKind);
             Assert.AreEqual("2.0", field.InstrValue);
+
+            field = ParseInstructionField("I:abc-include demo.abh");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Include, field.InstrKind);
+            Assert.AreEqual("demo.abh", field.InstrValue);
+
+            field = ParseInstructionField("I:abc-creator abctunetool-1.0");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Creator, field.InstrKind);
+            Assert.AreEqual("abctunetool-1.0", field.InstrValue);
+
+            field = ParseInstructionField("I:decoration +");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Decoration, field.InstrKind);
+            Assert.AreEqual("+", field.InstrValue);
+
+            field = ParseInstructionField("I:linebreak <EOL>");
+            Assert.AreEqual(InformationFieldKind.Instruction, field.Kind);
+            Assert.AreEqual(InstructionKind.Linebreak, field.InstrKind);
+            Assert.AreEqual("<EOL>", field.InstrValue);
+
         }
 
     }
