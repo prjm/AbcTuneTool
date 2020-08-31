@@ -44,5 +44,10 @@
         ///     linebreak
         /// </summary>
         public const string Linebreak = "linebreak";
+
+        /// <summary>
+        ///     major scale
+        /// </summary>
+        public const string Major = "major";
     }
 }

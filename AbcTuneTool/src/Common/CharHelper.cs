@@ -1,4 +1,6 @@
-﻿namespace AbcTuneTool.Common {
+﻿using AbcTuneTool.Model;
+
+namespace AbcTuneTool.Common {
 
     /// <summary>
     ///     char helper functions
@@ -95,5 +97,27 @@
                 value == 'X' ||
                 value == 'Z' ||
                 value == '+';
+
+        /// <summary>
+        ///     get the accidental for a char
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static Accidental AsAccidental(this char c)
+            => c switch
+            {
+                '#' => Accidental.Sharp,
+                'b' => Accidental.Flat,
+                _ => Accidental.Undefined
+            };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static bool IsKeyNoteLetter(this char c) =>
+            c >= 'A' && c <= 'G';
+
     }
 }

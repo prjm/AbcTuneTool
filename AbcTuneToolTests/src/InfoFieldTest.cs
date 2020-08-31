@@ -1,4 +1,5 @@
-﻿using AbcTuneTool.Model;
+﻿using AbcTuneTool.Common;
+using AbcTuneTool.Model;
 
 namespace AbcTuneToolTests {
 
@@ -124,19 +125,22 @@ namespace AbcTuneToolTests {
 
         }
 
-        /*
         [TestMethod]
-        public void Test_I_Instruction() {
-            var field = ParseInstructionField("I:abc-charset utf-8");
-            Assert.AreEqual(field.Kind, InformationFieldKind.Instruction);
-            Assert.AreEqual(field.Kind.InFileHeader(), true);
-            Assert.AreEqual(field.Kind.InTuneHeader(), true);
-            Assert.AreEqual(field.Kind.InTuneBody(), true);
-            Assert.AreEqual(field.Kind.InInline(), true);
-            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Instruction);
-            Assert.AreEqual("utf-8", field.InstrValue);
+        public void Test_K_Key() {
+            var field = ParseKeyField("K:G");
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+
+            Assert.AreEqual(field.Kind, InformationFieldKind.Key);
+            Assert.AreEqual(false, field.Kind.InFileHeader());
+            Assert.AreEqual(true, field.Kind.InTuneHeader());
+            Assert.AreEqual(true, field.Kind.InTuneBody());
+            Assert.AreEqual(true, field.Kind.InInline());
+            Assert.AreEqual(InformationFieldContent.Key, field.Kind.GetContentType());
+
+            field = ParseKeyField("K:C#");
+            Assert.AreEqual(n('C', '#'), field.KeyValue);
+
         }
-        */
 
     }
 }

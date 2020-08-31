@@ -15,9 +15,11 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <param name="tokenizer"></param>
         /// <param name="listPools">list pools</param>
-        public Parser(BufferedAbcTokenizer tokenizer, ListPools listPools) {
+        /// <param name="keyNotes"></param>
+        public Parser(BufferedAbcTokenizer tokenizer, ListPools listPools, KeyNotes keyNotes) {
             Tokenizer = tokenizer;
             ListPools = listPools;
+            KeyNotes = keyNotes;
         }
 
         /// <summary>
@@ -29,6 +31,11 @@ namespace AbcTuneTool.FileIo {
         ///     list pools
         /// </summary>
         public ListPools ListPools { get; }
+
+        /// <summary>
+        ///     possible key notes
+        /// </summary>
+        public KeyNotes KeyNotes { get; }
 
         private Token CurrentToken
             => Tokenizer.Lookahead(0);
@@ -57,6 +64,9 @@ namespace AbcTuneTool.FileIo {
                 {
                     InformationFieldKind.Instruction
                         => new InstructionField(header, new Terminal(values), cache, pool),
+
+                    InformationFieldKind.Key
+                        => new KeyField(header, new Terminal(values), KeyNotes),
 
                     _ => new InformationField(header, new Terminal(values), kind),
                 };

@@ -171,6 +171,7 @@
                 InformationFieldKind.Group => true,
                 InformationFieldKind.History => true,
                 InformationFieldKind.Instruction => true,
+                InformationFieldKind.Key => false,
                 _ => false,
             };
 
@@ -190,6 +191,7 @@
                 InformationFieldKind.Group => true,
                 InformationFieldKind.History => true,
                 InformationFieldKind.Instruction => true,
+                InformationFieldKind.Key => true,
                 _ => false,
             };
 
@@ -209,6 +211,7 @@
                 InformationFieldKind.Group => false,
                 InformationFieldKind.History => false,
                 InformationFieldKind.Instruction => true,
+                InformationFieldKind.Key => true,
                 _ => false,
             };
 
@@ -228,6 +231,7 @@
                 InformationFieldKind.Group => false,
                 InformationFieldKind.History => false,
                 InformationFieldKind.Instruction => true,
+                InformationFieldKind.Key => true,
                 _ => false,
             };
 
@@ -247,6 +251,7 @@
                 InformationFieldKind.Group => InformationFieldContent.StringContent,
                 InformationFieldKind.History => InformationFieldContent.StringContent,
                 InformationFieldKind.Instruction => InformationFieldContent.Instruction,
+                InformationFieldKind.Key => InformationFieldContent.Key,
                 _ => InformationFieldContent.Undefined,
             };
 

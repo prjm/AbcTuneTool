@@ -16,7 +16,7 @@ namespace AbcTuneToolTests {
             using var reader = new StringReader(toParse);
             using var tokenizer = new Tokenizer(reader, cache, pool, logger);
             using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
-            using var parser = new Parser(bufferedTokenizer, listPool);
+            using var parser = new Parser(bufferedTokenizer, listPool, new KeyNotes());
             return tester(parser);
         }
 
@@ -36,6 +36,11 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected KeyField ParseKeyField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as KeyField;
+            Assert.NotNull(result);
+            return result;
+        }
 
     }
 }

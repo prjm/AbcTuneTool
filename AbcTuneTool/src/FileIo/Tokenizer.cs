@@ -276,6 +276,7 @@ namespace AbcTuneTool.FileIo {
                 return isInInfoField.GetContentType() switch
                 {
                     InformationFieldContent.Instruction => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Key => ReadWhitespaceSeparatedInfoField(value),
                     _ => ReadDefaultInfoField(value),
                 };
             }

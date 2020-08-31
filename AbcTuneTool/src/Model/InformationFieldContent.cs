@@ -19,6 +19,11 @@
         ///     instruction content
         /// </summary>
         Instruction = 2,
+
+        /// <summary>
+        ///     key description
+        /// </summary>
+        Key = 3,
     }
 
 

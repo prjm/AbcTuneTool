@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
 using AbcTuneTool.Common;
 
 namespace AbcTuneTool.Model {
@@ -8,6 +10,7 @@ namespace AbcTuneTool.Model {
     /// <summary>
     ///     terminal syntax part
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Terminal {
 
         /// <summary>
@@ -21,6 +24,37 @@ namespace AbcTuneTool.Model {
         /// <param name="tokenValues"></param>
         public Terminal(ImmutableArray<Token> tokenValues)
             => tokens = tokenValues;
+
+        /// <summary>
+        ///     get a token value after a whitspace token
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string GetValueAfterWhitespace(int index) {
+            if (tokens.Length <= index)
+                return string.Empty;
+
+            for (; index < tokens.Length; index++) {
+                ref readonly var token = ref tokens.ItemRef(index);
+
+                if (token.Value.Length < 1)
+                    continue;
+
+                var c = token.Value[0];
+                if (!c.IsWhitespace())
+                    return token.Value;
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        ///     display this terminal in the debugger
+        /// </summary>
+        /// <returns></returns>
+        public string DebuggerDisplay
+            => string.Concat(tokens.Select(t => t.DebuggerDisplay + ", "));
+
 
         /// <summary>
         ///     check if a string is matched
@@ -112,6 +146,26 @@ namespace AbcTuneTool.Model {
                 if (tokens.Length < 1 || tokens[0].Value.Length < 1)
                     return '\0';
                 return tokens[0].Value[0];
+            }
+        }
+
+        /// <summary>
+        ///     get the second char
+        /// </summary>
+        public char SecondChar {
+            get {
+                if (tokens.Length < 1)
+                    return '\0';
+
+                if (tokens[0].Value.Length >= 2)
+                    return tokens[0].Value[1];
+
+                if (tokens.Length < 2)
+                    return '\0';
+
+                if (tokens[1].Value.Length >= 1)
+                    return tokens[1].Value[0];
+                return '\0';
             }
         }
 
