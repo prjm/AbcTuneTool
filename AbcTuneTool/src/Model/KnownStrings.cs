@@ -46,8 +46,73 @@
         public const string Linebreak = "linebreak";
 
         /// <summary>
-        ///     major scale
+        ///     major mode
         /// </summary>
         public const string Major = "major";
+
+        /// <summary>
+        ///     major mode
+        /// </summary>
+        public const string Maj = "maj";
+
+        /// <summary>
+        ///     minor mode
+        /// </summary>
+        public const string Min = "min";
+
+        /// <summary>
+        ///     minor mode
+        /// </summary>
+        public const string Minor = "minor";
+
+        /// <summary>
+        ///     mixolydian scale
+        /// </summary>
+        public const string Mixolydian = "mixolydian";
+
+        /// <summary>
+        ///     mixolydian scale
+        /// </summary>
+        public const string Mix = "mix";
+
+        /// <summary>
+        ///     dorian scale
+        /// </summary>
+        public const string Dorian = "dorian";
+
+        /// <summary>
+        ///     dorian scale
+        /// </summary>
+        public const string Dor = "dor";
+
+        /// <summary>
+        ///     phrygian scale
+        /// </summary>
+        public const string Phrygian = "phrygian";
+
+        /// <summary>
+        ///     lydian scale
+        /// </summary>
+        public const string Lydian = "lydian";
+
+        /// <summary>
+        ///     locrian scale
+        /// </summary>
+        public const string Locrian = "locrian";
+
+        /// <summary>
+        ///     phrygian scale
+        /// </summary>
+        public const string Phr = "phr";
+
+        /// <summary>
+        ///     lydian scale
+        /// </summary>
+        public const string Lyd = "lyd";
+
+        /// <summary>
+        ///     locrian scale
+        /// </summary>
+        public const string Loc = "loc";
     }
 }

@@ -126,9 +126,10 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Test_K_Key() {
+        public void Test_K_Major_Key() {
             var field = ParseKeyField("K:G");
             static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
 
             Assert.AreEqual(field.Kind, InformationFieldKind.Key);
             Assert.AreEqual(false, field.Kind.InFileHeader());
@@ -137,10 +138,173 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(true, field.Kind.InInline());
             Assert.AreEqual(InformationFieldContent.Key, field.Kind.GetContentType());
 
-            field = ParseKeyField("K:C#");
-            Assert.AreEqual(n('C', '#'), field.KeyValue);
+            Assert.AreEqual(n('C', '#'), p("C#"));
+            Assert.AreEqual(n('F', '#'), p("F#"));
+            Assert.AreEqual(n('B', '\0'), p("B"));
+            Assert.AreEqual(n('E', '\0'), p("E"));
+            Assert.AreEqual(n('A', '\0'), p("A"));
+            Assert.AreEqual(n('D', '\0'), p("D"));
+            Assert.AreEqual(n('G', '\0'), p("G"));
+            Assert.AreEqual(n('C', '\0'), p("C"));
+            Assert.AreEqual(n('F', '\0'), p("F"));
+            Assert.AreEqual(n('B', 'b'), p("Bb"));
+            Assert.AreEqual(n('E', 'b'), p("Eb"));
+            Assert.AreEqual(n('A', 'b'), p("Ab"));
+            Assert.AreEqual(n('D', 'b'), p("Db"));
+            Assert.AreEqual(n('G', 'b'), p("Gb"));
+            Assert.AreEqual(n('C', 'b'), p("Cb"));
 
+            Assert.AreEqual(n('C', '#'), p("C# major"));
+            Assert.AreEqual(n('F', '#'), p("F# major"));
+            Assert.AreEqual(n('B', '\0'), p("B maj"));
+            Assert.AreEqual(n('E', '\0'), p("E maj"));
+            Assert.AreEqual(n('A', '\0'), p("A maj"));
+            Assert.AreEqual(n('D', '\0'), p("D maj"));
+            Assert.AreEqual(n('G', '\0'), p("G maj"));
+            Assert.AreEqual(n('C', '\0'), p("C maj"));
+            Assert.AreEqual(n('F', '\0'), p("F maj"));
+            Assert.AreEqual(n('B', 'b'), p("Bb Maj"));
+            Assert.AreEqual(n('E', 'b'), p("Eb Maj"));
+            Assert.AreEqual(n('A', 'b'), p("Ab Maj"));
+            Assert.AreEqual(n('D', 'b'), p("Db Maj"));
+            Assert.AreEqual(n('G', 'b'), p("Gb Maj"));
+            Assert.AreEqual(n('C', 'b'), p("Cb Maj"));
         }
+
+        [TestMethod]
+        public void Test_K_Minor_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('A', '#'), p("A# minor"));
+            Assert.AreEqual(n('D', '#'), p("D# minor"));
+            Assert.AreEqual(n('G', '#'), p("G# minor"));
+            Assert.AreEqual(n('C', '#'), p("C# minor"));
+            Assert.AreEqual(n('F', '#'), p("F# minor"));
+            Assert.AreEqual(n('B', '\0'), p("B  min"));
+            Assert.AreEqual(n('E', '\0'), p("E  min"));
+            Assert.AreEqual(n('A', '\0'), p("A  min"));
+            Assert.AreEqual(n('D', '\0'), p("D  min"));
+            Assert.AreEqual(n('G', '\0'), p("G  min"));
+            Assert.AreEqual(n('C', '\0'), p("C  min"));
+            Assert.AreEqual(n('F', '\0'), p("Fm min"));
+            Assert.AreEqual(n('B', 'b'), p("Bb min"));
+            Assert.AreEqual(n('E', 'b'), p("Eb min"));
+            Assert.AreEqual(n('A', 'b'), p("Ab min"));
+        }
+
+        [TestMethod]
+        public void Test_K_Mixolydian_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('G', '#'), p("G# mixolydian"));
+            Assert.AreEqual(n('C', '#'), p("C# mixolydian"));
+            Assert.AreEqual(n('F', '#'), p("F# mixolydian"));
+            Assert.AreEqual(n('B', '\0'), p("B  mixolydian"));
+            Assert.AreEqual(n('E', '\0'), p("E  mixolydian"));
+            Assert.AreEqual(n('A', '\0'), p("A  mix"));
+            Assert.AreEqual(n('D', '\0'), p("D  mix"));
+            Assert.AreEqual(n('G', '\0'), p("G  mix"));
+            Assert.AreEqual(n('C', '\0'), p("C  mix"));
+            Assert.AreEqual(n('F', '\0'), p("F  mix"));
+            Assert.AreEqual(n('B', 'b'), p("Bb mix"));
+            Assert.AreEqual(n('E', 'b'), p("Eb mix"));
+            Assert.AreEqual(n('A', 'b'), p("Ab mix"));
+            Assert.AreEqual(n('D', 'b'), p("Db mix"));
+            Assert.AreEqual(n('G', 'b'), p("Gb mix"));
+        }
+
+        [TestMethod]
+        public void Test_K_Dorian_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('D', '#'), p("D# dorian"));
+            Assert.AreEqual(n('G', '#'), p("G# dorian"));
+            Assert.AreEqual(n('C', '#'), p("C# dorian"));
+            Assert.AreEqual(n('F', '\0'), p("F  dorian"));
+            Assert.AreEqual(n('B', '\0'), p("B  dorian"));
+            Assert.AreEqual(n('E', '\0'), p("E  dor"));
+            Assert.AreEqual(n('A', '\0'), p("A  dor"));
+            Assert.AreEqual(n('D', '\0'), p("D  dor"));
+            Assert.AreEqual(n('G', '\0'), p("G  dor"));
+            Assert.AreEqual(n('C', '\0'), p("C  dor"));
+            Assert.AreEqual(n('F', '\0'), p("F  dor"));
+            Assert.AreEqual(n('B', 'b'), p("Bb dor"));
+            Assert.AreEqual(n('E', 'b'), p("Eb dor"));
+            Assert.AreEqual(n('A', 'b'), p("Ab dor"));
+            Assert.AreEqual(n('D', 'b'), p("Db dor"));
+        }
+
+        [TestMethod]
+        public void Test_K_Phrygian_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('E', '#'), p("E# phrygian"));
+            Assert.AreEqual(n('A', '#'), p("A# phrygian"));
+            Assert.AreEqual(n('D', '#'), p("D# phrygian"));
+            Assert.AreEqual(n('G', '#'), p("G# phrygian"));
+            Assert.AreEqual(n('C', '#'), p("C# phrygian"));
+            Assert.AreEqual(n('F', '#'), p("F# phr"));
+            Assert.AreEqual(n('B', '\0'), p("B  phr"));
+            Assert.AreEqual(n('E', '\0'), p("E  phr"));
+            Assert.AreEqual(n('A', '\0'), p("A  phr"));
+            Assert.AreEqual(n('D', '\0'), p("D  phr"));
+            Assert.AreEqual(n('G', '\0'), p("G  phr"));
+            Assert.AreEqual(n('C', '\0'), p("C  phr"));
+            Assert.AreEqual(n('F', '\0'), p("F  phr"));
+            Assert.AreEqual(n('B', 'b'), p("Bb phr"));
+            Assert.AreEqual(n('E', 'b'), p("Eb phr"));
+        }
+
+
+        [TestMethod]
+        public void Test_K_Lydian_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('F', '#'), p("F# lydian"));
+            Assert.AreEqual(n('B', '\0'), p("B  lydian"));
+            Assert.AreEqual(n('E', '\0'), p("E  lydian"));
+            Assert.AreEqual(n('A', '\0'), p("A  lydian"));
+            Assert.AreEqual(n('D', '\0'), p("D  lydian"));
+            Assert.AreEqual(n('G', '\0'), p("G  lyd"));
+            Assert.AreEqual(n('C', '\0'), p("C  lyd"));
+            Assert.AreEqual(n('F', '\0'), p("F  lyd"));
+            Assert.AreEqual(n('B', 'b'), p("Bb lyd"));
+            Assert.AreEqual(n('E', 'b'), p("Eb lyd"));
+            Assert.AreEqual(n('A', 'b'), p("Ab lyd"));
+            Assert.AreEqual(n('D', 'b'), p("Db lyd"));
+            Assert.AreEqual(n('G', 'b'), p("Gb lyd"));
+            Assert.AreEqual(n('C', 'b'), p("Cb lyd"));
+            Assert.AreEqual(n('F', 'b'), p("Fb lyd"));
+        }
+
+
+        [TestMethod]
+        public void Test_K_Locrian_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('B', '#'), p("B# locrian"));
+            Assert.AreEqual(n('E', '#'), p("E# locrian"));
+            Assert.AreEqual(n('A', '#'), p("A# locrian"));
+            Assert.AreEqual(n('D', '#'), p("D# locrian"));
+            Assert.AreEqual(n('G', '#'), p("G# locrian"));
+            Assert.AreEqual(n('C', '#'), p("C# loc"));
+            Assert.AreEqual(n('F', '#'), p("F# loc"));
+            Assert.AreEqual(n('B', '\0'), p("B  loc"));
+            Assert.AreEqual(n('E', '\0'), p("E  loc"));
+            Assert.AreEqual(n('A', '\0'), p("A  loc"));
+            Assert.AreEqual(n('D', '\0'), p("D  loc"));
+            Assert.AreEqual(n('G', '\0'), p("G  loc"));
+            Assert.AreEqual(n('C', '\0'), p("C  loc"));
+            Assert.AreEqual(n('F', '\0'), p("F  loc"));
+            Assert.AreEqual(n('B', 'b'), p("Bb loc"));
+        }
+
 
     }
 }
