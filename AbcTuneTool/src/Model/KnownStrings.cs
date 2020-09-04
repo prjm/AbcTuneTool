@@ -114,5 +114,15 @@
         ///     locrian scale
         /// </summary>
         public const string Loc = "loc";
+
+        /// <summary>
+        ///     minor mode
+        /// </summary>
+        public const string M = "m";
+
+        /// <summary>
+        ///     no scale
+        /// </summary>
+        public const string None = "none";
     }
 }

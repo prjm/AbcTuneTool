@@ -1,4 +1,5 @@
-﻿using AbcTuneTool.Common;
+﻿using System;
+using AbcTuneTool.Common;
 
 namespace AbcTuneTool.Model {
 
@@ -11,13 +12,17 @@ namespace AbcTuneTool.Model {
         ///     create a new key field
         /// </summary>
         /// <param name="header"></param>
-        /// <param name="terminal"></param>
+        /// <param name="value"></param>
         /// <param name="notes">used key notes</param>
-        public KeyField(Terminal header, Terminal terminal, KeyNotes notes) : base(header, terminal, InformationFieldKind.Key) {
-            var note = terminal.FirstChar;
-            var accidental = terminal.SecondChar.AsAccidental();
-            var mode = terminal.GetValueAfterWhitespace(1);
-            KeyValue = notes.ForKeySignature(note, accidental, mode);
+        public KeyField(Terminal header, Terminal value, KeyNotes notes) : base(header, value, InformationFieldKind.Key) {
+            var note = value.FirstChar;
+            var accidental = value.SecondChar.AsAccidental();
+            var mode = value.GetValueAfterWhitespace(1);
+
+            if (value.IsEmpty || value.Matches(KnownStrings.None, StringComparison.OrdinalIgnoreCase) || value.IsWhitespace)
+                KeyValue = Note.None;
+            else
+                KeyValue = notes.ForKeySignature(note, accidental, mode);
         }
 
         /// <summary>

@@ -26,6 +26,60 @@ namespace AbcTuneTool.Model {
             => tokens = tokenValues;
 
         /// <summary>
+        ///     check if a character is an whitespace
+        /// </summary>
+        public bool IsWhitespace {
+            get {
+                if (tokens.Length < 1)
+                    return false;
+
+                for (var i = 0; i < tokens.Length; i++)
+                    if (!string.IsNullOrWhiteSpace(tokens[i].Value))
+                        return false;
+
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        ///     test if this terminal matches a string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="ordinalIgnoreCase"></param>
+        /// <returns></returns>
+        public bool Matches(string input, StringComparison ordinalIgnoreCase) {
+            var tokenIndex = 0;
+            var tokenCharIndex = 0;
+
+            if (tokens.Length < 1)
+                return false;
+
+            if (input.Length < 1)
+                throw new ArgumentOutOfRangeException();
+
+            ref readonly var token = ref tokens.ItemRef(0);
+
+            for (var charIndex = 0; charIndex < input.Length && tokenIndex < tokens.Length; charIndex++, tokenCharIndex++) {
+
+                if (token.OriginalValue.Length <= tokenCharIndex) {
+                    tokenCharIndex = 0;
+                    tokenIndex++;
+
+                    if (tokenIndex >= tokens.Length)
+                        return false;
+
+                    token = ref tokens.ItemRef(tokenIndex);
+                }
+
+                if (input[charIndex] != token.OriginalValue[tokenCharIndex])
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         ///     get a token value after a whitspace token
         /// </summary>
         /// <param name="index"></param>
@@ -61,36 +115,8 @@ namespace AbcTuneTool.Model {
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public bool Matches(string input) {
-            var tokenIndex = 0;
-            var tokenCharIndex = 0;
-
-            if (tokens.Length < 1)
-                return false;
-
-            if (input.Length < 1)
-                throw new ArgumentOutOfRangeException();
-
-            ref readonly var token = ref tokens.ItemRef(0);
-
-            for (var charIndex = 0; charIndex < input.Length && tokenIndex < tokens.Length; charIndex++, tokenCharIndex++) {
-
-                if (token.OriginalValue.Length <= tokenCharIndex) {
-                    tokenCharIndex = 0;
-                    tokenIndex++;
-
-                    if (tokenIndex >= tokens.Length)
-                        return false;
-
-                    token = ref tokens.ItemRef(tokenIndex);
-                }
-
-                if (input[charIndex] != token.OriginalValue[tokenCharIndex])
-                    return false;
-            }
-
-            return true;
-        }
+        public bool Matches(string input)
+            => Matches(input, StringComparison.Ordinal);
 
         /// <summary>
         ///     add the content of this terminal to a string builder
@@ -168,6 +194,12 @@ namespace AbcTuneTool.Model {
                 return '\0';
             }
         }
+
+        /// <summary>
+        ///     <c>true</c> if there a no tokens in this terminal
+        /// </summary>
+        public bool IsEmpty
+            => tokens.Length < 1;
 
         /// <summary>
         ///     create a new string from the source tokens

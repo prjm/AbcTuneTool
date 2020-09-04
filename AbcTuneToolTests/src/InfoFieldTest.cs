@@ -191,6 +191,23 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(n('B', 'b'), p("Bb min"));
             Assert.AreEqual(n('E', 'b'), p("Eb min"));
             Assert.AreEqual(n('A', 'b'), p("Ab min"));
+
+
+            Assert.AreEqual(n('A', '#'), p("A# m"));
+            Assert.AreEqual(n('D', '#'), p("D# m"));
+            Assert.AreEqual(n('G', '#'), p("G# m"));
+            Assert.AreEqual(n('C', '#'), p("C# m"));
+            Assert.AreEqual(n('F', '#'), p("F# m"));
+            Assert.AreEqual(n('B', '\0'), p("B  m"));
+            Assert.AreEqual(n('E', '\0'), p("E  m"));
+            Assert.AreEqual(n('A', '\0'), p("A  m"));
+            Assert.AreEqual(n('D', '\0'), p("D  m"));
+            Assert.AreEqual(n('G', '\0'), p("G  m"));
+            Assert.AreEqual(n('C', '\0'), p("C  m"));
+            Assert.AreEqual(n('F', '\0'), p("Fm m"));
+            Assert.AreEqual(n('B', 'b'), p("Bb m"));
+            Assert.AreEqual(n('E', 'b'), p("Eb m"));
+            Assert.AreEqual(n('A', 'b'), p("Ab m"));
         }
 
         [TestMethod]
@@ -257,6 +274,16 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(n('F', '\0'), p("F  phr"));
             Assert.AreEqual(n('B', 'b'), p("Bb phr"));
             Assert.AreEqual(n('E', 'b'), p("Eb phr"));
+        }
+
+        [TestMethod]
+        public void Test_K_No_Key() {
+            static Note n(char c, char a) => new Note(c, a.AsAccidental());
+            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+
+            Assert.AreEqual(n('x', ' '), p(""));
+            Assert.AreEqual(n('x', ' '), p("  "));
+            Assert.AreEqual(n('x', ' '), p("none"));
         }
 
 

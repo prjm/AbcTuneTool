@@ -202,7 +202,7 @@ namespace AbcTuneTool.Model {
                 return Major.GetNote(note, accidental);
             }
 
-            if (mode.StartsWith(KnownStrings.Min, StringComparison.OrdinalIgnoreCase)) {
+            if (mode.StartsWith(KnownStrings.Min, StringComparison.OrdinalIgnoreCase) || string.Equals(mode, KnownStrings.M, StringComparison.Ordinal)) {
                 return Minor.GetNote(note, accidental);
             }
 

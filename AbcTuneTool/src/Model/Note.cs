@@ -8,7 +8,6 @@ namespace AbcTuneTool.Model {
     /// </summary>
     public class Note : IEquatable<Note> {
 
-
         /// <summary>
         ///     create a new note
         /// </summary>
@@ -31,6 +30,12 @@ namespace AbcTuneTool.Model {
         /// </summary>
         public static Note Unknown { get; }
             = new Note('\0', Accidental.Undefined);
+
+        /// <summary>
+        ///     no note
+        /// </summary>
+        public static Note None { get; }
+            = new Note('x', Accidental.Undefined);
 
         /// <summary>
         ///     note value
