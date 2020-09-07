@@ -112,7 +112,22 @@ namespace AbcTuneTool.Common {
             };
 
         /// <summary>
-        /// 
+        ///     get the accidental for a char
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static ToneInterval AsToneInterval(this char c)
+            => c switch
+            {
+                'R' => ToneInterval.Root,
+                'H' => ToneInterval.HalfStep,
+                'W' => ToneInterval.WholeStep,
+                _ => ToneInterval.Undefined
+            };
+
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>

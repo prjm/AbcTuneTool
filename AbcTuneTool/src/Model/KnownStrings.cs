@@ -6,6 +6,11 @@
     public static class KnownStrings {
 
         /// <summary>
+        ///     debugger display
+        /// </summary>
+        public const string DebuggerDisplay = "{DebuggerDisplay,nq}";
+
+        /// <summary>
         ///     version comment
         /// </summary>
         public const string VersionComment = "%abc-";
@@ -124,5 +129,40 @@
         ///     no scale
         /// </summary>
         public const string None = "none";
+
+        /// <summary>
+        ///     major mode
+        /// </summary>
+        public const string MajorMode = "RWWHWWWH";
+
+        /// <summary>
+        ///     minor mode
+        /// </summary>
+        public const string MinorMode = "RWHWWHWW";
+
+        /// <summary>
+        ///     mixolydian mode
+        /// </summary>
+        public const string MixolydianMode = "RWWHWWHW";
+
+        /// <summary>
+        ///     dorian mode
+        /// </summary>
+        public const string DorianMode = "RWHWWWHW";
+
+        /// <summary>
+        ///     phrygian mode
+        /// </summary>
+        public const string PhrygianMode = "RHWWWHWW";
+
+        /// <summary>
+        ///     lydian mode
+        /// </summary>
+        public const string LydianMode = "RWWWHWWH";
+
+        /// <summary>
+        ///     locrian mode
+        /// </summary>
+        public const string LocrianMode = "RHWWHWWW";
     }
 }

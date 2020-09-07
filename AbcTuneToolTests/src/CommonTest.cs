@@ -16,7 +16,7 @@ namespace AbcTuneToolTests {
             using var reader = new StringReader(toParse);
             using var tokenizer = new Tokenizer(reader, cache, pool, logger);
             using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
-            using var parser = new Parser(bufferedTokenizer, listPool, new KeyNotes());
+            using var parser = new Parser(bufferedTokenizer, listPool);
             return tester(parser);
         }
 
