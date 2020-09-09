@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using AbcTuneTool.Common;
 
 namespace AbcTuneTool.Model {
@@ -51,7 +52,12 @@ namespace AbcTuneTool.Model {
         }
 
         /// <summary>
-        ///     parse a givne mode description string
+        ///     accidentals
+        /// </summary>
+        public ImmutableArray<Tone> Accidentals { get; private set; }
+
+        /// <summary>
+        ///     parse a given mode description string
         /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
@@ -72,6 +78,8 @@ namespace AbcTuneTool.Model {
         /// <returns></returns>
         public StandardToneSystem DefineKey(int level, bool useAlternative) {
             var old = this;
+            var accidentals = new List<Tone>();
+            var accidental = level <= 0 ? Accidental.Flat : Accidental.Sharp;
 
             for (var i = 0; i < Math.Abs(level); i++) {
                 var result = new StandardToneSystem(this);
@@ -81,9 +89,14 @@ namespace AbcTuneTool.Model {
                     result.AddTone(newtone);
                 }
 
+                foreach (var tone in result.MainTones)
+                    if (tone.Accidental == accidental && accidentals.IndexOf(tone) < 0)
+                        accidentals.Add(tone);
+
                 old = result;
             }
 
+            old.Accidentals = accidentals.ToImmutableArray();
             return old;
         }
 

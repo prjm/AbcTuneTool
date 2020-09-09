@@ -52,8 +52,14 @@ namespace AbcTuneTool.Model {
         /// <summary>
         ///     debugger display helper
         /// </summary>
-        public string DebuggerDisplay
-            => (Name + " " + Accidental.AsChar()).Trim();
+        public string DebuggerDisplay {
+            get {
+                Span<char> m = stackalloc char[2];
+                m[0] = Name;
+                m[1] = Accidental.AsChar();
+                return new string(m).Trim();
+            }
+        }
 
         /// <summary>
         ///     lower alternative
@@ -87,5 +93,13 @@ namespace AbcTuneTool.Model {
         /// <returns></returns>
         public override int GetHashCode()
             => HashCode.Combine(Name, Accidental);
+
+        /// <summary>
+        ///     string display
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+            => DebuggerDisplay;
+
     }
 }
