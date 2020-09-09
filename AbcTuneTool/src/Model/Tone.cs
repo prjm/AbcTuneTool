@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using AbcTuneTool.Common;
 
 namespace AbcTuneTool.Model {
 
@@ -24,8 +25,16 @@ namespace AbcTuneTool.Model {
         /// </summary>
         /// <param name="name"></param>
         /// <param name="accidental"></param>
+        public Tone(char name, char accidental) : this(name, accidental.AsAccidental()) { }
+
+
+        /// <summary>
+        ///     create a new tone
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="accidental"></param>
         /// <param name="alternative"></param>
-        public Tone(char name, Accidental accidental, Tone alternative) : this(name, accidental)
+        public Tone(char name, Accidental accidental, Tone? alternative) : this(name, accidental)
             => LowerAlternative = alternative;
 
         /// <summary>
@@ -35,7 +44,7 @@ namespace AbcTuneTool.Model {
         /// <param name="accidental"></param>
         /// <param name="lowerAlternative"></param>
         /// <param name="upperAlternative"></param>
-        public Tone(char name, Accidental accidental, Tone lowerAlternative, Tone upperAlternative) : this(name, accidental, lowerAlternative)
+        public Tone(char name, Accidental accidental, Tone? lowerAlternative, Tone? upperAlternative) : this(name, accidental, lowerAlternative)
             => UpperAlternative = upperAlternative;
 
 

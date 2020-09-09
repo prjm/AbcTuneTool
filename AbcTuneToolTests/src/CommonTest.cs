@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
@@ -40,6 +41,21 @@ namespace AbcTuneToolTests {
             var result = Symbol(source, (Parser p) => p.ParseInformationField()) as KeyField;
             Assert.NotNull(result);
             return result;
+        }
+
+        protected static Tone[] StringToTones(params string[] tones)
+            => StringToTones((IEnumerable<string>)tones);
+
+        protected static Tone[] StringToTones(IEnumerable<string> tones) {
+            var t = new List<Tone>();
+            foreach (var tone in tones) {
+                Assert.AreEqual(2, tone.Length);
+                var n = tone[0];
+                var a = tone[1].AsAccidental();
+                t.Add(new Tone(n, a));
+            }
+
+            return t.ToArray();
         }
 
     }

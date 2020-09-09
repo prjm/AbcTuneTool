@@ -9,13 +9,13 @@
         ///     create a new minor key table
         /// </summary>
         public MinorKeyTable() : base(new StandardToneSystem(KnownStrings.MinorMode, 9)) {
-            AddKey(-7, 'A', 'b');
-            AddKey(-6, 'E', 'b');
-            AddKey(-5, 'B', 'b');
-            AddKey(-4, 'F', ' ');
-            AddKey(-3, 'C', ' ');
-            AddKey(-2, 'G', ' ');
             AddKey(-1, 'D', ' ');
+            AddKey(-2, 'G', ' ');
+            AddKey(-3, 'C', ' ');
+            AddKey(-4, 'F', ' ');
+            AddKey(-5, 'B', 'b', new Tone('B', 'b'));
+            AddKey(-6, 'E', 'b', new Tone('E', 'b'));
+            AddKey(-7, 'A', 'b', new Tone('A', 'b'));
             AddKey(+0, 'A', ' ');
             AddKey(+1, 'E', ' ');
             AddKey(+2, 'B', ' ');

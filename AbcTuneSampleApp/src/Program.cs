@@ -1,4 +1,5 @@
 ﻿using System;
+using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 
 namespace AbcTuneSampleApp {
@@ -6,11 +7,17 @@ namespace AbcTuneSampleApp {
 
         static void Main() {
 
-            var s = new StandardToneSystem(KnownStrings.LocrianMode, 11);
-            var k = s.DefineKey(7, true);
+            var s = new PhrygianKeyTable();
+            s.DefineKey('D', ' '.AsAccidental());
 
-            foreach (var n in k.MainTones)
+            foreach (var n in s.Tones.MainTones)
                 System.Console.WriteLine(n.ToString());
+
+            Console.WriteLine();
+            Console.Write("Accidentals: ");
+            foreach (var n in s.Tones.Accidentals)
+                System.Console.Write(n.ToString());
+            Console.WriteLine();
 
             return;
 

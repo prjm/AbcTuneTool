@@ -28,18 +28,6 @@ namespace AbcTuneToolTests {
         private static IEnumerable<string> Split(string str, int chunkSize)
             => Enumerable.Range(0, str.Length / chunkSize).Select(i => str.Substring(i * chunkSize, chunkSize));
 
-        private static Tone[] StringToTones(IEnumerable<string> tones) {
-            var t = new List<Tone>();
-            foreach (var tone in tones) {
-                Assert.AreEqual(2, tone.Length);
-                var n = tone[0];
-                var a = tone[1].AsAccidental();
-                t.Add(new Tone(n, a));
-            }
-
-            return t.ToArray();
-        }
-
         [TestMethod]
         public void TestMajor() {
 
@@ -50,7 +38,7 @@ namespace AbcTuneToolTests {
             TestKey<MAJ>("E ", "F#C#G#D#", "E ", "F#", "G#", "A ", "B ", "C#", "D#", "E ");
             TestKey<MAJ>("B ", "F#C#G#D#A#", "B ", "C#", "D#", "E ", "F#", "G#", "A#", "B ");
             TestKey<MAJ>("F#", "F#C#G#D#A#E#", "F#", "G#", "A#", "B ", "C#", "D#", "E#", "F#");
-
+            TestKey<MAJ>("C#", "F#C#G#D#A#E#B#", "C#", "D#", "E#", "F#", "G#", "A#", "B#", "C#");
         }
 
     }

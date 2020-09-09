@@ -1,4 +1,5 @@
-﻿using AbcTuneTool.Common;
+﻿using System.Linq;
+using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 
 namespace AbcTuneToolTests {
@@ -285,16 +286,14 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(t('C', ' '), q("none"));
         }
 
-        /*
 
         [TestMethod]
         public void Test_K_Explicit_Key() {
-            static Note n(char c, char a) => new Note(c, a.AsAccidental());
-            Note p(string k) => ParseKeyField("K:" + k).KeyValue;
+            //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
+            Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Accidentals.ToArray();
 
-            Assert.AreEqual(n('E', '#'), p("D exp _b _e ^f"));
+            Assert.AreEqualSeq(StringToTones("Bb", "Eb"), a("D Phr"));
         }
-        */
 
         [TestMethod]
         public void Test_K_Lydian_Key() {

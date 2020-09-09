@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using AbcTuneTool.Common;
 
@@ -9,13 +8,16 @@ namespace AbcTuneTool.Model {
     ///     standard tone system
     /// </summary>
     public class StandardToneSystem : ToneSystem {
-        private readonly ToneInterval[] mode;
+        private readonly string modeString;
+        private readonly ToneInterval[] parsedMode;
 
         /// <summary>
         ///     create a standard tone system
         /// </summary>
         public StandardToneSystem(string mode, int rotate = 0) {
-            this.mode = ParseMode(mode);
+            modeString = mode;
+            parsedMode = ParseMode(mode);
+            Accidentals = ImmutableArray<Tone>.Empty;
 
             AddTone('C', ' ', ' ', ' ', 'B', '#');
             AddTone('C', '#', 'D', 'b');
@@ -35,8 +37,10 @@ namespace AbcTuneTool.Model {
         }
 
 
-        private StandardToneSystem(StandardToneSystem system)
-            => mode = system.mode;
+        private StandardToneSystem(StandardToneSystem system) {
+            parsedMode = system.parsedMode;
+            modeString = system.modeString;
+        }
 
         /// <summary>
         ///     main tones
@@ -44,7 +48,7 @@ namespace AbcTuneTool.Model {
         public IEnumerable<Tone> MainTones {
             get {
                 var index = 0;
-                foreach (var step in mode) {
+                foreach (var step in parsedMode) {
                     index = (index + step.AsHalfTones()) % Tones.Count;
                     yield return Tones[index];
                 }
@@ -73,53 +77,55 @@ namespace AbcTuneTool.Model {
         /// <summary>
         ///     define a key in a tone system
         /// </summary>
-        /// <param name="level"></param>
-        /// <param name="useAlternative"></param>
+        /// <param name="accidental"></param>
+        /// <param name="allowedAccidentals"></param>
         /// <returns></returns>
-        public StandardToneSystem DefineKey(int level, bool useAlternative) {
-            var old = this;
+        public StandardToneSystem DefineKey(Accidental accidental, List<Tone> allowedAccidentals) {
             var accidentals = new List<Tone>();
-            var accidental = level <= 0 ? Accidental.Flat : Accidental.Sharp;
+            var result = new StandardToneSystem(this);
 
-            for (var i = 0; i < Math.Abs(level); i++) {
-                var result = new StandardToneSystem(this);
+            accidentals.AddRange(Accidentals);
 
-                foreach (var tone in old.Tones) {
-                    var newtone = level > 0 ? AddFifth(old, tone, useAlternative) : RemoveFifth(old, tone, useAlternative);
-                    result.AddTone(newtone);
-                }
+            foreach (var tone in Tones) {
 
+                var newTone = accidental switch
+                {
+                    Accidental.Sharp => AddFifth(this, tone, allowedAccidentals),
+                    Accidental.Flat => RemoveFifth(this, tone, allowedAccidentals),
+                    _ => tone,
+                };
+                result.AddTone(newTone);
+            }
+
+            if (accidental != Accidental.Undefined)
                 foreach (var tone in result.MainTones)
                     if (tone.Accidental == accidental && accidentals.IndexOf(tone) < 0)
                         accidentals.Add(tone);
 
-                old = result;
-            }
-
-            old.Accidentals = accidentals.ToImmutableArray();
-            return old;
+            result.Accidentals = accidentals.ToImmutableArray();
+            return result;
         }
 
-        private static Tone AddFifth(ToneSystem system, Tone tone, bool useAlt) {
+        private static Tone AddFifth(ToneSystem system, Tone tone, List<Tone> allowedAccidentals) {
             var index = system.Tones.IndexOf(tone);
             var newIndex = (index + 7) % system.Tones.Count;
             tone = system.Tones[newIndex];
 
-            if (useAlt && !(tone.UpperAlternative is null) && tone.UpperAlternative.Name != ' ')
+            if (!(tone.UpperAlternative is null) && allowedAccidentals.Contains(tone.UpperAlternative))
                 tone = tone.UpperAlternative;
 
-            return new Tone(tone.Name, tone.Accidental);
+            return new Tone(tone.Name, tone.Accidental, tone.LowerAlternative, tone.UpperAlternative);
         }
 
-        private static Tone RemoveFifth(ToneSystem system, Tone tone, bool useAlt) {
+        private static Tone RemoveFifth(ToneSystem system, Tone tone, List<Tone> allowedAccidentals) {
             var index = system.Tones.IndexOf(tone);
             var newIndex = (index + system.Tones.Count - 7) % system.Tones.Count;
             tone = system.Tones[newIndex];
 
-            if (useAlt && !(tone.LowerAlternative is null) && tone.LowerAlternative.Name != ' ')
+            if (!(tone.LowerAlternative is null) && allowedAccidentals.Contains(tone.LowerAlternative))
                 tone = tone.LowerAlternative;
 
-            return new Tone(tone.Name, tone.Accidental);
+            return new Tone(tone.Name, tone.Accidental, tone.LowerAlternative, tone.UpperAlternative);
         }
 
     }
