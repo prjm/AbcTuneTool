@@ -19,18 +19,18 @@ namespace AbcTuneTool.Model {
             parsedMode = ParseMode(mode);
             Accidentals = ImmutableArray<Tone>.Empty;
 
-            AddTone('C', ' ', ' ', ' ', 'B', '#');
-            AddTone('C', '#', 'D', 'b');
-            AddTone('D', ' ');
-            AddTone('D', '#', 'E', 'b');
-            AddTone('E', ' ', 'F', 'b');
-            AddTone('F', ' ', ' ', ' ', 'E', '#');
-            AddTone('F', '#', 'G', 'b');
-            AddTone('G', ' ');
-            AddTone('G', '#', 'A', 'b');
-            AddTone('A', ' ');
-            AddTone('A', '#', 'B', 'b');
-            AddTone('B', ' ', 'C', 'b');
+            AddTone('c', ' ', ' ', ' ', 'b', '#');
+            AddTone('c', '#', 'd', 'b');
+            AddTone('d', ' ');
+            AddTone('d', '#', 'e', 'b');
+            AddTone('e', ' ', 'f', 'b');
+            AddTone('f', ' ', ' ', ' ', 'e', '#');
+            AddTone('f', '#', 'g', 'b');
+            AddTone('g', ' ');
+            AddTone('g', '#', 'a', 'b');
+            AddTone('a', ' ');
+            AddTone('a', '#', 'b', 'b');
+            AddTone('b', ' ', 'c', 'b');
 
             if (rotate != 0)
                 Tones = Tones.Rotate(rotate);

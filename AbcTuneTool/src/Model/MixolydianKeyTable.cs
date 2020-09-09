@@ -20,11 +20,11 @@
             AddKey(+0, 'G', ' ');
             AddKey(-1, 'C', ' ');
             AddKey(-2, 'F', ' ');
-            AddKey(-3, 'B', 'b', new Tone('B', 'b'));
-            AddKey(-4, 'E', 'b', new Tone('E', 'b'));
-            AddKey(-5, 'A', 'b', new Tone('A', 'b'));
-            AddKey(-6, 'D', 'b', new Tone('D', 'b'));
-            AddKey(-7, 'G', 'b', new Tone('G', 'b'));
+            AddKey(-3, 'B', 'b', new Tone('b', 'b'));
+            AddKey(-4, 'E', 'b', new Tone('e', 'b'));
+            AddKey(-5, 'A', 'b', new Tone('a', 'b'));
+            AddKey(-6, 'D', 'b', new Tone('d', 'b'));
+            AddKey(-7, 'G', 'b', new Tone('g', 'b'));
 
         }
     }

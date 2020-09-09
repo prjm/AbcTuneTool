@@ -139,37 +139,37 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(true, field.Kind.InInline());
             Assert.AreEqual(InformationFieldContent.Key, field.Kind.GetContentType());
 
-            Assert.AreEqual(t('C', '#'), q("C#"));
-            Assert.AreEqual(t('F', '#'), q("F#"));
-            Assert.AreEqual(t('B', ' '), q("B"));
-            Assert.AreEqual(t('E', ' '), q("E"));
-            Assert.AreEqual(t('A', ' '), q("A"));
-            Assert.AreEqual(t('D', ' '), q("D"));
-            Assert.AreEqual(t('G', ' '), q("G"));
-            Assert.AreEqual(t('C', ' '), q("C"));
-            Assert.AreEqual(t('F', ' '), q("F"));
-            Assert.AreEqual(t('B', 'b'), q("Bb"));
-            Assert.AreEqual(t('E', 'b'), q("Eb"));
-            Assert.AreEqual(t('A', 'b'), q("Ab"));
-            Assert.AreEqual(t('D', 'b'), q("Db"));
-            Assert.AreEqual(t('G', 'b'), q("Gb"));
-            Assert.AreEqual(t('C', 'b'), q("Cb"));
+            Assert.AreEqual(t('c', '#'), q("C#"));
+            Assert.AreEqual(t('f', '#'), q("F#"));
+            Assert.AreEqual(t('b', ' '), q("B"));
+            Assert.AreEqual(t('e', ' '), q("E"));
+            Assert.AreEqual(t('a', ' '), q("A"));
+            Assert.AreEqual(t('d', ' '), q("D"));
+            Assert.AreEqual(t('g', ' '), q("G"));
+            Assert.AreEqual(t('c', ' '), q("C"));
+            Assert.AreEqual(t('f', ' '), q("F"));
+            Assert.AreEqual(t('b', 'b'), q("Bb"));
+            Assert.AreEqual(t('e', 'b'), q("Eb"));
+            Assert.AreEqual(t('a', 'b'), q("Ab"));
+            Assert.AreEqual(t('d', 'b'), q("Db"));
+            Assert.AreEqual(t('g', 'b'), q("Gb"));
+            Assert.AreEqual(t('c', 'b'), q("Cb"));
 
-            Assert.AreEqual(t('C', '#'), q("C# major"));
-            Assert.AreEqual(t('F', '#'), q("F# major"));
-            Assert.AreEqual(t('B', ' '), q("B maj"));
-            Assert.AreEqual(t('E', ' '), q("E maj"));
-            Assert.AreEqual(t('A', ' '), q("A maj"));
-            Assert.AreEqual(t('D', ' '), q("D maj"));
-            Assert.AreEqual(t('G', ' '), q("G maj"));
-            Assert.AreEqual(t('C', ' '), q("C maj"));
-            Assert.AreEqual(t('F', ' '), q("F maj"));
-            Assert.AreEqual(t('B', 'b'), q("Bb Maj"));
-            Assert.AreEqual(t('E', 'b'), q("Eb Maj"));
-            Assert.AreEqual(t('A', 'b'), q("Ab Maj"));
-            Assert.AreEqual(t('D', 'b'), q("Db Maj"));
-            Assert.AreEqual(t('G', 'b'), q("Gb Maj"));
-            Assert.AreEqual(t('C', 'b'), q("Cb Maj"));
+            Assert.AreEqual(t('c', '#'), q("C# major"));
+            Assert.AreEqual(t('f', '#'), q("F# major"));
+            Assert.AreEqual(t('b', ' '), q("B maj"));
+            Assert.AreEqual(t('e', ' '), q("E maj"));
+            Assert.AreEqual(t('a', ' '), q("A maj"));
+            Assert.AreEqual(t('d', ' '), q("D maj"));
+            Assert.AreEqual(t('g', ' '), q("G maj"));
+            Assert.AreEqual(t('c', ' '), q("C maj"));
+            Assert.AreEqual(t('f', ' '), q("F maj"));
+            Assert.AreEqual(t('b', 'b'), q("Bb Maj"));
+            Assert.AreEqual(t('e', 'b'), q("Eb Maj"));
+            Assert.AreEqual(t('a', 'b'), q("Ab Maj"));
+            Assert.AreEqual(t('d', 'b'), q("Db Maj"));
+            Assert.AreEqual(t('g', 'b'), q("Gb Maj"));
+            Assert.AreEqual(t('c', 'b'), q("Cb Maj"));
         }
 
         [TestMethod]
@@ -177,37 +177,37 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('A', '#'), q("A# minor"));
-            Assert.AreEqual(t('D', '#'), q("D# minor"));
-            Assert.AreEqual(t('G', '#'), q("G# minor"));
-            Assert.AreEqual(t('C', '#'), q("C# minor"));
-            Assert.AreEqual(t('F', '#'), q("F# minor"));
-            Assert.AreEqual(t('B', ' '), q("B  min"));
-            Assert.AreEqual(t('E', ' '), q("E  min"));
-            Assert.AreEqual(t('A', ' '), q("A  min"));
-            Assert.AreEqual(t('D', ' '), q("D  min"));
-            Assert.AreEqual(t('G', ' '), q("G  min"));
-            Assert.AreEqual(t('C', ' '), q("C  min"));
-            Assert.AreEqual(t('F', ' '), q("F min"));
-            Assert.AreEqual(t('B', 'b'), q("Bb min"));
-            Assert.AreEqual(t('E', 'b'), q("Eb min"));
-            Assert.AreEqual(t('A', 'b'), q("Ab min"));
+            Assert.AreEqual(t('a', '#'), q("A# minor"));
+            Assert.AreEqual(t('d', '#'), q("D# minor"));
+            Assert.AreEqual(t('g', '#'), q("G# minor"));
+            Assert.AreEqual(t('c', '#'), q("C# minor"));
+            Assert.AreEqual(t('f', '#'), q("F# minor"));
+            Assert.AreEqual(t('b', ' '), q("B  min"));
+            Assert.AreEqual(t('e', ' '), q("E  min"));
+            Assert.AreEqual(t('a', ' '), q("A  min"));
+            Assert.AreEqual(t('d', ' '), q("D  min"));
+            Assert.AreEqual(t('g', ' '), q("G  min"));
+            Assert.AreEqual(t('c', ' '), q("C  min"));
+            Assert.AreEqual(t('f', ' '), q("F min"));
+            Assert.AreEqual(t('b', 'b'), q("Bb min"));
+            Assert.AreEqual(t('e', 'b'), q("Eb min"));
+            Assert.AreEqual(t('a', 'b'), q("Ab min"));
 
-            Assert.AreEqual(t('A', '#'), q("A# m"));
-            Assert.AreEqual(t('D', '#'), q("D# m"));
-            Assert.AreEqual(t('G', '#'), q("G# m"));
-            Assert.AreEqual(t('C', '#'), q("C# m"));
-            Assert.AreEqual(t('F', '#'), q("F# m"));
-            Assert.AreEqual(t('B', ' '), q("B  m"));
-            Assert.AreEqual(t('E', ' '), q("E  m"));
-            Assert.AreEqual(t('A', ' '), q("A  m"));
-            Assert.AreEqual(t('D', ' '), q("D  m"));
-            Assert.AreEqual(t('G', ' '), q("G  m"));
-            Assert.AreEqual(t('C', ' '), q("C  m"));
-            Assert.AreEqual(t('F', ' '), q("F  m"));
-            Assert.AreEqual(t('B', 'b'), q("Bb m"));
-            Assert.AreEqual(t('E', 'b'), q("Eb m"));
-            Assert.AreEqual(t('A', 'b'), q("Ab m"));
+            Assert.AreEqual(t('a', '#'), q("A# m"));
+            Assert.AreEqual(t('d', '#'), q("D# m"));
+            Assert.AreEqual(t('g', '#'), q("G# m"));
+            Assert.AreEqual(t('c', '#'), q("C# m"));
+            Assert.AreEqual(t('f', '#'), q("F# m"));
+            Assert.AreEqual(t('b', ' '), q("B  m"));
+            Assert.AreEqual(t('e', ' '), q("E  m"));
+            Assert.AreEqual(t('a', ' '), q("A  m"));
+            Assert.AreEqual(t('d', ' '), q("D  m"));
+            Assert.AreEqual(t('g', ' '), q("G  m"));
+            Assert.AreEqual(t('c', ' '), q("C  m"));
+            Assert.AreEqual(t('f', ' '), q("F  m"));
+            Assert.AreEqual(t('b', 'b'), q("Bb m"));
+            Assert.AreEqual(t('e', 'b'), q("Eb m"));
+            Assert.AreEqual(t('a', 'b'), q("Ab m"));
         }
 
         [TestMethod]
@@ -215,21 +215,21 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('G', '#'), q("G# mixolydian"));
-            Assert.AreEqual(t('C', '#'), q("C# mixolydian"));
-            Assert.AreEqual(t('F', '#'), q("F# mixolydian"));
-            Assert.AreEqual(t('B', ' '), q("B  mixolydian"));
-            Assert.AreEqual(t('E', ' '), q("E  mixolydian"));
-            Assert.AreEqual(t('A', ' '), q("A  mix"));
-            Assert.AreEqual(t('D', ' '), q("D  mix"));
-            Assert.AreEqual(t('G', ' '), q("G  mix"));
-            Assert.AreEqual(t('C', ' '), q("C  mix"));
-            Assert.AreEqual(t('F', ' '), q("F  mix"));
-            Assert.AreEqual(t('B', 'b'), q("Bb mix"));
-            Assert.AreEqual(t('E', 'b'), q("Eb mix"));
-            Assert.AreEqual(t('A', 'b'), q("Ab mix"));
-            Assert.AreEqual(t('D', 'b'), q("Db mix"));
-            Assert.AreEqual(t('G', 'b'), q("Gb mix"));
+            Assert.AreEqual(t('g', '#'), q("G# mixolydian"));
+            Assert.AreEqual(t('c', '#'), q("C# mixolydian"));
+            Assert.AreEqual(t('f', '#'), q("F# mixolydian"));
+            Assert.AreEqual(t('b', ' '), q("B  mixolydian"));
+            Assert.AreEqual(t('e', ' '), q("E  mixolydian"));
+            Assert.AreEqual(t('a', ' '), q("A  mix"));
+            Assert.AreEqual(t('d', ' '), q("D  mix"));
+            Assert.AreEqual(t('g', ' '), q("G  mix"));
+            Assert.AreEqual(t('c', ' '), q("C  mix"));
+            Assert.AreEqual(t('f', ' '), q("F  mix"));
+            Assert.AreEqual(t('b', 'b'), q("Bb mix"));
+            Assert.AreEqual(t('e', 'b'), q("Eb mix"));
+            Assert.AreEqual(t('a', 'b'), q("Ab mix"));
+            Assert.AreEqual(t('d', 'b'), q("Db mix"));
+            Assert.AreEqual(t('g', 'b'), q("Gb mix"));
         }
 
         [TestMethod]
@@ -237,21 +237,21 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('D', '#'), q("D# dorian"));
-            Assert.AreEqual(t('G', '#'), q("G# dorian"));
-            Assert.AreEqual(t('C', '#'), q("C# dorian"));
-            Assert.AreEqual(t('F', ' '), q("F  dorian"));
-            Assert.AreEqual(t('B', ' '), q("B  dorian"));
-            Assert.AreEqual(t('E', ' '), q("E  dor"));
-            Assert.AreEqual(t('A', ' '), q("A  dor"));
-            Assert.AreEqual(t('D', ' '), q("D  dor"));
-            Assert.AreEqual(t('G', ' '), q("G  dor"));
-            Assert.AreEqual(t('C', ' '), q("C  dor"));
-            Assert.AreEqual(t('F', ' '), q("F  dor"));
-            Assert.AreEqual(t('B', 'b'), q("Bb dor"));
-            Assert.AreEqual(t('E', 'b'), q("Eb dor"));
-            Assert.AreEqual(t('A', 'b'), q("Ab dor"));
-            Assert.AreEqual(t('D', 'b'), q("Db dor"));
+            Assert.AreEqual(t('d', '#'), q("D# dorian"));
+            Assert.AreEqual(t('g', '#'), q("G# dorian"));
+            Assert.AreEqual(t('c', '#'), q("C# dorian"));
+            Assert.AreEqual(t('f', ' '), q("F  dorian"));
+            Assert.AreEqual(t('b', ' '), q("B  dorian"));
+            Assert.AreEqual(t('e', ' '), q("E  dor"));
+            Assert.AreEqual(t('a', ' '), q("A  dor"));
+            Assert.AreEqual(t('d', ' '), q("D  dor"));
+            Assert.AreEqual(t('g', ' '), q("G  dor"));
+            Assert.AreEqual(t('c', ' '), q("C  dor"));
+            Assert.AreEqual(t('f', ' '), q("F  dor"));
+            Assert.AreEqual(t('b', 'b'), q("Bb dor"));
+            Assert.AreEqual(t('e', 'b'), q("Eb dor"));
+            Assert.AreEqual(t('a', 'b'), q("Ab dor"));
+            Assert.AreEqual(t('d', 'b'), q("Db dor"));
         }
 
         [TestMethod]
@@ -259,21 +259,21 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('E', '#'), q("E# phrygian"));
-            Assert.AreEqual(t('A', '#'), q("A# phrygian"));
-            Assert.AreEqual(t('D', '#'), q("D# phrygian"));
-            Assert.AreEqual(t('G', '#'), q("G# phrygian"));
-            Assert.AreEqual(t('C', '#'), q("C# phrygian"));
-            Assert.AreEqual(t('F', '#'), q("F# phr"));
-            Assert.AreEqual(t('B', ' '), q("B  phr"));
-            Assert.AreEqual(t('E', ' '), q("E  phr"));
-            Assert.AreEqual(t('A', ' '), q("A  phr"));
-            Assert.AreEqual(t('D', ' '), q("D  phr"));
-            Assert.AreEqual(t('G', ' '), q("G  phr"));
-            Assert.AreEqual(t('C', ' '), q("C  phr"));
-            Assert.AreEqual(t('F', ' '), q("F  phr"));
-            Assert.AreEqual(t('B', 'b'), q("Bb phr"));
-            Assert.AreEqual(t('E', 'b'), q("Eb phr"));
+            Assert.AreEqual(t('e', '#'), q("E# phrygian"));
+            Assert.AreEqual(t('a', '#'), q("A# phrygian"));
+            Assert.AreEqual(t('d', '#'), q("D# phrygian"));
+            Assert.AreEqual(t('g', '#'), q("G# phrygian"));
+            Assert.AreEqual(t('c', '#'), q("C# phrygian"));
+            Assert.AreEqual(t('f', '#'), q("F# phr"));
+            Assert.AreEqual(t('b', ' '), q("B  phr"));
+            Assert.AreEqual(t('e', ' '), q("E  phr"));
+            Assert.AreEqual(t('a', ' '), q("A  phr"));
+            Assert.AreEqual(t('d', ' '), q("D  phr"));
+            Assert.AreEqual(t('g', ' '), q("G  phr"));
+            Assert.AreEqual(t('c', ' '), q("C  phr"));
+            Assert.AreEqual(t('f', ' '), q("F  phr"));
+            Assert.AreEqual(t('b', 'b'), q("Bb phr"));
+            Assert.AreEqual(t('e', 'b'), q("Eb phr"));
         }
 
         [TestMethod]
@@ -281,9 +281,9 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('C', ' '), q(""));
-            Assert.AreEqual(t('C', ' '), q("  "));
-            Assert.AreEqual(t('C', ' '), q("none"));
+            Assert.AreEqual(t('c', ' '), q(""));
+            Assert.AreEqual(t('c', ' '), q("  "));
+            Assert.AreEqual(t('c', ' '), q("none"));
         }
 
 
@@ -292,9 +292,9 @@ namespace AbcTuneToolTests {
             //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Accidentals.ToArray();
 
-            Assert.AreEqualSeq(StringToTones("Bb", "Eb"), a("D Phr"));
-            Assert.AreEqualSeq(StringToTones("Bb", "Eb", "f#"), a("D Phr ^f"));
-            Assert.AreEqualSeq(StringToTones("F#"), a("D maj =C"));
+            Assert.AreEqualSeq(StringToTones("bb", "eb"), a("D Phr"));
+            Assert.AreEqualSeq(StringToTones("bb", "eb", "f#"), a("D Phr ^f"));
+            Assert.AreEqualSeq(StringToTones("f#"), a("D maj =c"));
         }
 
         [TestMethod]
@@ -302,21 +302,21 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('F', '#'), q("F# lydian"));
-            Assert.AreEqual(t('B', ' '), q("B  lydian"));
-            Assert.AreEqual(t('E', ' '), q("E  lydian"));
-            Assert.AreEqual(t('A', ' '), q("A  lydian"));
-            Assert.AreEqual(t('D', ' '), q("D  lydian"));
-            Assert.AreEqual(t('G', ' '), q("G  lyd"));
-            Assert.AreEqual(t('C', ' '), q("C  lyd"));
-            Assert.AreEqual(t('F', ' '), q("F  lyd"));
-            Assert.AreEqual(t('B', 'b'), q("Bb lyd"));
-            Assert.AreEqual(t('E', 'b'), q("Eb lyd"));
-            Assert.AreEqual(t('A', 'b'), q("Ab lyd"));
-            Assert.AreEqual(t('D', 'b'), q("Db lyd"));
-            Assert.AreEqual(t('G', 'b'), q("Gb lyd"));
-            Assert.AreEqual(t('C', 'b'), q("Cb lyd"));
-            Assert.AreEqual(t('F', 'b'), q("Fb lyd"));
+            Assert.AreEqual(t('f', '#'), q("F# lydian"));
+            Assert.AreEqual(t('b', ' '), q("B  lydian"));
+            Assert.AreEqual(t('e', ' '), q("E  lydian"));
+            Assert.AreEqual(t('a', ' '), q("A  lydian"));
+            Assert.AreEqual(t('d', ' '), q("D  lydian"));
+            Assert.AreEqual(t('g', ' '), q("G  lyd"));
+            Assert.AreEqual(t('c', ' '), q("C  lyd"));
+            Assert.AreEqual(t('f', ' '), q("F  lyd"));
+            Assert.AreEqual(t('b', 'b'), q("Bb lyd"));
+            Assert.AreEqual(t('e', 'b'), q("Eb lyd"));
+            Assert.AreEqual(t('a', 'b'), q("Ab lyd"));
+            Assert.AreEqual(t('d', 'b'), q("Db lyd"));
+            Assert.AreEqual(t('g', 'b'), q("Gb lyd"));
+            Assert.AreEqual(t('c', 'b'), q("Cb lyd"));
+            Assert.AreEqual(t('f', 'b'), q("Fb lyd"));
         }
 
 
@@ -325,21 +325,21 @@ namespace AbcTuneToolTests {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-            Assert.AreEqual(t('B', '#'), q("B# locrian"));
-            Assert.AreEqual(t('E', '#'), q("E# locrian"));
-            Assert.AreEqual(t('A', '#'), q("A# locrian"));
-            Assert.AreEqual(t('D', '#'), q("D# locrian"));
-            Assert.AreEqual(t('G', '#'), q("G# locrian"));
-            Assert.AreEqual(t('C', '#'), q("C# loc"));
-            Assert.AreEqual(t('F', '#'), q("F# loc"));
-            Assert.AreEqual(t('B', ' '), q("B  loc"));
-            Assert.AreEqual(t('E', ' '), q("E  loc"));
-            Assert.AreEqual(t('A', ' '), q("A  loc"));
-            Assert.AreEqual(t('D', ' '), q("D  loc"));
-            Assert.AreEqual(t('G', ' '), q("G  loc"));
-            Assert.AreEqual(t('C', ' '), q("C  loc"));
-            Assert.AreEqual(t('F', ' '), q("F  loc"));
-            Assert.AreEqual(t('B', 'b'), q("Bb loc"));
+            Assert.AreEqual(t('b', '#'), q("B# locrian"));
+            Assert.AreEqual(t('e', '#'), q("E# locrian"));
+            Assert.AreEqual(t('a', '#'), q("A# locrian"));
+            Assert.AreEqual(t('d', '#'), q("D# locrian"));
+            Assert.AreEqual(t('g', '#'), q("G# locrian"));
+            Assert.AreEqual(t('c', '#'), q("C# loc"));
+            Assert.AreEqual(t('f', '#'), q("F# loc"));
+            Assert.AreEqual(t('b', ' '), q("B  loc"));
+            Assert.AreEqual(t('e', ' '), q("E  loc"));
+            Assert.AreEqual(t('a', ' '), q("A  loc"));
+            Assert.AreEqual(t('d', ' '), q("D  loc"));
+            Assert.AreEqual(t('g', ' '), q("G  loc"));
+            Assert.AreEqual(t('c', ' '), q("C  loc"));
+            Assert.AreEqual(t('f', ' '), q("F  loc"));
+            Assert.AreEqual(t('b', 'b'), q("Bb loc"));
         }
 
 

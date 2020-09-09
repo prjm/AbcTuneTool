@@ -54,12 +54,12 @@
         public static string AsString(this Accidental accidental)
             => accidental switch
             {
-                Accidental.Sharp => "♯",
-                Accidental.Flat => "♭",
-                Accidental.DoubleFlat => "𝄫",
-                Accidental.DoubleSharp => "𝄪",
-                Accidental.Natural => "♮",
-                Accidental.Invalid => "☒",
+                Accidental.Sharp => "#",
+                Accidental.Flat => "b",
+                Accidental.DoubleFlat => "bb",
+                Accidental.DoubleSharp => "##",
+                Accidental.Natural => "=",
+                Accidental.Invalid => "~",
                 _ => string.Empty
             };
 

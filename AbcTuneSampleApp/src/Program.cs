@@ -8,7 +8,7 @@ namespace AbcTuneSampleApp {
         static void Main() {
 
             var s = new MajorKeyTable();
-            s.DefineKey('B', 'b'.AsAccidental());
+            s.DefineKey('F', '#'.AsAccidental());
 
             foreach (var n in s.Tones.MainTones)
                 System.Console.WriteLine(n.ToString());

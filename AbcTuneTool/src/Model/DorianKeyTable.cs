@@ -22,10 +22,10 @@
             AddKey(-1, 'G', ' ');
             AddKey(-2, 'C', ' ');
             AddKey(-3, 'F', ' ');
-            AddKey(-4, 'B', 'b', new Tone('B', 'b'));
-            AddKey(-5, 'E', 'b', new Tone('E', 'b'));
-            AddKey(-6, 'A', 'b', new Tone('A', 'b'));
-            AddKey(-7, 'D', 'b', new Tone('D', 'b'));
+            AddKey(-4, 'B', 'b', new Tone('b', 'b'));
+            AddKey(-5, 'E', 'b', new Tone('e', 'b'));
+            AddKey(-6, 'A', 'b', new Tone('a', 'b'));
+            AddKey(-7, 'D', 'b', new Tone('d', 'b'));
 
         }
 
