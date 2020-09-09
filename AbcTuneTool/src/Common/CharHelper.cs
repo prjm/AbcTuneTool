@@ -107,8 +107,13 @@ namespace AbcTuneTool.Common {
             => c switch
             {
                 '#' => Accidental.Sharp,
+                '^' => Accidental.Sharp,
                 'b' => Accidental.Flat,
-                _ => Accidental.Undefined
+                '_' => Accidental.Flat,
+                '=' => Accidental.Natural,
+                ' ' => Accidental.Undefined,
+                '\0' => Accidental.Undefined,
+                _ => Accidental.Invalid
             };
 
         /// <summary>

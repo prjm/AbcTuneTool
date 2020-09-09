@@ -106,6 +106,34 @@ namespace AbcTuneTool.Model {
             return result;
         }
 
+        internal bool AddAccidental(Tone addTone) {
+            var acc = new List<Tone>();
+            var wasCombined = false;
+
+            foreach (var existing in Accidentals) {
+
+                var newAcc = existing;
+
+                if (!wasCombined && existing.Name == addTone.Name) {
+                    var newTone = new Tone(existing.Name, existing.Accidental.Combine(addTone.Accidental));
+
+                    if (newTone.Accidental != Accidental.Undefined)
+                        acc.Add(newTone);
+
+                    wasCombined = true;
+                    continue;
+                }
+
+                acc.Add(newAcc);
+            }
+
+            if (!wasCombined)
+                acc.Add(addTone);
+
+            Accidentals = acc.ToImmutableArray();
+            return true;
+        }
+
         private static Tone AddFifth(ToneSystem system, Tone tone, List<Tone> allowedAccidentals) {
             var index = system.Tones.IndexOf(tone);
             var newIndex = (index + 7) % system.Tones.Count;

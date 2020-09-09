@@ -7,8 +7,8 @@ namespace AbcTuneSampleApp {
 
         static void Main() {
 
-            var s = new PhrygianKeyTable();
-            s.DefineKey('D', ' '.AsAccidental());
+            var s = new MajorKeyTable();
+            s.DefineKey('B', 'b'.AsAccidental());
 
             foreach (var n in s.Tones.MainTones)
                 System.Console.WriteLine(n.ToString());

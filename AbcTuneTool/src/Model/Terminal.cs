@@ -80,13 +80,24 @@ namespace AbcTuneTool.Model {
         }
 
         /// <summary>
-        ///     get a token value after a whitspace token
+        ///     get the value after a whitespace token
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string GetValueAfterWhitespace(int index) {
-            if (tokens.Length <= index)
+        public string GetValueAfterWhitespace(int index)
+            => GetValueAfterWhitespace(index, out _);
+
+        /// <summary>
+        ///     get a token value after a whitespace token
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="offset">selected token offset</param>
+        /// <returns></returns>
+        public string GetValueAfterWhitespace(int index, out int offset) {
+            if (tokens.Length <= index) {
+                offset = -1;
                 return string.Empty;
+            }
 
             for (; index < tokens.Length; index++) {
                 ref readonly var token = ref tokens.ItemRef(index);
@@ -95,10 +106,13 @@ namespace AbcTuneTool.Model {
                     continue;
 
                 var c = token.Value[0];
-                if (!c.IsWhitespace())
+                if (!c.IsWhitespace()) {
+                    offset = index;
                     return token.Value;
+                }
             }
 
+            offset = -1;
             return string.Empty;
         }
 
@@ -200,6 +214,12 @@ namespace AbcTuneTool.Model {
         /// </summary>
         public bool IsEmpty
             => tokens.Length < 1;
+
+        /// <summary>
+        ///     terminal sequence length
+        /// </summary>
+        public int Length
+            => tokens.Length;
 
         /// <summary>
         ///     create a new string from the source tokens

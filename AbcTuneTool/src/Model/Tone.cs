@@ -63,10 +63,7 @@ namespace AbcTuneTool.Model {
         /// </summary>
         public string DebuggerDisplay {
             get {
-                Span<char> m = stackalloc char[2];
-                m[0] = Name;
-                m[1] = Accidental.AsChar();
-                return new string(m).Trim();
+                return string.Concat(Name, Accidental.AsString()).Trim();
             }
         }
 

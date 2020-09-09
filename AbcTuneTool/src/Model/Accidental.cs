@@ -19,6 +19,26 @@
         ///     sharp
         /// </summary>
         Sharp = 2,
+
+        /// <summary>
+        ///     two flats
+        /// </summary>
+        DoubleFlat = 3,
+
+        /// <summary>
+        ///     two sharps
+        /// </summary>
+        DoubleSharp = 4,
+
+        /// <summary>
+        ///     natural
+        /// </summary>
+        Natural = 5,
+
+        /// <summary>
+        ///     invalid accidental
+        /// </summary>
+        Invalid = 6,
     }
 
     /// <summary>
@@ -31,12 +51,30 @@
         /// </summary>
         /// <param name="accidental"></param>
         /// <returns></returns>
-        public static char AsChar(this Accidental accidental)
+        public static string AsString(this Accidental accidental)
             => accidental switch
             {
-                Accidental.Sharp => '#',
-                Accidental.Flat => 'b',
-                _ => ' '
+                Accidental.Sharp => "♯",
+                Accidental.Flat => "♭",
+                Accidental.DoubleFlat => "𝄫",
+                Accidental.DoubleSharp => "𝄪",
+                Accidental.Natural => "♮",
+                Accidental.Invalid => "☒",
+                _ => string.Empty
+            };
+
+        public static Accidental Combine(this Accidental a1, Accidental a2)
+            => (a1, a2) switch
+            {
+                (Accidental.Undefined, _) => a2,
+                (_, Accidental.Undefined) => a1,
+                (Accidental.Flat, Accidental.Flat) => Accidental.DoubleFlat,
+                (Accidental.Flat, Accidental.Natural) => Accidental.Undefined,
+                (Accidental.Sharp, Accidental.Sharp) => Accidental.DoubleSharp,
+                (Accidental.Sharp, Accidental.Natural) => Accidental.Undefined,
+                (Accidental.Natural, Accidental.Flat) => Accidental.Undefined,
+                (Accidental.Natural, Accidental.Sharp) => Accidental.Undefined,
+                _ => Accidental.Invalid,
             };
 
     }

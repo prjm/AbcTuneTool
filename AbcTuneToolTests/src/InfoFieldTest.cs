@@ -130,7 +130,7 @@ namespace AbcTuneToolTests {
         public void Test_K_Major_Key() {
             var field = ParseKeyField("K:G");
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.MainTones.First();
 
             Assert.AreEqual(field.Kind, InformationFieldKind.Key);
             Assert.AreEqual(false, field.Kind.InFileHeader());
@@ -175,7 +175,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Minor_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('A', '#'), q("A# minor"));
             Assert.AreEqual(t('D', '#'), q("D# minor"));
@@ -188,7 +188,7 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(t('D', ' '), q("D  min"));
             Assert.AreEqual(t('G', ' '), q("G  min"));
             Assert.AreEqual(t('C', ' '), q("C  min"));
-            Assert.AreEqual(t('F', ' '), q("Fm min"));
+            Assert.AreEqual(t('F', ' '), q("F min"));
             Assert.AreEqual(t('B', 'b'), q("Bb min"));
             Assert.AreEqual(t('E', 'b'), q("Eb min"));
             Assert.AreEqual(t('A', 'b'), q("Ab min"));
@@ -204,7 +204,7 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(t('D', ' '), q("D  m"));
             Assert.AreEqual(t('G', ' '), q("G  m"));
             Assert.AreEqual(t('C', ' '), q("C  m"));
-            Assert.AreEqual(t('F', ' '), q("Fm m"));
+            Assert.AreEqual(t('F', ' '), q("F  m"));
             Assert.AreEqual(t('B', 'b'), q("Bb m"));
             Assert.AreEqual(t('E', 'b'), q("Eb m"));
             Assert.AreEqual(t('A', 'b'), q("Ab m"));
@@ -213,7 +213,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Mixolydian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('G', '#'), q("G# mixolydian"));
             Assert.AreEqual(t('C', '#'), q("C# mixolydian"));
@@ -235,7 +235,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Dorian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('D', '#'), q("D# dorian"));
             Assert.AreEqual(t('G', '#'), q("G# dorian"));
@@ -257,7 +257,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Phrygian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('E', '#'), q("E# phrygian"));
             Assert.AreEqual(t('A', '#'), q("A# phrygian"));
@@ -279,7 +279,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_No_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('C', ' '), q(""));
             Assert.AreEqual(t('C', ' '), q("  "));
@@ -290,15 +290,17 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Explicit_Key() {
             //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Accidentals.ToArray();
+            Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Accidentals.ToArray();
 
             Assert.AreEqualSeq(StringToTones("Bb", "Eb"), a("D Phr"));
+            Assert.AreEqualSeq(StringToTones("Bb", "Eb", "f#"), a("D Phr ^f"));
+            Assert.AreEqualSeq(StringToTones("F#"), a("D maj =C"));
         }
 
         [TestMethod]
         public void Test_K_Lydian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('F', '#'), q("F# lydian"));
             Assert.AreEqual(t('B', ' '), q("B  lydian"));
@@ -321,7 +323,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Locrian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue2.Tones.Tones[0];
+            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('B', '#'), q("B# locrian"));
             Assert.AreEqual(t('E', '#'), q("E# locrian"));
