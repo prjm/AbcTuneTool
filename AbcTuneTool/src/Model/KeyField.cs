@@ -19,9 +19,21 @@ namespace AbcTuneTool.Model {
 
             IsValidKey = keyValue.isValid;
             KeyValue = keyValue.table;
+            Clef = GetClefForValue(value, keyValue.offset);
         }
 
-        private static (bool isValid, KeyTable table) GetModeForValue(Terminal value) {
+        private static ClefSettings GetClefForValue(Terminal value, int offset) {
+            var clef = AbcTuneTool.Model.ClefMode.Undefined;
+            var name = value.GetValueAfterWhitespace(offset);
+
+            if (name.StartsWith("treble", StringComparison.Ordinal)) {
+                clef = Model.ClefMode.Treble;
+            }
+
+            return new ClefSettings(clef);
+        }
+
+        private static (KeyStatus isValid, KeyTable table, int offset) GetModeForValue(Terminal value) {
             var tone = value.FirstChar;
             var tone2 = value.SecondChar;
             var accidental = tone2.AsAccidental();
@@ -29,6 +41,8 @@ namespace AbcTuneTool.Model {
             bool isValid;
             var describedMode = true;
             var allowsAddAcc = true;
+            var hasKey = false;
+            var offset = 0;
             KeyTable result;
 
             if (tone == 'H' && (tone2 == 'P' || tone2 == 'p')) {
@@ -36,6 +50,7 @@ namespace AbcTuneTool.Model {
                 isValid = true;
                 describedMode = false;
                 allowsAddAcc = true;
+                hasKey = true;
 
                 if (tone2 == 'p') {
                     result.Tones.AddAccidental(new Tone('f', '#'));
@@ -48,36 +63,43 @@ namespace AbcTuneTool.Model {
                 result = new MajorKeyTable();
                 describedMode = !string.IsNullOrWhiteSpace(mode);
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Min, StringComparison.OrdinalIgnoreCase) || string.Equals(mode, KnownStrings.M, StringComparison.Ordinal)) {
                 result = new MinorKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Mix, StringComparison.OrdinalIgnoreCase) || string.Equals(mode, KnownStrings.M, StringComparison.Ordinal)) {
                 result = new MixolydianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Dor, StringComparison.OrdinalIgnoreCase)) {
                 result = new DorianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Phr, StringComparison.OrdinalIgnoreCase)) {
                 result = new PhrygianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Lyd, StringComparison.OrdinalIgnoreCase)) {
                 result = new LydianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (mode.StartsWith(KnownStrings.Loc, StringComparison.OrdinalIgnoreCase)) {
                 result = new LocrianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
+                hasKey = true;
             }
 
             else if (value.IsEmpty
@@ -87,6 +109,7 @@ namespace AbcTuneTool.Model {
                 result = new EmptyKeyTable();
                 describedMode = !value.IsEmpty && !value.IsWhitespace;
                 isValid = true;
+                hasKey = true;
                 allowsAddAcc = describedMode && mode.StartsWith(KnownStrings.Exp, StringComparison.OrdinalIgnoreCase);
             }
 
@@ -99,8 +122,8 @@ namespace AbcTuneTool.Model {
             if (isValid && allowsAddAcc) {
 
                 for (var i = 2 + (describedMode ? 1 : 0); i < value.Length && isValid; i++) {
-                    var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset);
-                    i = offset;
+                    var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset1);
+                    i = offset1;
 
                     var addTone = additionalAccidental.AsTonePrefixAccidentals();
                     isValid = isValid && result.Tones.AddAccidental(addTone);
@@ -108,17 +131,31 @@ namespace AbcTuneTool.Model {
 
             }
 
-            return (isValid, result);
+            var status = (hasKey, isValid) switch
+            {
+                (false, _) => KeyStatus.NoKey,
+                (true, false) => KeyStatus.Invalidkey,
+                (true, true) => KeyStatus.ValidKey
+            };
+
+
+            return (status, result, offset);
         }
 
         /// <summary>
         ///     <c>true</c> if this is a valid key
         /// </summary>
-        public bool IsValidKey { get; }
+        public KeyStatus IsValidKey { get; }
 
         /// <summary>
         ///     key value
         /// </summary>
         public KeyTable KeyValue { get; }
+
+        /// <summary>
+        ///     clef
+        /// </summary>
+        public ClefSettings Clef { get; }
+
     }
 }

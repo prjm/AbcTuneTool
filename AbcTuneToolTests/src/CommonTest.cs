@@ -9,7 +9,7 @@ namespace AbcTuneToolTests {
 
     public abstract class CommonTest {
 
-        protected T RunParserTest<T>(string toParse, Func<Parser, T> tester) {
+        protected static T RunParserTest<T>(string toParse, Func<Parser, T> tester) {
             var cache = new StringCache();
             var pool = new StringBuilderPool();
             var logger = new Logger();
@@ -21,7 +21,7 @@ namespace AbcTuneToolTests {
             return tester(parser);
         }
 
-        protected T Symbol<T>(string toParse, Func<Parser, T> f)
+        protected static T Symbol<T>(string toParse, Func<Parser, T> f)
             => RunParserTest(toParse, (Parser p) => f(p));
 
 
@@ -37,10 +37,10 @@ namespace AbcTuneToolTests {
             return result;
         }
 
-        protected KeyField ParseKeyField(string source) {
+        protected static KeyField ParseKeyField(string source, KeyStatus keyStatus = KeyStatus.ValidKey) {
             var result = Symbol(source, (Parser p) => p.ParseInformationField()) as KeyField;
             Assert.NotNull(result);
-            Assert.AreEqual(true, result.IsValidKey);
+            Assert.AreEqual(keyStatus, result.IsValidKey);
             return result;
         }
 

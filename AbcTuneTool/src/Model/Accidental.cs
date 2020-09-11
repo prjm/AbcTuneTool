@@ -1,4 +1,6 @@
-﻿namespace AbcTuneTool.Model {
+﻿// Ignore spelling: bb
+
+namespace AbcTuneTool.Model {
 
     /// <summary>
     ///     accidental signs
@@ -64,11 +66,11 @@
             };
 
         /// <summary>
-        ///     combine accidentals
+        ///     combine two accidentals
         /// </summary>
-        /// <param name="a1"></param>
-        /// <param name="a2"></param>
-        /// <returns></returns>
+        /// <param name="a1">first accidental</param>
+        /// <param name="a2">second accidental</param>
+        /// <returns>combination</returns>
         public static Accidental Combine(this Accidental a1, Accidental a2)
             => (a1, a2) switch
             {

@@ -6,6 +6,15 @@ namespace AbcTuneToolTests {
 
     public class InfoFieldTest : CommonTest {
 
+        private static Tone KeyOf(string k)
+            => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+
+        private static ClefSettings ClefOfK(string k)
+            => ParseKeyField("K:" + k, KeyStatus.NoKey).Clef;
+
+        private static Tone ToneOf(char c, char a)
+            => new Tone(c, a.AsAccidental());
+
         [TestMethod]
         public void Test_A_Area() {
             var field = ParseInfoField("A:Main area");
@@ -327,26 +336,26 @@ namespace AbcTuneToolTests {
 
         [TestMethod]
         public void Test_K_Locrian_Key() {
-            static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
-
-            Assert.AreEqual(t('b', '#'), q("B# locrian"));
-            Assert.AreEqual(t('e', '#'), q("E# locrian"));
-            Assert.AreEqual(t('a', '#'), q("A# locrian"));
-            Assert.AreEqual(t('d', '#'), q("D# locrian"));
-            Assert.AreEqual(t('g', '#'), q("G# locrian"));
-            Assert.AreEqual(t('c', '#'), q("C# loc"));
-            Assert.AreEqual(t('f', '#'), q("F# loc"));
-            Assert.AreEqual(t('b', ' '), q("B  loc"));
-            Assert.AreEqual(t('e', ' '), q("E  loc"));
-            Assert.AreEqual(t('a', ' '), q("A  loc"));
-            Assert.AreEqual(t('d', ' '), q("D  loc"));
-            Assert.AreEqual(t('g', ' '), q("G  loc"));
-            Assert.AreEqual(t('c', ' '), q("C  loc"));
-            Assert.AreEqual(t('f', ' '), q("F  loc"));
-            Assert.AreEqual(t('b', 'b'), q("Bb loc"));
+            Assert.AreEqual(ToneOf('b', '#'), KeyOf("B# locrian"));
+            Assert.AreEqual(ToneOf('e', '#'), KeyOf("E# locrian"));
+            Assert.AreEqual(ToneOf('a', '#'), KeyOf("A# locrian"));
+            Assert.AreEqual(ToneOf('d', '#'), KeyOf("D# locrian"));
+            Assert.AreEqual(ToneOf('g', '#'), KeyOf("G# locrian"));
+            Assert.AreEqual(ToneOf('c', '#'), KeyOf("C# loc"));
+            Assert.AreEqual(ToneOf('f', '#'), KeyOf("F# loc"));
+            Assert.AreEqual(ToneOf('b', ' '), KeyOf("B  loc"));
+            Assert.AreEqual(ToneOf('e', ' '), KeyOf("E  loc"));
+            Assert.AreEqual(ToneOf('a', ' '), KeyOf("A  loc"));
+            Assert.AreEqual(ToneOf('d', ' '), KeyOf("D  loc"));
+            Assert.AreEqual(ToneOf('g', ' '), KeyOf("G  loc"));
+            Assert.AreEqual(ToneOf('c', ' '), KeyOf("C  loc"));
+            Assert.AreEqual(ToneOf('f', ' '), KeyOf("F  loc"));
+            Assert.AreEqual(ToneOf('b', 'b'), KeyOf("Bb loc"));
         }
 
-
+        [TestMethod]
+        public void Test_K_Clefs() {
+            Assert.AreEqual(ClefMode.Treble, ClefOfK("treble").Clef);
+        }
     }
 }
