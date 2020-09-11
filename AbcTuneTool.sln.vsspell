@@ -13,6 +13,7 @@
   <IgnoredFilePatterns>
     <FilePattern>AbcTuneToolTests\src\*.cs</FilePattern>
     <FilePattern>Entities.cs</FilePattern>
+    <FilePattern>KnownStrings.cs</FilePattern>
   </IgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
 </SpellCheckerConfiguration>

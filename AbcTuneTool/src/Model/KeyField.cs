@@ -1,6 +1,5 @@
 ﻿using System;
 using AbcTuneTool.Common;
-using AbcTuneTool.src.Model;
 
 namespace AbcTuneTool.Model {
 
@@ -15,22 +14,63 @@ namespace AbcTuneTool.Model {
         /// <param name="header"></param>
         /// <param name="value"></param>
         public KeyField(Terminal header, Terminal value) : base(header, value, InformationFieldKind.Key) {
-            var keyValue = GetModeForValue(value);
+            var (isValid, table, offset) = GetModeForValue(value);
 
-            IsValidKey = keyValue.isValid;
-            KeyValue = keyValue.table;
-            Clef = GetClefForValue(value, keyValue.offset);
+            IsValidKey = isValid;
+            KeyValue = table;
+
+            Clef = GetClefForValue(value, offset);
         }
 
         private static ClefSettings GetClefForValue(Terminal value, int offset) {
-            var clef = AbcTuneTool.Model.ClefMode.Undefined;
-            var name = value.GetValueAfterWhitespace(offset);
+            var clef = ClefMode.Undefined;
+            var clefTranspose = ClefTranspose.Undefined;
+            var name = value.GetValueAfterWhitespace(offset, out offset);
+            var hasClef = false;
+            var eq = 0;
+            var clefLine = 0;
 
-            if (name.StartsWith("treble", StringComparison.Ordinal)) {
-                clef = Model.ClefMode.Treble;
+            if (name.StartsWith(KnownStrings.Clef, StringComparison.OrdinalIgnoreCase) && (eq = name.IndexOf('=')) > 0) {
+                name = name.Substring(1 + eq);
             }
 
-            return new ClefSettings(clef);
+            if (name.StartsWith(KnownStrings.Treble, StringComparison.Ordinal)) {
+                clef = ClefMode.Treble;
+                clefLine = 2;
+                hasClef = true;
+            }
+
+            else if (name.StartsWith(KnownStrings.Alto, StringComparison.OrdinalIgnoreCase)) {
+                clef = ClefMode.Alto;
+                clefLine = 3;
+                hasClef = true;
+            }
+
+            else if (name.StartsWith(KnownStrings.Tenor, StringComparison.OrdinalIgnoreCase)) {
+                clef = ClefMode.Tenor;
+                clefLine = 4;
+                hasClef = true;
+            }
+
+            else if (name.StartsWith(KnownStrings.Bass, StringComparison.OrdinalIgnoreCase)) {
+                clef = ClefMode.Bass;
+                clefLine = 4;
+                hasClef = true;
+            }
+
+            if (name.EndsWith(KnownStrings.AddEight, StringComparison.Ordinal)) {
+                clefTranspose = ClefTranspose.AddEight;
+            }
+
+            else if (name.EndsWith(KnownStrings.SubtractEight, StringComparison.Ordinal)) {
+                clefTranspose = ClefTranspose.SubtractEight;
+            }
+
+
+            if (!hasClef)
+                clef = ClefMode.NoClef;
+
+            return new ClefSettings(clef, clefLine, clefTranspose);
         }
 
         private static (KeyStatus isValid, KeyTable table, int offset) GetModeForValue(Terminal value) {

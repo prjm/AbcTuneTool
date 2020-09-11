@@ -169,5 +169,40 @@
         ///     explicit annotation
         /// </summary>
         public const string Exp = "exp";
+
+        /// <summary>
+        ///     clef
+        /// </summary>
+        public const string Clef = "clef";
+
+        /// <summary>
+        ///     treble clef
+        /// </summary>
+        public const string Treble = "treble";
+
+        /// <summary>
+        ///     alto clef
+        /// </summary>
+        public const string Alto = "alto";
+
+        /// <summary>
+        ///     bass key
+        /// </summary>
+        public const string Bass = "bass";
+
+        /// <summary>
+        ///     tenor
+        /// </summary>
+        public const string Tenor = "tenor";
+
+        /// <summary>
+        ///     add eight
+        /// </summary>
+        public const string AddEight = "+8";
+
+        /// <summary>
+        ///     subtract eight
+        /// </summary>
+        public const string SubtractEight = "-8";
     }
 }

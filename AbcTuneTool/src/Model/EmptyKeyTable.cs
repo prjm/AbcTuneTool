@@ -1,6 +1,4 @@
-﻿using AbcTuneTool.Model;
-
-namespace AbcTuneTool.src.Model {
+﻿namespace AbcTuneTool.Model {
 
     /// <summary>
     ///     empty key table

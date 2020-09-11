@@ -356,6 +356,19 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Clefs() {
             Assert.AreEqual(ClefMode.Treble, ClefOfK("treble").Clef);
+            Assert.AreEqual(ClefMode.Treble, ClefOfK("clef=treble").Clef);
+            Assert.AreEqual(ClefMode.Alto, ClefOfK("alto").Clef);
+            Assert.AreEqual(ClefMode.Alto, ClefOfK("clef=alto").Clef);
+            Assert.AreEqual(ClefMode.Tenor, ClefOfK("tenor").Clef);
+            Assert.AreEqual(ClefMode.Tenor, ClefOfK("clef=tenor").Clef);
+            Assert.AreEqual(ClefMode.Bass, ClefOfK("bass").Clef);
+            Assert.AreEqual(ClefMode.Bass, ClefOfK("clef=bass").Clef);
+
+            Assert.AreEqual(ClefMode.Treble, ClefOfK("treble").Clef);
+            Assert.AreEqual(ClefTranspose.Undefined, ClefOfK("treble").ClefTranspose);
+            Assert.AreEqual(ClefTranspose.AddEight, ClefOfK("treble+8").ClefTranspose);
+            Assert.AreEqual(ClefTranspose.SubtractEight, ClefOfK("treble-8").ClefTranspose);
+
         }
     }
 }
