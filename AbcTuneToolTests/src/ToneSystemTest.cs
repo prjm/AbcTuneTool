@@ -9,6 +9,7 @@ namespace AbcTuneToolTests {
     public class ToneSystemTest : CommonTest {
 
         private class MAJ : MajorKeyTable { }
+        private class MIN : MinorKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -57,6 +58,7 @@ namespace AbcTuneToolTests {
         public void TestMajorScale() {
 
             TestKey<MAJ>("C ", "", "c ", "d ", "e ", "f ", "g ", "a ", "b ", "c ");
+
             TestKey<MAJ>("G ", "f#", "g ", "a ", "b ", "c ", "d ", "e ", "f#", "g ");
             TestKey<MAJ>("D ", "f#c#", "d ", "e ", "f#", "g ", "a ", "b ", "c#", "d ");
             TestKey<MAJ>("A ", "f#c#g#", "a ", "b ", "c#", "d ", "e ", "f#", "g#", "a ");
@@ -72,6 +74,29 @@ namespace AbcTuneToolTests {
             TestKey<MAJ>("Db", "bbebabdbgb", "db", "eb", "f ", "gb", "ab", "bb", "c ", "db");
             TestKey<MAJ>("Gb", "bbebabdbgbcb", "gb", "ab", "bb", "cb", "db", "eb", "f ", "gb");
             TestKey<MAJ>("Cb", "bbebabdbgbcbfb", "cb", "db", "eb", "fb", "gb", "ab", "bb", "cb");
+
+        }
+
+        [TestMethod]
+        public void TestMinorScale() {
+
+            TestKey<MIN>("A ", "", "a ", "b ", "c ", "d ", "e ", "f ", "g ", "a ");
+
+            TestKey<MIN>("E ", "f#", "e ", "f#", "g ", "a ", "b ", "c ", "d ", "e ");
+            TestKey<MIN>("B ", "f#c#", "b ", "c#", "d ", "e ", "f#", "g ", "a ", "b ");
+            TestKey<MIN>("F#", "f#c#g#", "f#", "g#", "a ", "b ", "c#", "d ", "e ", "f#");
+            TestKey<MIN>("C#", "f#c#g#d#", "c#", "d#", "e ", "f#", "g#", "a ", "b ", "c#");
+            TestKey<MIN>("G#", "f#c#g#d#a#", "g#", "a#", "b ", "c#", "d#", "e ", "f#", "g#");
+            TestKey<MIN>("D#", "f#c#g#d#a#e#", "d#", "e#", "f#", "g#", "a#", "b ", "c#", "d#");
+            TestKey<MIN>("A#", "f#c#g#d#a#e#b#", "a#", "b#", "c#", "d#", "e#", "f#", "g#", "a#");
+
+            TestKey<MIN>("D ", "bb", "d ", "e ", "f ", "g ", "a ", "bb", "c ", "d ");
+            TestKey<MIN>("G ", "bbeb", "g ", "a ", "bb", "c ", "d ", "eb", "f ", "g ");
+            TestKey<MIN>("C ", "bbebab", "c ", "d ", "eb", "f ", "g ", "ab", "bb", "c ");
+            TestKey<MIN>("F ", "bbebabdb", "f ", "g ", "ab", "bb", "c ", "db", "eb", "f ");
+            TestKey<MIN>("Bb", "bbebabdbgb", "bb", "c ", "db", "eb", "f ", "gb", "ab", "bb");
+            TestKey<MIN>("Eb", "bbebabdbgbcb", "eb", "f ", "gb", "ab", "bb", "cb", "db", "eb");
+            TestKey<MIN>("Ab", "bbebabdbgbcbfb", "ab", "bb", "cb", "db", "eb", "fb", "gb", "ab");
 
         }
 

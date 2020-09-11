@@ -286,7 +286,6 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(t('c', ' '), q("none"));
         }
 
-
         [TestMethod]
         public void Test_K_Explicit_Key() {
             //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
@@ -295,6 +294,12 @@ namespace AbcTuneToolTests {
             Assert.AreEqualSeq(StringToTones("bb", "eb"), a("D Phr"));
             Assert.AreEqualSeq(StringToTones("bb", "eb", "f#"), a("D Phr ^f"));
             Assert.AreEqualSeq(StringToTones("f#"), a("D maj =c"));
+
+            Assert.AreEqualSeq(StringToTones("bb", "eb", "f#"), a("D exp _b _e  ^f"));
+
+            Assert.AreEqualSeq(StringToTones(""), a("HP"));
+            Assert.AreEqualSeq(StringToTones("f#", "c#", "g="), a("Hp"));
+
         }
 
         [TestMethod]

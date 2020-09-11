@@ -23,14 +23,30 @@ namespace AbcTuneTool.Model {
 
         private static (bool isValid, KeyTable table) GetModeForValue(Terminal value) {
             var tone = value.FirstChar;
-            var accidental = value.SecondChar.AsAccidental();
+            var tone2 = value.SecondChar;
+            var accidental = tone2.AsAccidental();
             var mode = value.GetValueAfterWhitespace(1);
-            var isValid = true;
+            bool isValid;
             var describedMode = true;
+            var allowsAddAcc = true;
             KeyTable result;
 
-            if (string.IsNullOrWhiteSpace(mode) || mode.StartsWith(KnownStrings.Maj, StringComparison.OrdinalIgnoreCase)) {
+            if (tone == 'H' && (tone2 == 'P' || tone2 == 'p')) {
                 result = new MajorKeyTable();
+                isValid = true;
+                describedMode = false;
+                allowsAddAcc = true;
+
+                if (tone2 == 'p') {
+                    result.Tones.AddAccidental(new Tone('f', '#'));
+                    result.Tones.AddAccidental(new Tone('c', '#'));
+                    result.Tones.AddAccidental(new Tone('g', '='));
+                }
+            }
+
+            else if (tone.IsKeyNoteLetter() && string.IsNullOrWhiteSpace(mode) || mode.StartsWith(KnownStrings.Maj, StringComparison.OrdinalIgnoreCase)) {
+                result = new MajorKeyTable();
+                describedMode = !string.IsNullOrWhiteSpace(mode);
                 isValid = result.DefineKey(tone, accidental);
             }
 
@@ -64,10 +80,14 @@ namespace AbcTuneTool.Model {
                 isValid = result.DefineKey(tone, accidental);
             }
 
-            else if (value.IsEmpty || value.Matches(KnownStrings.None, StringComparison.OrdinalIgnoreCase) || value.IsWhitespace) {
+            else if (value.IsEmpty
+                || value.Matches(KnownStrings.None, StringComparison.OrdinalIgnoreCase)
+                || value.IsWhitespace
+                || mode.StartsWith(KnownStrings.Exp, StringComparison.OrdinalIgnoreCase)) {
                 result = new EmptyKeyTable();
                 describedMode = !value.IsEmpty && !value.IsWhitespace;
                 isValid = true;
+                allowsAddAcc = describedMode && mode.StartsWith(KnownStrings.Exp, StringComparison.OrdinalIgnoreCase);
             }
 
             else {
@@ -76,7 +96,7 @@ namespace AbcTuneTool.Model {
                 isValid = false;
             }
 
-            if (isValid) {
+            if (isValid && allowsAddAcc) {
 
                 for (var i = 2 + (describedMode ? 1 : 0); i < value.Length && isValid; i++) {
                     var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset);

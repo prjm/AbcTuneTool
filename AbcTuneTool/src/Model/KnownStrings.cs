@@ -164,5 +164,10 @@
         ///     locrian mode
         /// </summary>
         public const string LocrianMode = "RHWWHWWW";
+
+        /// <summary>
+        ///     explicit annotation
+        /// </summary>
+        public const string Exp = "exp";
     }
 }

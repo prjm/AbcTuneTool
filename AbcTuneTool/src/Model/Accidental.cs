@@ -63,6 +63,12 @@
                 _ => string.Empty
             };
 
+        /// <summary>
+        ///     combine accidentals
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
         public static Accidental Combine(this Accidental a1, Accidental a2)
             => (a1, a2) switch
             {

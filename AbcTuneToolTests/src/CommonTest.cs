@@ -40,6 +40,7 @@ namespace AbcTuneToolTests {
         protected KeyField ParseKeyField(string source) {
             var result = Symbol(source, (Parser p) => p.ParseInformationField()) as KeyField;
             Assert.NotNull(result);
+            Assert.AreEqual(true, result.IsValidKey);
             return result;
         }
 
@@ -49,6 +50,10 @@ namespace AbcTuneToolTests {
         protected static Tone[] StringToTones(IEnumerable<string> tones) {
             var t = new List<Tone>();
             foreach (var tone in tones) {
+
+                if (tone.Length == 0)
+                    continue;
+
                 Assert.AreEqual(2, tone.Length);
                 var n = tone[0];
                 var a = tone[1].AsAccidental();
