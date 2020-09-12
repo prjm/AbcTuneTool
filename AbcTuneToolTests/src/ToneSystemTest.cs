@@ -10,6 +10,7 @@ namespace AbcTuneToolTests {
 
         private class MAJ : MajorKeyTable { }
         private class MIN : MinorKeyTable { }
+        private class MIX : MixolydianKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -97,6 +98,29 @@ namespace AbcTuneToolTests {
             TestKey<MIN>("Bb", "bbebabdbgb", "bb", "c ", "db", "eb", "f ", "gb", "ab", "bb");
             TestKey<MIN>("Eb", "bbebabdbgbcb", "eb", "f ", "gb", "ab", "bb", "cb", "db", "eb");
             TestKey<MIN>("Ab", "bbebabdbgbcbfb", "ab", "bb", "cb", "db", "eb", "fb", "gb", "ab");
+
+        }
+
+        [TestMethod]
+        public void TestMixolydianScale() {
+
+            TestKey<MIX>("G ", "", "g ", "a ", "b ", "c ", "d ", "e ", "f ", "g ");
+
+            TestKey<MIX>("D ", "f#", "d ", "e ", "f#", "g ", "a ", "b ", "c ", "d ");
+            TestKey<MIX>("A ", "f#c#", "a ", "b ", "c#", "d ", "e ", "f#", "g ", "a ");
+            TestKey<MIX>("E ", "f#c#g#", "e ", "f#", "g#", "a ", "b ", "c#", "d ", "e ");
+            TestKey<MIX>("B ", "f#c#g#d#", "b ", "c#", "d#", "e ", "f#", "g#", "a ", "b ");
+            TestKey<MIX>("F#", "f#c#g#d#a#", "f#", "g#", "a#", "b ", "c#", "d#", "e ", "f#");
+            TestKey<MIX>("C#", "f#c#g#d#a#e#", "c#", "d#", "e#", "f#", "g#", "a#", "b ", "c#");
+            TestKey<MIX>("G#", "f#c#g#d#a#e#b#", "g#", "a#", "b#", "c#", "d#", "e#", "f#", "g#");
+
+            TestKey<MIX>("C ", "bb", "c ", "d ", "e ", "f ", "g ", "a ", "bb", "c ");
+            TestKey<MIX>("F ", "bbeb", "f ", "g ", "a ", "bb", "c ", "d ", "eb", "f ");
+            TestKey<MIX>("Bb", "bbebab", "bb", "c ", "d ", "eb", "f ", "g ", "ab", "bb");
+            TestKey<MIX>("Eb", "bbebabdb", "eb", "f ", "g ", "ab", "bb", "c ", "db", "eb");
+            TestKey<MIX>("Ab", "bbebabdbgb", "ab", "bb", "c ", "db", "eb", "f ", "gb", "ab");
+            TestKey<MIX>("Db", "bbebabdbgbcb", "db", "eb", "f ", "gb", "ab", "bb", "cb", "db");
+            TestKey<MIX>("Gb", "bbebabdbgbcbfb", "gb", "ab", "bb", "cb", "db", "eb", "fb", "gb");
 
         }
 

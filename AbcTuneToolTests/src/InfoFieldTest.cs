@@ -369,6 +369,10 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(ClefTranspose.AddEight, ClefOfK("treble+8").ClefTranspose);
             Assert.AreEqual(ClefTranspose.SubtractEight, ClefOfK("treble-8").ClefTranspose);
 
+            Assert.AreEqual(2, ClefOfK("treble").ClefLine);
+            Assert.AreEqual(1, ClefOfK("treble1").ClefLine);
+            Assert.AreEqual(1, ClefOfK("treble1+8").ClefLine);
+
         }
     }
 }
