@@ -69,5 +69,13 @@
         ///     field kind
         /// </summary>
         public InformationFieldKind Kind { get; }
+
+        /// <summary>
+        ///     parse a fractional value
+        /// </summary>
+        /// <param name="value"></param>
+        protected static Fraction ParseFraction(string value)
+            => new Fraction(value);
+
     }
 }

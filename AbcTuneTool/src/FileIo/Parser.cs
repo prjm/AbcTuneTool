@@ -53,13 +53,20 @@ namespace AbcTuneTool.FileIo {
                 var kind = InformationField.GetKindFor(header.FirstChar);
                 var cache = Tokenizer.Tokenizer.Cache;
                 var pool = Tokenizer.Tokenizer.StringBuilderPool;
+                var fieldValues = new Terminal(values);
                 return kind switch
                 {
                     InformationFieldKind.Instruction
-                        => new InstructionField(header, new Terminal(values), cache, pool),
+                        => new InstructionField(header, fieldValues, cache, pool),
 
                     InformationFieldKind.Key
-                        => new KeyField(header, new Terminal(values)),
+                        => new KeyField(header, fieldValues),
+
+                    InformationFieldKind.UnitNoteLength
+                        => new LengthField(header, fieldValues),
+
+                    InformationFieldKind.Meter
+                        => new MeterField(header, fieldValues),
 
                     _ => new InformationField(header, new Terminal(values), kind),
                 };

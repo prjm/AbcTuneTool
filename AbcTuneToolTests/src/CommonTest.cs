@@ -44,6 +44,18 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static LengthField ParseLengthField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as LengthField;
+            Assert.NotNull(result);
+            return result;
+        }
+
+        protected static MeterField ParseMeterField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as MeterField;
+            Assert.NotNull(result);
+            return result;
+        }
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 

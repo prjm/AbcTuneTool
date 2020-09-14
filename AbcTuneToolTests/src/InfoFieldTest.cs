@@ -12,6 +12,12 @@ namespace AbcTuneToolTests {
         private static ClefSettings ClefOfK(string k, KeyStatus s = KeyStatus.NoKey)
             => ParseKeyField("K:" + k, s).Clef;
 
+        private static Fraction LengthOf(string l)
+            => ParseLengthField("L:" + l).Length;
+
+        private static Meter MeterOf(string l)
+            => ParseMeterField("M:" + l).MeterValue;
+
         private static Tone ToneOf(char c, char a)
             => new Tone(c, a.AsAccidental());
 
@@ -393,5 +399,44 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(3, ClefOfK("G maj clef=trebble stafflines=3", KeyStatus.ValidKey).Stafflines);
 
         }
+
+        [TestMethod]
+        public void Test_L_NoteLength() {
+            var field = ParseLengthField("L:1/1");
+            Assert.AreEqual(field.Kind, InformationFieldKind.UnitNoteLength);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.NoteLength);
+
+            Assert.AreEqual(new Fraction(1, 1), LengthOf("1/1"));
+            Assert.AreEqual(new Fraction(1, 2), LengthOf("1/2"));
+            Assert.AreEqual(new Fraction(1, 4), LengthOf("1/4"));
+            Assert.AreEqual(new Fraction(1, 8), LengthOf("1/8"));
+            Assert.AreEqual(new Fraction(1, 16), LengthOf("1/16"));
+            Assert.AreEqual(new Fraction(1, 32), LengthOf("1/32"));
+            Assert.AreEqual(new Fraction(1, 64), LengthOf("1/64"));
+
+        }
+
+        [TestMethod]
+        public void Test_M_Meter() {
+            var field = ParseMeterField("M:3/4");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Meter);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Meter);
+
+            Assert.AreEqual(new Meter(new Fraction(4, 4)), MeterOf("C"));
+            Assert.AreEqual(new Meter(new Fraction(2, 2)), MeterOf("C|"));
+            Assert.AreEqual(new Meter(new Fraction(3, 4)), MeterOf("3/4"));
+            Assert.AreEqual(new Meter(new Fraction(1, 4), new Fraction(2, 4)), MeterOf("(1+2)/4"));
+            Assert.AreEqual(new Meter(new Fraction(1, 4), new Fraction(2, 4)), MeterOf("1+2/4"));
+
+        }
+
     }
 }

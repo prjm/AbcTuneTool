@@ -51,7 +51,7 @@ namespace AbcTuneTool.Model {
         /// <summary>
         ///     convert this accidental to a char
         /// </summary>
-        /// <param name="accidental"></param>
+        /// <param name="accidental">accidental to convert</param>
         /// <returns></returns>
         public static string AsString(this Accidental accidental)
             => accidental switch

@@ -24,6 +24,16 @@
         ///     key description
         /// </summary>
         Key = 3,
+
+        /// <summary>
+        ///     note length
+        /// </summary>
+        NoteLength = 4,
+
+        /// <summary>
+        ///     meter
+        /// </summary>
+        Meter = 5,
     }
 
 

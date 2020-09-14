@@ -224,5 +224,20 @@
         ///     number of stafflines (clef)
         /// </summary>
         public const string Stafflines = "stafflines";
+
+        /// <summary>
+        ///     invalid
+        /// </summary>
+        public const string Invalid = "invalid";
+
+        /// <summary>
+        ///     c
+        /// </summary>
+        public const string C = "C";
+
+        /// <summary>
+        ///     c line
+        /// </summary>
+        public const string CLine = "C|";
     }
 }

@@ -172,6 +172,8 @@
                 InformationFieldKind.History => true,
                 InformationFieldKind.Instruction => true,
                 InformationFieldKind.Key => false,
+                InformationFieldKind.UnitNoteLength => true,
+                InformationFieldKind.Meter => true,
                 _ => false,
             };
 
@@ -192,6 +194,8 @@
                 InformationFieldKind.History => true,
                 InformationFieldKind.Instruction => true,
                 InformationFieldKind.Key => true,
+                InformationFieldKind.UnitNoteLength => true,
+                InformationFieldKind.Meter => true,
                 _ => false,
             };
 
@@ -212,6 +216,8 @@
                 InformationFieldKind.History => false,
                 InformationFieldKind.Instruction => true,
                 InformationFieldKind.Key => true,
+                InformationFieldKind.UnitNoteLength => true,
+                InformationFieldKind.Meter => true,
                 _ => false,
             };
 
@@ -232,6 +238,8 @@
                 InformationFieldKind.History => false,
                 InformationFieldKind.Instruction => true,
                 InformationFieldKind.Key => true,
+                InformationFieldKind.UnitNoteLength => true,
+                InformationFieldKind.Meter => true,
                 _ => false,
             };
 
@@ -252,6 +260,8 @@
                 InformationFieldKind.History => InformationFieldContent.StringContent,
                 InformationFieldKind.Instruction => InformationFieldContent.Instruction,
                 InformationFieldKind.Key => InformationFieldContent.Key,
+                InformationFieldKind.UnitNoteLength => InformationFieldContent.NoteLength,
+                InformationFieldKind.Meter => InformationFieldContent.Meter,
                 _ => InformationFieldContent.Undefined,
             };
 

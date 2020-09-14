@@ -277,6 +277,9 @@ namespace AbcTuneTool.FileIo {
                 {
                     InformationFieldContent.Instruction => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Key => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.NoteLength => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Meter => ReadWhitespaceSeparatedInfoField(value),
+
                     _ => ReadDefaultInfoField(value),
                 };
             }
