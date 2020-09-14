@@ -11,6 +11,7 @@ namespace AbcTuneToolTests {
         private class MAJ : MajorKeyTable { }
         private class MIN : MinorKeyTable { }
         private class MIX : MixolydianKeyTable { }
+        private class DOR : DorianKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -121,6 +122,31 @@ namespace AbcTuneToolTests {
             TestKey<MIX>("Ab", "bbebabdbgb", "ab", "bb", "c ", "db", "eb", "f ", "gb", "ab");
             TestKey<MIX>("Db", "bbebabdbgbcb", "db", "eb", "f ", "gb", "ab", "bb", "cb", "db");
             TestKey<MIX>("Gb", "bbebabdbgbcbfb", "gb", "ab", "bb", "cb", "db", "eb", "fb", "gb");
+
+        }
+
+        [TestMethod]
+        public void TestDorianScale() {
+
+            TestKey<DOR>("D ", "", "d ", "e ", "f ", "g ", "a ", "b ", "c ", "d ");
+
+            TestKey<DOR>("A ", "f#", "a ", "b ", "c ", "d ", "e ", "f#", "g ", "a ");
+            TestKey<DOR>("E ", "f#c#", "e ", "f#", "g ", "a ", "b ", "c#", "d ", "e ");
+            TestKey<DOR>("E ", "f#c#", "e ", "f#", "g ", "a ", "b ", "c#", "d ", "e ");
+            TestKey<DOR>("B ", "f#c#g#", "b ", "c#", "d ", "e ", "f#", "g#", "a ", "b ");
+            TestKey<DOR>("F#", "f#c#g#d#", "f#", "g#", "a ", "b ", "c#", "d#", "e ", "f#");
+            TestKey<DOR>("C#", "f#c#g#d#a#", "c#", "d#", "e ", "f#", "g#", "a#", "b ", "c#");
+            TestKey<DOR>("G#", "f#c#g#d#a#e#", "g#", "a#", "b ", "c#", "d#", "e#", "f#", "g#");
+            TestKey<DOR>("D#", "f#c#g#d#a#e#b#", "d#", "e#", "f#", "g#", "a#", "b#", "c#", "d#");
+
+            TestKey<DOR>("G ", "bb", "g ", "a ", "bb", "c ", "d ", "e ", "f ", "g ");
+            TestKey<DOR>("C ", "bbeb", "c ", "d ", "eb", "f ", "g ", "a ", "bb", "c ");
+            TestKey<DOR>("F ", "bbebab", "f ", "g ", "ab", "bb", "c ", "d ", "eb", "f ");
+            TestKey<DOR>("Bb", "bbebabdb", "bb", "c ", "db", "eb", "f ", "g ", "ab", "bb");
+            TestKey<DOR>("Eb", "bbebabdbgb", "eb", "f ", "gb", "ab", "bb", "c ", "db", "eb");
+            TestKey<DOR>("Ab", "bbebabdbgbcb", "ab", "bb", "cb", "db", "eb", "f ", "gb", "ab");
+            TestKey<DOR>("Db", "bbebabdbgbcbfb", "db", "eb", "fb", "gb", "ab", "bb", "cb", "db");
+
 
         }
 

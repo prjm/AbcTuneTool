@@ -15,17 +15,17 @@
             AddKey(+3, 'B', ' ');
             AddKey(+4, 'F', '#');
             AddKey(+5, 'C', '#');
-            AddKey(+6, 'G', '#');
-            AddKey(+7, 'D', '#');
+            AddKey(+6, 'G', '#', new Tone('e', '#'));
+            AddKey(+7, 'D', '#', new Tone('b', '#'));
 
             AddKey(+0, 'D', ' ');
-            AddKey(-1, 'G', ' ');
-            AddKey(-2, 'C', ' ');
-            AddKey(-3, 'F', ' ');
-            AddKey(-4, 'B', 'b', new Tone('b', 'b'));
-            AddKey(-5, 'E', 'b', new Tone('e', 'b'));
-            AddKey(-6, 'A', 'b', new Tone('a', 'b'));
-            AddKey(-7, 'D', 'b', new Tone('d', 'b'));
+            AddKey(-1, 'G', ' ', new Tone('b', 'b'));
+            AddKey(-2, 'C', ' ', new Tone('e', 'b'));
+            AddKey(-3, 'F', ' ', new Tone('a', 'b'));
+            AddKey(-4, 'B', 'b', new Tone('d', 'b'));
+            AddKey(-5, 'E', 'b', new Tone('g', 'b'));
+            AddKey(-6, 'A', 'b', new Tone('c', 'b'));
+            AddKey(-7, 'D', 'b', new Tone('f', 'b'));
 
         }
 
