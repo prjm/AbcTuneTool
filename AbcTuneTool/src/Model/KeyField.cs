@@ -26,12 +26,12 @@ namespace AbcTuneTool.Model {
             var tone = value.FirstChar;
             var tone2 = value.SecondChar;
             var accidental = tone2.AsAccidental();
-            var mode = value.GetValueAfterWhitespace(1);
+            var mode = value.GetValueAfterWhitespace(1, out var offset2);
+            var offset1 = 0;
             bool isValid;
             var describedMode = true;
             var allowsAddAcc = true;
             var hasKey = false;
-            var offset = 0;
             KeyTable result;
 
             if (tone == 'H' && (tone2 == 'P' || tone2 == 'p')) {
@@ -46,6 +46,7 @@ namespace AbcTuneTool.Model {
                     result.Tones.AddAccidental(new Tone('c', '#'));
                     result.Tones.AddAccidental(new Tone('g', '='));
                 }
+                offset1 = offset2 + 1;
             }
 
             else if (tone.IsKeyNoteLetter() && string.IsNullOrWhiteSpace(mode) || mode.StartsWith(KnownStrings.Maj, StringComparison.OrdinalIgnoreCase)) {
@@ -53,42 +54,49 @@ namespace AbcTuneTool.Model {
                 describedMode = !string.IsNullOrWhiteSpace(mode);
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Min, StringComparison.OrdinalIgnoreCase) || string.Equals(mode, KnownStrings.M, StringComparison.Ordinal)) {
                 result = new MinorKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Mix, StringComparison.OrdinalIgnoreCase) || string.Equals(mode, KnownStrings.M, StringComparison.Ordinal)) {
                 result = new MixolydianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Dor, StringComparison.OrdinalIgnoreCase)) {
                 result = new DorianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Phr, StringComparison.OrdinalIgnoreCase)) {
                 result = new PhrygianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Lyd, StringComparison.OrdinalIgnoreCase)) {
                 result = new LydianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (mode.StartsWith(KnownStrings.Loc, StringComparison.OrdinalIgnoreCase)) {
                 result = new LocrianKeyTable();
                 isValid = result.DefineKey(tone, accidental);
                 hasKey = true;
+                offset1 = offset2 + 1;
             }
 
             else if (value.IsEmpty
@@ -108,16 +116,22 @@ namespace AbcTuneTool.Model {
                 isValid = false;
             }
 
+            if (describedMode)
+                offset1++;
+
             if (isValid && allowsAddAcc) {
 
                 for (var i = 2 + (describedMode ? 1 : 0); i < value.Length && isValid; i++) {
-                    var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset1);
-                    i = offset1;
+                    var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset3);
+                    i = offset3;
+
+                    if (additionalAccidental.Length < 1 || additionalAccidental[0].AsAccidental(true) == Accidental.Invalid)
+                        break;
 
                     var addTone = additionalAccidental.AsTonePrefixAccidentals();
                     isValid = isValid && result.Tones.AddAccidental(addTone);
+                    offset1 = offset3 + 1;
                 }
-
             }
 
             var status = (hasKey, isValid) switch
@@ -128,7 +142,7 @@ namespace AbcTuneTool.Model {
             };
 
 
-            return (status, result, offset);
+            return (status, result, offset1);
         }
 
         /// <summary>

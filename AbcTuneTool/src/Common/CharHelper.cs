@@ -102,17 +102,18 @@ namespace AbcTuneTool.Common {
         ///     get the accidental for a char
         /// </summary>
         /// <param name="c"></param>
+        /// <param name="onlyPrefix"></param>
         /// <returns></returns>
-        public static Accidental AsAccidental(this char c)
-            => c switch
+        public static Accidental AsAccidental(this char c, bool onlyPrefix = false)
+            => (c, onlyPrefix) switch
             {
-                '#' => Accidental.Sharp,
-                '^' => Accidental.Sharp,
-                'b' => Accidental.Flat,
-                '_' => Accidental.Flat,
-                '=' => Accidental.Natural,
-                ' ' => Accidental.Undefined,
-                '\0' => Accidental.Undefined,
+                ('^', _) => Accidental.Sharp,
+                ('_', _) => Accidental.Flat,
+                ('=', _) => Accidental.Natural,
+                ('#', false) => Accidental.Sharp,
+                ('b', false) => Accidental.Flat,
+                (' ', false) => Accidental.Undefined,
+                ('\0', false) => Accidental.Undefined,
                 _ => Accidental.Invalid
             };
 

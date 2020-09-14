@@ -9,8 +9,8 @@ namespace AbcTuneToolTests {
         private static Tone KeyOf(string k)
             => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
-        private static ClefSettings ClefOfK(string k)
-            => ParseKeyField("K:" + k, KeyStatus.NoKey).Clef;
+        private static ClefSettings ClefOfK(string k, KeyStatus s = KeyStatus.NoKey)
+            => ParseKeyField("K:" + k, s).Clef;
 
         private static Tone ToneOf(char c, char a)
             => new Tone(c, a.AsAccidental());
@@ -372,6 +372,25 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(2, ClefOfK("treble").ClefLine);
             Assert.AreEqual(1, ClefOfK("treble1").ClefLine);
             Assert.AreEqual(1, ClefOfK("treble1+8").ClefLine);
+
+            Assert.AreEqual('a', ClefOfK("treble middle=a").Middle);
+            Assert.AreEqual('A', ClefOfK("treble middle=A").Middle);
+
+            Assert.AreEqual(33, ClefOfK("trebble transpose=33").Transpose);
+            Assert.AreEqual(-64, ClefOfK("trebble transpose=-64").Transpose);
+            Assert.AreEqual(33, ClefOfK("trebble middle=a transpose=33").Transpose);
+            Assert.AreEqual(-64, ClefOfK("trebble middle=a transpose=-64").Transpose);
+
+            Assert.AreEqual(0, ClefOfK("trebble").Octaves);
+            Assert.AreEqual(+1, ClefOfK("trebble octave=1").Octaves);
+            Assert.AreEqual(-1, ClefOfK("trebble octave=-1").Octaves);
+
+            Assert.AreEqual(5, ClefOfK("trebble").Stafflines);
+            Assert.AreEqual(1, ClefOfK("trebble stafflines=1").Stafflines);
+            Assert.AreEqual(5, ClefOfK("trebble stafflines=5").Stafflines);
+
+            Assert.AreEqual(3, ClefOfK("G maj trebble stafflines=3", KeyStatus.ValidKey).Stafflines);
+            Assert.AreEqual(3, ClefOfK("G maj clef=trebble stafflines=3", KeyStatus.ValidKey).Stafflines);
 
         }
     }

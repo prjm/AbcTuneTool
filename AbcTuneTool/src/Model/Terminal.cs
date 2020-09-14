@@ -94,7 +94,7 @@ namespace AbcTuneTool.Model {
         /// <param name="offset">selected token offset</param>
         /// <returns></returns>
         public string GetValueAfterWhitespace(int index, out int offset) {
-            if (tokens.Length <= index) {
+            if (tokens.Length <= index || index < 0) {
                 offset = -1;
                 return string.Empty;
             }

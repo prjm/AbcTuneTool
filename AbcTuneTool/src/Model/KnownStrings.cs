@@ -204,5 +204,25 @@
         ///     subtract eight
         /// </summary>
         public const string SubtractEight = "-8";
+
+        /// <summary>
+        ///     middle (of clef)
+        /// </summary>
+        public const string Middle = "middle";
+
+        /// <summary>
+        ///     tranpose (of clef)
+        /// </summary>
+        public const string Transpose = "transpose";
+
+        /// <summary>
+        ///     octave (of clef)
+        /// </summary>
+        public const string Octave = "octave";
+
+        /// <summary>
+        ///     number of stafflines (clef)
+        /// </summary>
+        public const string Stafflines = "stafflines";
     }
 }
