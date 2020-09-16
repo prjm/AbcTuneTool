@@ -218,6 +218,31 @@ namespace AbcTuneTool.FileIo {
             return true;
         }
 
+        private bool ReadSemicolonSeparatedInfoField(char value) {
+            using var sb = StringBuilderPool.Rent();
+            var wasSemicolon = value == ';';
+
+            sb.Item.Append(value);
+
+            while (ReadChar(out var nextValue)) {
+
+                var isWhitespace = nextValue.IsWhitespace();
+                var isSemicolon = nextValue == ';';
+
+                if (nextValue.IsLinebreak() || wasSemicolon && !isWhitespace || isSemicolon) {
+                    buffer.Enqueue(nextValue);
+                    break;
+                }
+                else {
+                    sb.Item.Append(nextValue);
+                }
+            }
+
+            var headerData = Cache.ForStringBuilder(sb.Item);
+            SetToken(headerData, headerData, TokenKind.Char);
+            return true;
+        }
+
         private bool ReadLinebreak(char value, ObjectPoolItem<StringBuilder>? sb) {
             var kind = isEmptyLine ? TokenKind.EmptyLine : TokenKind.Linebreak;
             string cr() => sb == default ? Cache.ForChar(value) : Cache.ForStringBuilder(sb, value);
@@ -279,6 +304,8 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldContent.Key => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.NoteLength => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Meter => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Macro => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Origin => ReadSemicolonSeparatedInfoField(value),
 
                     _ => ReadDefaultInfoField(value),
                 };

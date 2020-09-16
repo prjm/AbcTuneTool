@@ -34,6 +34,16 @@
         ///     meter
         /// </summary>
         Meter = 5,
+
+        /// <summary>
+        ///     macro definition
+        /// </summary>
+        Macro = 6,
+
+        /// <summary>
+        ///     origin of tune
+        /// </summary>
+        Origin = 7,
     }
 
 

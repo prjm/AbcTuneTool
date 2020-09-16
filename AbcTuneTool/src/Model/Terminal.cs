@@ -88,6 +88,16 @@ namespace AbcTuneTool.Model {
             => GetValueAfterWhitespace(index, out _);
 
         /// <summary>
+        ///     get the value after a semicolon token
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string GetValueAfterSemicolon(int index)
+            => GetValueAfterSemicolon(index, out _);
+
+
+
+        /// <summary>
         ///     get a token value after a whitespace token
         /// </summary>
         /// <param name="index"></param>
@@ -107,6 +117,35 @@ namespace AbcTuneTool.Model {
 
                 var c = token.Value[0];
                 if (!c.IsWhitespace()) {
+                    offset = index;
+                    return token.Value;
+                }
+            }
+
+            offset = -1;
+            return string.Empty;
+        }
+
+        /// <summary>
+        ///     get a token value after a whitespace token
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="offset">selected token offset</param>
+        /// <returns></returns>
+        public string GetValueAfterSemicolon(int index, out int offset) {
+            if (tokens.Length <= index || index < 0) {
+                offset = -1;
+                return string.Empty;
+            }
+
+            for (; index < tokens.Length; index++) {
+                ref readonly var token = ref tokens.ItemRef(index);
+
+                if (token.Value.Length < 1)
+                    continue;
+
+                var c = token.Value[0];
+                if (c != ';') {
                     offset = index;
                     return token.Value;
                 }

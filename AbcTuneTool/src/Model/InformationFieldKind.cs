@@ -174,6 +174,9 @@
                 InformationFieldKind.Key => false,
                 InformationFieldKind.UnitNoteLength => true,
                 InformationFieldKind.Meter => true,
+                InformationFieldKind.Macro => true,
+                InformationFieldKind.Notes => true,
+                InformationFieldKind.Origin => true,
                 _ => false,
             };
 
@@ -196,6 +199,9 @@
                 InformationFieldKind.Key => true,
                 InformationFieldKind.UnitNoteLength => true,
                 InformationFieldKind.Meter => true,
+                InformationFieldKind.Macro => true,
+                InformationFieldKind.Notes => true,
+                InformationFieldKind.Origin => true,
                 _ => false,
             };
 
@@ -218,6 +224,9 @@
                 InformationFieldKind.Key => true,
                 InformationFieldKind.UnitNoteLength => true,
                 InformationFieldKind.Meter => true,
+                InformationFieldKind.Macro => true,
+                InformationFieldKind.Notes => true,
+                InformationFieldKind.Origin => false,
                 _ => false,
             };
 
@@ -240,6 +249,9 @@
                 InformationFieldKind.Key => true,
                 InformationFieldKind.UnitNoteLength => true,
                 InformationFieldKind.Meter => true,
+                InformationFieldKind.Macro => true,
+                InformationFieldKind.Notes => true,
+                InformationFieldKind.Origin => false,
                 _ => false,
             };
 
@@ -262,6 +274,9 @@
                 InformationFieldKind.Key => InformationFieldContent.Key,
                 InformationFieldKind.UnitNoteLength => InformationFieldContent.NoteLength,
                 InformationFieldKind.Meter => InformationFieldContent.Meter,
+                InformationFieldKind.Macro => InformationFieldContent.Macro,
+                InformationFieldKind.Notes => InformationFieldContent.StringContent,
+                InformationFieldKind.Origin => InformationFieldContent.Origin,
                 _ => InformationFieldContent.Undefined,
             };
 

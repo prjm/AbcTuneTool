@@ -438,5 +438,42 @@ namespace AbcTuneToolTests {
 
         }
 
+        [TestMethod]
+        public void Test_M_Macro() {
+            var field = ParseMacroField("m: ~G2 = {A}G{F}G");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Macro);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Macro);
+        }
+
+        [TestMethod]
+        public void Test_N_Notes() {
+            var field = ParseInfoField("N:note text");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Notes);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
+        }
+
+        [TestMethod]
+        public void Test_O_Origin() {
+            var field = ParseInfoField("O:Germany; Bavaria");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Origin);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), false);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Origin);
+
+            Assert.AreEqual("Germany", field.Value.GetValueAfterSemicolon(0));
+            Assert.AreEqual("Bavaria", field.Value.GetValueAfterSemicolon(1));
+        }
+
+
     }
 }

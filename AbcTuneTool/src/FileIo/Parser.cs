@@ -68,6 +68,9 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.Meter
                         => new MeterField(header, fieldValues),
 
+                    InformationFieldKind.Macro
+                        => new MacroField(header, fieldValues),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }

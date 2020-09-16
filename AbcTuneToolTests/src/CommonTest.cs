@@ -56,6 +56,12 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static MacroField ParseMacroField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as MacroField;
+            Assert.NotNull(result);
+            return result;
+        }
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 
