@@ -177,6 +177,7 @@
                 InformationFieldKind.Macro => true,
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => true,
+                InformationFieldKind.Parts => false,
                 _ => false,
             };
 
@@ -202,6 +203,7 @@
                 InformationFieldKind.Macro => true,
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => true,
+                InformationFieldKind.Parts => true,
                 _ => false,
             };
 
@@ -227,6 +229,7 @@
                 InformationFieldKind.Macro => true,
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => false,
+                InformationFieldKind.Parts => true,
                 _ => false,
             };
 
@@ -252,6 +255,7 @@
                 InformationFieldKind.Macro => true,
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => false,
+                InformationFieldKind.Parts => true,
                 _ => false,
             };
 
@@ -277,6 +281,7 @@
                 InformationFieldKind.Macro => InformationFieldContent.Macro,
                 InformationFieldKind.Notes => InformationFieldContent.StringContent,
                 InformationFieldKind.Origin => InformationFieldContent.Origin,
+                InformationFieldKind.Parts => InformationFieldContent.Parts,
                 _ => InformationFieldContent.Undefined,
             };
 

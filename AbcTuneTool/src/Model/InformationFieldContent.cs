@@ -44,6 +44,11 @@
         ///     origin of tune
         /// </summary>
         Origin = 7,
+
+        /// <summary>
+        ///     part values
+        /// </summary>
+        Parts = 8,
     }
 
 

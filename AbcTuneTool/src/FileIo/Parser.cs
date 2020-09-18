@@ -71,6 +71,9 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.Macro
                         => new MacroField(header, fieldValues),
 
+                    InformationFieldKind.Parts
+                        => new PartsField(header, fieldValues),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }

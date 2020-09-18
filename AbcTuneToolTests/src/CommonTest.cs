@@ -62,6 +62,12 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static PartsField ParsePartsField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as PartsField;
+            Assert.NotNull(result);
+            return result;
+        }
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 

@@ -474,6 +474,30 @@ namespace AbcTuneToolTests {
             Assert.AreEqual("Bavaria", field.Value.GetValueAfterSemicolon(1));
         }
 
+        [TestMethod]
+        public void Test_P_Parts() {
+            var field = ParsePartsField("P:A");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Parts);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Parts);
+
+            field = ParsePartsField("P:...A");
+            Assert.AreEqual('A', (field.Items[3] as PartName)?.Name);
+
+            field = ParsePartsField("P:...A10");
+            Assert.AreEqual(10, (field.Items[4] as PartRepeat)?.Repeat);
+
+            field = ParsePartsField("P:...A3..");
+            Assert.AreEqual(3, (field.Items[4] as PartRepeat)?.Repeat);
+
+            field = ParsePartsField("P:(abC)3");
+            Assert.AreEqual('C', ((field.Items[0] as PartGroup)?.Items[2] as PartName)?.Name);
+
+        }
+
 
     }
 }

@@ -41,6 +41,14 @@ namespace AbcTuneTool.Common {
                 value >= 'a' && value <= 'z';
 
         /// <summary>
+        ///     test if a char is a numeric value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsNumber(this char value) =>
+                value >= '0' && value <= '9';
+
+        /// <summary>
         ///     test if a char is a simple whitespace char
         /// </summary>
         /// <param name="value"></param>
