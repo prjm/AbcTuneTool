@@ -49,6 +49,11 @@
         ///     part values
         /// </summary>
         Parts = 8,
+
+        /// <summary>
+        ///     tempo definition
+        /// </summary>
+        Tempo = 9,
     }
 
 

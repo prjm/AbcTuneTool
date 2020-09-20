@@ -306,7 +306,7 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldContent.Meter => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Macro => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Origin => ReadSemicolonSeparatedInfoField(value),
-
+                    InformationFieldContent.Tempo => ReadWhitespaceSeparatedInfoField(value),
                     _ => ReadDefaultInfoField(value),
                 };
             }

@@ -178,6 +178,10 @@
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => true,
                 InformationFieldKind.Parts => false,
+                InformationFieldKind.Tempo => false,
+                InformationFieldKind.Rythm => true,
+                InformationFieldKind.Remark => true,
+                InformationFieldKind.Source => true,
                 _ => false,
             };
 
@@ -204,6 +208,10 @@
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => true,
                 InformationFieldKind.Parts => true,
+                InformationFieldKind.Tempo => true,
+                InformationFieldKind.Rythm => true,
+                InformationFieldKind.Remark => true,
+                InformationFieldKind.Source => true,
                 _ => false,
             };
 
@@ -230,6 +238,10 @@
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => false,
                 InformationFieldKind.Parts => true,
+                InformationFieldKind.Tempo => true,
+                InformationFieldKind.Rythm => true,
+                InformationFieldKind.Remark => true,
+                InformationFieldKind.Source => false,
                 _ => false,
             };
 
@@ -256,6 +268,10 @@
                 InformationFieldKind.Notes => true,
                 InformationFieldKind.Origin => false,
                 InformationFieldKind.Parts => true,
+                InformationFieldKind.Tempo => true,
+                InformationFieldKind.Rythm => true,
+                InformationFieldKind.Remark => true,
+                InformationFieldKind.Source => false,
                 _ => false,
             };
 
@@ -282,6 +298,10 @@
                 InformationFieldKind.Notes => InformationFieldContent.StringContent,
                 InformationFieldKind.Origin => InformationFieldContent.Origin,
                 InformationFieldKind.Parts => InformationFieldContent.Parts,
+                InformationFieldKind.Tempo => InformationFieldContent.Tempo,
+                InformationFieldKind.Rythm => InformationFieldContent.StringContent,
+                InformationFieldKind.Remark => InformationFieldContent.StringContent,
+                InformationFieldKind.Source => InformationFieldContent.StringContent,
                 _ => InformationFieldContent.Undefined,
             };
 

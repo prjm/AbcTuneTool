@@ -495,7 +495,67 @@ namespace AbcTuneToolTests {
 
             field = ParsePartsField("P:(abC)3");
             Assert.AreEqual('C', ((field.Items[0] as PartGroup)?.Items[2] as PartName)?.Name);
+        }
 
+        [TestMethod]
+        public void Test_Q_Tempo() {
+            var field = ParseTempoField("Q:1/2=120");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Tempo);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Tempo);
+
+            field = ParseTempoField("Q:1/2=120");
+            Assert.AreEqual(field.Bpm, 120);
+            Assert.AreEqualSeq(new[] { new Fraction(1, 2) }, field.Fractions.ToArray());
+
+            field = ParseTempoField("Q:1/4 1/2=140");
+            Assert.AreEqual(field.Bpm, 140);
+            Assert.AreEqualSeq(new[] { new Fraction(1, 4), new Fraction(1, 2) }, field.Fractions.ToArray());
+
+            field = ParseTempoField("Q:\"allegro\" 1/4 1/2=140");
+            Assert.AreEqual("allegro", field.Tempo);
+
+            field = ParseTempoField("Q:   \"allegro\" 1/4 1/2=140");
+            Assert.AreEqual("allegro", field.Tempo);
+
+            field = ParseTempoField("Q: 1/4 1/2=140 \"allegro\" ");
+            Assert.AreEqual("allegro", field.Tempo);
+        }
+
+        [TestMethod]
+        public void Parse_R_Rythm() {
+            var field = ParseInfoField("R:polka");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Rythm);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
+        }
+
+        [TestMethod]
+        public void Parse_R_Remark() {
+            var field = ParseInfoField("r:this is a remark");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Remark);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
+        }
+
+        [TestMethod]
+        public void Parse_S_Source() {
+            var field = ParseInfoField("S:tunes from germany");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Source);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), false);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
         }
 
 

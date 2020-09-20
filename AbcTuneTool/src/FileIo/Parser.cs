@@ -74,6 +74,9 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.Parts
                         => new PartsField(header, fieldValues),
 
+                    InformationFieldKind.Tempo
+                        => new TempoField(header, fieldValues),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }

@@ -68,6 +68,13 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static TempoField ParseTempoField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as TempoField;
+            Assert.NotNull(result);
+            return result;
+        }
+
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 
