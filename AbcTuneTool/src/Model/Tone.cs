@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using AbcTuneTool.Common;
+using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneTool.Model {
 

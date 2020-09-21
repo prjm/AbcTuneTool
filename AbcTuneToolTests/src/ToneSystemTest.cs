@@ -2,6 +2,7 @@
 using System.Linq;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneToolTests {
 

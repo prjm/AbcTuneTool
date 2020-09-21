@@ -1,6 +1,6 @@
 ﻿// Ignore spelling: bb
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Symbolic {
 
     /// <summary>
     ///     accidental signs

@@ -1,6 +1,7 @@
 ﻿using System;
+using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     field with clefs

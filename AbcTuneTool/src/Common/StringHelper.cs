@@ -1,4 +1,5 @@
 ﻿using AbcTuneTool.Model;
+using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneTool.Common {
 

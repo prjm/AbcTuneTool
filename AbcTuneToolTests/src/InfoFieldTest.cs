@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneToolTests {
 
@@ -558,6 +559,16 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
         }
 
+        [TestMethod]
+        public void Parse_T_Title() {
+            var field = ParseInfoField("T:a small tune");
+            Assert.AreEqual(field.Kind, InformationFieldKind.TuneTitle);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
+        }
 
     }
 }
