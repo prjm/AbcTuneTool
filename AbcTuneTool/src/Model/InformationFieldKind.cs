@@ -182,6 +182,7 @@
                 InformationFieldKind.Rythm => true,
                 InformationFieldKind.Remark => true,
                 InformationFieldKind.Source => true,
+                InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => false,
                 _ => false,
             };
@@ -213,6 +214,7 @@
                 InformationFieldKind.Rythm => true,
                 InformationFieldKind.Remark => true,
                 InformationFieldKind.Source => true,
+                InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => true,
                 _ => false,
             };
@@ -244,6 +246,7 @@
                 InformationFieldKind.Rythm => true,
                 InformationFieldKind.Remark => true,
                 InformationFieldKind.Source => false,
+                InformationFieldKind.SymbolLine => true,
                 InformationFieldKind.TuneTitle => true,
                 _ => false,
             };
@@ -275,6 +278,7 @@
                 InformationFieldKind.Rythm => true,
                 InformationFieldKind.Remark => true,
                 InformationFieldKind.Source => false,
+                InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => false,
                 _ => false,
             };
@@ -306,6 +310,7 @@
                 InformationFieldKind.Rythm => InformationFieldContent.StringContent,
                 InformationFieldKind.Remark => InformationFieldContent.StringContent,
                 InformationFieldKind.Source => InformationFieldContent.StringContent,
+                InformationFieldKind.SymbolLine => InformationFieldContent.Symbols,
                 InformationFieldKind.TuneTitle => InformationFieldContent.StringContent,
                 _ => InformationFieldContent.Undefined,
             };

@@ -218,6 +218,14 @@ namespace AbcTuneTool.Model {
             : this(values.ToImmutableArray()) { }
 
         /// <summary>
+        ///     get the value of the terminal
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string this[int index]
+            => tokens[index].Value;
+
+        /// <summary>
         ///     get the first char of this terminal
         /// </summary>
         public char FirstChar {

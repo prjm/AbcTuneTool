@@ -2,6 +2,7 @@
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Symbolic;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneToolTests {
 
@@ -557,6 +558,22 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.InTuneBody(), false);
             Assert.AreEqual(field.Kind.InInline(), false);
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
+        }
+
+        [TestMethod]
+        public void Parse_S_SymbolLine() {
+            var field = ParseSymbolLineField("s:\"^sl ow\"");
+            Assert.AreEqual(field.Kind, InformationFieldKind.SymbolLine);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Symbols);
+
+            Assert.AreEqual("\"^sl ow\"", field.Value.GetValueAfterWhitespace(0));
+            Assert.AreEqual(AnnotationPosition.Above, (field.Elements[0] as Annotation)?.Position);
+            Assert.AreEqual("sl ow", (field.Elements[0] as Annotation)?.Text);
+
         }
 
         [TestMethod]

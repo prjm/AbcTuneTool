@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Immutable;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Fields;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.FileIo {
 
@@ -77,11 +80,32 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.Tempo
                         => new TempoField(header, fieldValues),
 
+                    InformationFieldKind.SymbolLine
+                        => new SymbolLineField(header, fieldValues, ParseTuneElements(fieldValues)),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }
 
             return default;
+        }
+
+        private ImmutableArray<TuneElement> ParseTuneElements(Terminal fieldValues) {
+            using var list = ListPools.ObjectLists.Rent();
+
+            for (var i = 0; i < fieldValues.Length; i++) {
+
+                var text = fieldValues[i];
+
+                if (text.Length < 1) continue;
+
+                if (text[0] == '"' && text.Length > 3) {
+                    list.Add(new Annotation(text[1].AsPosition(), text.Substring(2, text.Length - 3)));
+                }
+
+            }
+
+            return list.ToImmutableArray<TuneElement>();
         }
 
         private Token GetCurrentTokenAndFetchNext() {

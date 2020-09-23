@@ -54,6 +54,11 @@
         ///     tempo definition
         /// </summary>
         Tempo = 9,
+
+        /// <summary>
+        ///     symbol line
+        /// </summary>
+        Symbols = 10,
     }
 
 

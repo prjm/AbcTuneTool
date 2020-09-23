@@ -4,6 +4,7 @@ using System.IO;
 using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Fields;
 
 namespace AbcTuneToolTests {
 
@@ -74,6 +75,11 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static SymbolLineField ParseSymbolLineField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as SymbolLineField;
+            Assert.NotNull(result);
+            return result;
+        }
 
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);

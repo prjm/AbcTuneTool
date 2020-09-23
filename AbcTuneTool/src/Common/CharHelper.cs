@@ -1,5 +1,6 @@
 ﻿using AbcTuneTool.Model;
 using AbcTuneTool.Model.Symbolic;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.Common {
 
@@ -124,6 +125,17 @@ namespace AbcTuneTool.Common {
                 (' ', false) => Accidental.Undefined,
                 ('\0', false) => Accidental.Undefined,
                 _ => Accidental.Invalid
+            };
+
+        public static AnnotationPosition AsPosition(this char c)
+            => c switch
+            {
+                '@' => AnnotationPosition.Automatic,
+                '<' => AnnotationPosition.Before,
+                '>' => AnnotationPosition.After,
+                '^' => AnnotationPosition.Above,
+                '_' => AnnotationPosition.Below,
+                _ => AnnotationPosition.Undefined,
             };
 
         /// <summary>
