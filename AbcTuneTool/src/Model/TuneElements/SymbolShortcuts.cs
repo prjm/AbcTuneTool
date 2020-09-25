@@ -17,7 +17,10 @@ namespace AbcTuneTool.Model {
         /// <summary>
         ///     symbol shortcuts
         /// </summary>
-        public SymbolShortcuts() {
+        public SymbolShortcuts()
+            => ResetShortcuts();
+
+        private void ResetShortcuts() {
             Shortcuts.Clear();
             Shortcuts.Add('~', DecorationSymbol.Roll);
             Shortcuts.Add('H', DecorationSymbol.Fermata);
@@ -30,6 +33,5 @@ namespace AbcTuneTool.Model {
             Shortcuts.Add('u', DecorationSymbol.Upbow);
             Shortcuts.Add('v', DecorationSymbol.Downbow);
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using AbcTuneTool.Model.Symbolic;
-
-namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.Symbolic {
 
     /// <summary>
     ///     clef settings

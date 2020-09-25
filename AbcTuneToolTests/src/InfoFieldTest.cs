@@ -576,6 +576,9 @@ namespace AbcTuneToolTests {
 
             field = ParseSymbolLineField("s:!trill!");
             Assert.AreEqual(DecorationSymbol.Trill, (field.Elements[0] as TuneSymbol)?.Symbol);
+
+            field = ParseSymbolLineField("s: H");
+            Assert.AreEqual(DecorationSymbol.Fermata, (field.Elements[0] as TuneSymbol)?.Symbol);
         }
 
         [TestMethod]

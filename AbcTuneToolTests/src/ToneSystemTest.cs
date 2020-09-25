@@ -2,6 +2,7 @@
 using System.Linq;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.KeyTables;
 using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneToolTests {
@@ -53,9 +54,8 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void TestTone() {
-            Assert.AreEqual(" a".AsTonePrefixAccidentals(), new Tone('a', Accidental.Undefined));
-        }
+        public void TestTone()
+            => Assert.AreEqual(" a".AsTonePrefixAccidentals(), new Tone('a', Accidental.Undefined));
 
         [TestMethod]
         public void TestMajorScale() {

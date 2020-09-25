@@ -22,6 +22,7 @@ namespace AbcTuneTool.FileIo {
             Tokenizer = tokenizer;
             ListPools = listPools;
             Symbols = new DecorationRegistry();
+            Shortcuts = new SymbolShortcuts();
         }
 
         /// <summary>
@@ -38,6 +39,11 @@ namespace AbcTuneTool.FileIo {
         ///     symbols
         /// </summary>
         public DecorationRegistry Symbols { get; }
+
+        /// <summary>
+        ///     shortcuts
+        /// </summary>
+        public SymbolShortcuts Shortcuts { get; }
 
         private Token CurrentToken
             => Tokenizer.Lookahead(0);
@@ -107,6 +113,10 @@ namespace AbcTuneTool.FileIo {
 
                 if (text[0] == '"' && text.Length > 3) {
                     list.Add(new Annotation(text[1].AsPosition(), text[2..^1]));
+                }
+
+                else if (text.Length == 1 && Shortcuts.Shortcuts.TryGetValue(text[0], out var symbol2)) {
+                    list.Add(new TuneSymbol(symbol2));
                 }
 
                 else if (text[0] == '!' && text[^1] == '!' && text.Length > 2) {
