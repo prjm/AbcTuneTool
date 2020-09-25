@@ -102,7 +102,7 @@ namespace AbcTuneTool.Model {
             }
 
             else if (value.IsEmpty
-                || value.Matches(KnownStrings.None, StringComparison.OrdinalIgnoreCase)
+                || value.Matches(KnownStrings.None)
                 || value.IsWhitespace
                 || mode.StartsWith(KnownStrings.Exp, StringComparison.OrdinalIgnoreCase)) {
                 result = new EmptyKeyTable();

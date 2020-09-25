@@ -21,6 +21,7 @@ namespace AbcTuneTool.FileIo {
         public Parser(BufferedAbcTokenizer tokenizer, ListPools listPools) {
             Tokenizer = tokenizer;
             ListPools = listPools;
+            Symbols = new DecorationRegistry();
         }
 
         /// <summary>
@@ -32,6 +33,11 @@ namespace AbcTuneTool.FileIo {
         ///     list pools
         /// </summary>
         public ListPools ListPools { get; }
+
+        /// <summary>
+        ///     symbols
+        /// </summary>
+        public DecorationRegistry Symbols { get; }
 
         private Token CurrentToken
             => Tokenizer.Lookahead(0);
@@ -100,7 +106,13 @@ namespace AbcTuneTool.FileIo {
                 if (text.Length < 1) continue;
 
                 if (text[0] == '"' && text.Length > 3) {
-                    list.Add(new Annotation(text[1].AsPosition(), text.Substring(2, text.Length - 3)));
+                    list.Add(new Annotation(text[1].AsPosition(), text[2..^1]));
+                }
+
+                else if (text[0] == '!' && text[^1] == '!' && text.Length > 2) {
+                    var symbols = text[1..^1];
+                    if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
+                        list.Add(new TuneSymbol(symbol));
                 }
 
             }

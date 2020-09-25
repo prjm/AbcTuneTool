@@ -147,7 +147,7 @@ namespace AbcTuneToolTests {
         public void Test_K_Major_Key() {
             var field = ParseKeyField("K:G");
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.MainTones.First();
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.MainTones.First();
 
             Assert.AreEqual(field.Kind, InformationFieldKind.Key);
             Assert.AreEqual(false, field.Kind.InFileHeader());
@@ -192,7 +192,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Minor_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('a', '#'), q("A# minor"));
             Assert.AreEqual(t('d', '#'), q("D# minor"));
@@ -230,7 +230,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Mixolydian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('g', '#'), q("G# mixolydian"));
             Assert.AreEqual(t('c', '#'), q("C# mixolydian"));
@@ -252,7 +252,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Dorian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('d', '#'), q("D# dorian"));
             Assert.AreEqual(t('g', '#'), q("G# dorian"));
@@ -274,7 +274,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Phrygian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('e', '#'), q("E# phrygian"));
             Assert.AreEqual(t('a', '#'), q("A# phrygian"));
@@ -296,7 +296,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_No_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('c', ' '), q(""));
             Assert.AreEqual(t('c', ' '), q("  "));
@@ -306,7 +306,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Explicit_Key() {
             //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Accidentals.ToArray();
+            static Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Accidentals.ToArray();
 
             Assert.AreEqualSeq(StringToTones("bb", "eb"), a("D Phr"));
             Assert.AreEqualSeq(StringToTones("bb", "eb", "f#"), a("D Phr ^f"));
@@ -322,7 +322,7 @@ namespace AbcTuneToolTests {
         [TestMethod]
         public void Test_K_Lydian_Key() {
             static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
-            Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
+            static Tone q(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Tones[0];
 
             Assert.AreEqual(t('f', '#'), q("F# lydian"));
             Assert.AreEqual(t('b', ' '), q("B  lydian"));
@@ -574,6 +574,8 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(AnnotationPosition.Above, (field.Elements[0] as Annotation)?.Position);
             Assert.AreEqual("sl ow", (field.Elements[0] as Annotation)?.Text);
 
+            field = ParseSymbolLineField("s:!trill!");
+            Assert.AreEqual(DecorationSymbol.Trill, (field.Elements[0] as TuneSymbol)?.Symbol);
         }
 
         [TestMethod]
@@ -586,6 +588,5 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.InInline(), false);
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
         }
-
     }
 }

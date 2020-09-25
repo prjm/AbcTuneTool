@@ -127,6 +127,12 @@ namespace AbcTuneTool.Common {
                 _ => Accidental.Invalid
             };
 
+
+        /// <summary>
+        ///     convert a char to a position
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static AnnotationPosition AsPosition(this char c)
             => c switch
             {

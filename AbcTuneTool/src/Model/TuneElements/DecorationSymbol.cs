@@ -1,4 +1,4 @@
-﻿namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     decoration symbol
@@ -58,7 +58,7 @@
         /// <summary>
         ///     turn X
         /// </summary>
-        TunrX = 10,
+        TurnX = 10,
 
         /// <summary>
         ///     inverted turn

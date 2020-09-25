@@ -46,9 +46,8 @@ namespace AbcTuneTool.Model {
         ///     test if this terminal matches a string
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="ordinalIgnoreCase"></param>
         /// <returns></returns>
-        public bool Matches(string input, StringComparison ordinalIgnoreCase) {
+        public bool Matches(string input) {
             var tokenIndex = 0;
             var tokenCharIndex = 0;
 
@@ -161,15 +160,6 @@ namespace AbcTuneTool.Model {
         /// <returns></returns>
         public string DebuggerDisplay
             => string.Concat(tokens.Select(t => t.DebuggerDisplay + ", "));
-
-
-        /// <summary>
-        ///     check if a string is matched
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public bool Matches(string input)
-            => Matches(input, StringComparison.Ordinal);
 
         /// <summary>
         ///     add the content of this terminal to a string builder

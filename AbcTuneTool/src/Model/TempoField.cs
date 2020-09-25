@@ -25,7 +25,7 @@ namespace AbcTuneTool.Model {
                 if (value.Length < 1) continue;
 
                 if (value[0] == '"' && value[^1] == '"' && value.Length > 2) {
-                    Tempo = value.Substring(1, value.Length - 2);
+                    Tempo = value[1..^1];
                     continue;
                 }
 
