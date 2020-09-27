@@ -579,6 +579,21 @@ namespace AbcTuneToolTests {
 
             field = ParseSymbolLineField("s: H");
             Assert.AreEqual(DecorationSymbol.Fermata, (field.Elements[0] as TuneSymbol)?.Symbol);
+
+            field = ParseSymbolLineField("s: C7");
+            Assert.AreEqual('C', (field.Elements[0] as ChordSymbol)?.Note);
+            Assert.AreEqual("7", (field.Elements[0] as ChordSymbol)?.Type);
+
+            field = ParseSymbolLineField("s: C#7");
+            Assert.AreEqual('C', (field.Elements[0] as ChordSymbol)?.Note);
+            Assert.AreEqual('^'.AsAccidental(), (field.Elements[0] as ChordSymbol)?.Accidental);
+            Assert.AreEqual("7", (field.Elements[0] as ChordSymbol)?.Type);
+
+            field = ParseSymbolLineField("s: C7/Eb");
+            Assert.AreEqual('C', (field.Elements[0] as ChordSymbol)?.Note);
+            Assert.AreEqual("7", (field.Elements[0] as ChordSymbol)?.Type);
+            Assert.AreEqual('E', (field.Elements[0] as ChordSymbol)?.BassNote);
+            Assert.AreEqual('_'.AsAccidental(), (field.Elements[0] as ChordSymbol)?.BassAccidental);
         }
 
         [TestMethod]

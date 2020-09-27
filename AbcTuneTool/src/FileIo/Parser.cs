@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Fields;
+using AbcTuneTool.Model.Symbolic;
 using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.FileIo {
@@ -115,7 +116,7 @@ namespace AbcTuneTool.FileIo {
                     list.Add(new Annotation(text[1].AsPosition(), text[2..^1]));
                 }
 
-                else if (text.Length == 1 && Shortcuts.Shortcuts.TryGetValue(text[0], out var symbol2)) {
+                else if (text.Length == 1 && text[0].IsDecorationShortcut() && Shortcuts.Shortcuts.TryGetValue(text[0], out var symbol2)) {
                     list.Add(new TuneSymbol(symbol2));
                 }
 
@@ -123,6 +124,30 @@ namespace AbcTuneTool.FileIo {
                     var symbols = text[1..^1];
                     if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
                         list.Add(new TuneSymbol(symbol));
+                }
+
+                else if (text[0].IsNoteLetter()) {
+                    var firstNote = text[0];
+                    var accidental = text[1].AsAccidental(false, Accidental.Undefined);
+                    var slashIndex = text.IndexOf('/');
+                    var bassNote = '\0';
+                    var bassAccidental = Accidental.Undefined;
+                    var type = string.Empty;
+                    var startIndex = accidental != Accidental.Undefined ? 2 : 1;
+
+                    if (slashIndex >= 0 && slashIndex + 1 < text.Length) {
+                        if (slashIndex > startIndex & text.Length - startIndex - slashIndex > 0)
+                            type = text.Substring(startIndex, text.Length - startIndex - slashIndex - 1);
+
+                        bassNote = text[slashIndex + 1];
+                        if (slashIndex + 2 < text.Length)
+                            bassAccidental = text[slashIndex + 2].AsAccidental();
+                    }
+                    else {
+                        type = text.Substring(startIndex);
+                    }
+
+                    list.Add(new ChordSymbol(firstNote, accidental, type, bassNote, bassAccidental));
                 }
 
             }

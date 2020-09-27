@@ -113,8 +113,9 @@ namespace AbcTuneTool.Common {
         /// </summary>
         /// <param name="c"></param>
         /// <param name="onlyPrefix"></param>
+        /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static Accidental AsAccidental(this char c, bool onlyPrefix = false)
+        public static Accidental AsAccidental(this char c, bool onlyPrefix = false, Accidental defaultValue = Accidental.Invalid)
             => (c, onlyPrefix) switch
             {
                 ('^', _) => Accidental.Sharp,
@@ -124,7 +125,7 @@ namespace AbcTuneTool.Common {
                 ('b', false) => Accidental.Flat,
                 (' ', false) => Accidental.Undefined,
                 ('\0', false) => Accidental.Undefined,
-                _ => Accidental.Invalid
+                _ => defaultValue
             };
 
 
@@ -160,12 +161,31 @@ namespace AbcTuneTool.Common {
 
 
         /// <summary>
-        ///
+        ///     test if a char can be a keynote letter
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
         public static bool IsKeyNoteLetter(this char c) =>
             c >= 'A' && c <= 'G';
+
+        /// <summary>
+        ///     test if a char can be a decoration shortcut
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static bool IsDecorationShortcut(this char c) =>
+            c >= 'H' && c <= 'Z' ||
+            c >= 'h' && c <= 'z' ||
+            c == '~';
+
+        /// <summary>
+        ///     test if a char can be a note
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static bool IsNoteLetter(this char c) =>
+            c >= 'A' && c < 'H' ||
+            c >= 'a' && c < 'h';
 
     }
 }
