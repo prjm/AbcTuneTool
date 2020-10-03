@@ -1,4 +1,5 @@
-﻿using AbcTuneTool.Model.Symbolic;
+﻿using System;
+using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneTool.Model.TuneElements {
 
@@ -47,5 +48,25 @@ namespace AbcTuneTool.Model.TuneElements {
         ///     bass accidental
         /// </summary>
         public Accidental BassAccidental { get; }
+
+        /// <summary>
+        ///     check for equality
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public override bool Equals(TuneElement? other)
+            => other is ChordSymbol s &&
+                s.Note == Note &&
+                s.Accidental == Accidental &&
+                string.Equals(s.Type, Type, System.StringComparison.Ordinal) &&
+                s.BassNote == BassNote &&
+                s.BassAccidental == BassAccidental;
+
+        /// <summary>
+        ///     compute a hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+            => HashCode.Combine(Note, Accidental, Type, BassNote, BassAccidental);
     }
 }

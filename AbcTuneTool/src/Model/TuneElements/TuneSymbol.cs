@@ -1,4 +1,6 @@
-﻿namespace AbcTuneTool.Model.TuneElements {
+﻿using System;
+
+namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     create a new tune symbol
@@ -15,5 +17,20 @@
         ///     symbol kind
         /// </summary>
         public DecorationSymbol Symbol { get; }
+
+        /// <summary>
+        ///     check for equality
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public override bool Equals(TuneElement? other)
+            => other is TuneSymbol s && s?.Symbol == Symbol;
+
+        /// <summary>
+        ///     compute a hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+            => HashCode.Combine(Symbol.GetHashCode());
     }
 }

@@ -341,6 +341,7 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldContent.Origin => ReadSemicolonSeparatedInfoField(value),
                     InformationFieldContent.Tempo => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Symbols => ReadSymbolInfoField(value),
+                    InformationFieldContent.UserDefined => ReadWhitespaceSeparatedInfoField(value),
                     _ => ReadDefaultInfoField(value),
                 };
             }

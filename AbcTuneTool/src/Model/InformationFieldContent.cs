@@ -59,6 +59,11 @@
         ///     symbol line
         /// </summary>
         Symbols = 10,
+
+        /// <summary>
+        ///     user defined symbol shortcut
+        /// </summary>
+        UserDefined = 11,
     }
 
 

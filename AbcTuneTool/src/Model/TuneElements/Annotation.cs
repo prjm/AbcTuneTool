@@ -1,4 +1,6 @@
-﻿namespace AbcTuneTool.Model.TuneElements {
+﻿using System;
+
+namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     note annotation
@@ -25,5 +27,19 @@
         /// </summary>
         public string Text { get; }
 
+        /// <summary>
+        ///     check for equality
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public override bool Equals(TuneElement? other)
+            => other is Annotation a && a.Position == Position && string.Equals(a.Text, Text, System.StringComparison.Ordinal);
+
+        /// <summary>
+        ///     compute a hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+            => HashCode.Combine(Position, Text);
     }
 }

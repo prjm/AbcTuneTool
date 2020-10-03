@@ -528,7 +528,7 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Parse_R_Rythm() {
+        public void Test_R_Rythm() {
             var field = ParseInfoField("R:polka");
             Assert.AreEqual(field.Kind, InformationFieldKind.Rythm);
             Assert.AreEqual(field.Kind.InFileHeader(), true);
@@ -539,7 +539,7 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Parse_R_Remark() {
+        public void Test_R_Remark() {
             var field = ParseInfoField("r:this is a remark");
             Assert.AreEqual(field.Kind, InformationFieldKind.Remark);
             Assert.AreEqual(field.Kind.InFileHeader(), true);
@@ -550,7 +550,7 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Parse_S_Source() {
+        public void Test_S_Source() {
             var field = ParseInfoField("S:tunes from germany");
             Assert.AreEqual(field.Kind, InformationFieldKind.Source);
             Assert.AreEqual(field.Kind.InFileHeader(), true);
@@ -561,7 +561,7 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Parse_S_SymbolLine() {
+        public void Test_S_SymbolLine() {
             var field = ParseSymbolLineField("s:\"^sl ow\"");
             Assert.AreEqual(field.Kind, InformationFieldKind.SymbolLine);
             Assert.AreEqual(field.Kind.InFileHeader(), false);
@@ -597,7 +597,7 @@ namespace AbcTuneToolTests {
         }
 
         [TestMethod]
-        public void Parse_T_Title() {
+        public void Test_T_Title() {
             var field = ParseInfoField("T:a small tune");
             Assert.AreEqual(field.Kind, InformationFieldKind.TuneTitle);
             Assert.AreEqual(field.Kind.InFileHeader(), false);
@@ -606,5 +606,19 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.InInline(), false);
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.StringContent);
         }
+
+        [TestMethod]
+        public void Test_U_UserDefined() {
+            var field = ParseUserDefinedField("U:p = \"^+\"");
+            Assert.AreEqual(field.Kind, InformationFieldKind.UserDefined);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.UserDefined);
+
+            Assert.AreEqual(new Annotation(AnnotationPosition.Above, "+"), field.Symbol);
+        }
+
     }
 }

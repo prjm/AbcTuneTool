@@ -96,11 +96,21 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.SymbolLine
                         => new SymbolLineField(header, fieldValues, ParseTuneElements(fieldValues)),
 
+                    InformationFieldKind.UserDefined
+                        => ParseUserDefinedField(header, fieldValues),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }
 
             return default;
+        }
+
+        private UserDefinedField ParseUserDefinedField(Terminal header, Terminal fieldValues) {
+            var alias = fieldValues.GetValueAfterWhitespace(0, out var index);
+            var eq = fieldValues.GetValueAfterWhitespace(1 + index, out index);
+            var symbol = fieldValues.GetValueAfterWhitespace(1 + index, out _);
+            return new UserDefinedField(header, fieldValues, ParseTuneElement(symbol));
         }
 
         private ImmutableArray<TuneElement> ParseTuneElements(Terminal fieldValues) {
@@ -112,47 +122,56 @@ namespace AbcTuneTool.FileIo {
 
                 if (text.Length < 1) continue;
 
-                if (text[0] == '"' && text.Length > 3) {
-                    list.Add(new Annotation(text[1].AsPosition(), text[2..^1]));
-                }
-
-                else if (text.Length == 1 && text[0].IsDecorationShortcut() && Shortcuts.Shortcuts.TryGetValue(text[0], out var symbol2)) {
-                    list.Add(new TuneSymbol(symbol2));
-                }
-
-                else if (text[0] == '!' && text[^1] == '!' && text.Length > 2) {
-                    var symbols = text[1..^1];
-                    if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
-                        list.Add(new TuneSymbol(symbol));
-                }
-
-                else if (text[0].IsNoteLetter()) {
-                    var firstNote = text[0];
-                    var accidental = text[1].AsAccidental(false, Accidental.Undefined);
-                    var slashIndex = text.IndexOf('/');
-                    var bassNote = '\0';
-                    var bassAccidental = Accidental.Undefined;
-                    var type = string.Empty;
-                    var startIndex = accidental != Accidental.Undefined ? 2 : 1;
-
-                    if (slashIndex >= 0 && slashIndex + 1 < text.Length) {
-                        if (slashIndex > startIndex & text.Length - startIndex - slashIndex > 0)
-                            type = text.Substring(startIndex, text.Length - startIndex - slashIndex - 1);
-
-                        bassNote = text[slashIndex + 1];
-                        if (slashIndex + 2 < text.Length)
-                            bassAccidental = text[slashIndex + 2].AsAccidental();
-                    }
-                    else {
-                        type = text.Substring(startIndex);
-                    }
-
-                    list.Add(new ChordSymbol(firstNote, accidental, type, bassNote, bassAccidental));
-                }
-
+                var element = ParseTuneElement(text);
+                if (element != default)
+                    list.Add(element);
             }
 
             return list.ToImmutableArray<TuneElement>();
+        }
+
+        private TuneElement? ParseTuneElement(string text) {
+            var element = default(TuneElement);
+
+            if (text[0] == '"' && text.Length > 3) {
+                element = new Annotation(text[1].AsPosition(), text[2..^1]);
+            }
+
+            else if (text.Length == 1 && text[0].IsDecorationShortcut() && Shortcuts.Shortcuts.TryGetValue(text[0], out var symbol2)) {
+                element = new TuneSymbol(symbol2);
+            }
+
+            else if (text[0] == '!' && text[^1] == '!' && text.Length > 2) {
+                var symbols = text[1..^1];
+                if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
+                    element = new TuneSymbol(symbol);
+            }
+
+            else if (text[0].IsNoteLetter()) {
+                var firstNote = text[0];
+                var accidental = text[1].AsAccidental(false, Accidental.Undefined);
+                var slashIndex = text.IndexOf('/');
+                var bassNote = '\0';
+                var bassAccidental = Accidental.Undefined;
+                var type = string.Empty;
+                var startIndex = accidental != Accidental.Undefined ? 2 : 1;
+
+                if (slashIndex >= 0 && slashIndex + 1 < text.Length) {
+                    if (slashIndex > startIndex & text.Length - startIndex - slashIndex > 0)
+                        type = text.Substring(startIndex, text.Length - startIndex - slashIndex - 1);
+
+                    bassNote = text[slashIndex + 1];
+                    if (slashIndex + 2 < text.Length)
+                        bassAccidental = text[slashIndex + 2].AsAccidental();
+                }
+                else {
+                    type = text.Substring(startIndex);
+                }
+
+                element = new ChordSymbol(firstNote, accidental, type, bassNote, bassAccidental);
+            }
+
+            return element;
         }
 
         private Token GetCurrentTokenAndFetchNext() {
