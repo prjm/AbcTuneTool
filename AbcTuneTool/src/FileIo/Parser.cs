@@ -108,9 +108,9 @@ namespace AbcTuneTool.FileIo {
 
         private UserDefinedField ParseUserDefinedField(Terminal header, Terminal fieldValues) {
             var alias = fieldValues.GetValueAfterWhitespace(0, out var index);
-            var eq = fieldValues.GetValueAfterWhitespace(1 + index, out index);
+            _ = fieldValues.GetValueAfterWhitespace(1 + index, out index);
             var symbol = fieldValues.GetValueAfterWhitespace(1 + index, out _);
-            return new UserDefinedField(header, fieldValues, ParseTuneElement(symbol));
+            return new UserDefinedField(header, fieldValues, alias, ParseTuneElement(symbol));
         }
 
         private ImmutableArray<TuneElement> ParseTuneElements(Terminal fieldValues) {
@@ -145,6 +145,10 @@ namespace AbcTuneTool.FileIo {
                 var symbols = text[1..^1];
                 if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
                     element = new TuneSymbol(symbol);
+                else if (string.Equals(symbols, KnownStrings.None, StringComparison.CurrentCultureIgnoreCase))
+                    element = new UndefinedTuneSymbol();
+                else if (string.Equals(symbols, KnownStrings.Nil, StringComparison.CurrentCultureIgnoreCase))
+                    element = new UndefinedTuneSymbol();
             }
 
             else if (text[0].IsNoteLetter()) {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Symbolic {
 
     /// <summary>
     ///     definition of a fraction

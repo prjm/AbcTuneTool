@@ -618,6 +618,14 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.UserDefined);
 
             Assert.AreEqual(new Annotation(AnnotationPosition.Above, "+"), field.Symbol);
+
+            field = ParseUserDefinedField("U:p = !none!");
+            Assert.AreEqual("p", field.Alias);
+            Assert.AreEqual(new UndefinedTuneSymbol(), field.Symbol);
+
+            field = ParseUserDefinedField("U:p = !nil!");
+            Assert.AreEqual("p", field.Alias);
+            Assert.AreEqual(new UndefinedTuneSymbol(), field.Symbol);
         }
 
     }

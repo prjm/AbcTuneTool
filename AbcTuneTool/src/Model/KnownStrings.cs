@@ -239,5 +239,10 @@
         ///     c line
         /// </summary>
         public const string CLine = "C|";
+
+        /// <summary>
+        ///     nil symbol
+        /// </summary>
+        public const string Nil = "nil";
     }
 }

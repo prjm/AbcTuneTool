@@ -1,4 +1,6 @@
-﻿namespace AbcTuneTool.Model {
+﻿using AbcTuneTool.Model.Symbolic;
+
+namespace AbcTuneTool.Model {
 
     /// <summary>
     ///     information field
