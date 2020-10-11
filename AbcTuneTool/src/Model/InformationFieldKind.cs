@@ -185,6 +185,7 @@
                 InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => false,
                 InformationFieldKind.UserDefined => true,
+                InformationFieldKind.Voice => false,
                 _ => false,
             };
 
@@ -218,6 +219,7 @@
                 InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => true,
                 InformationFieldKind.UserDefined => true,
+                InformationFieldKind.Voice => true,
                 _ => false,
             };
 
@@ -251,6 +253,7 @@
                 InformationFieldKind.SymbolLine => true,
                 InformationFieldKind.TuneTitle => true,
                 InformationFieldKind.UserDefined => true,
+                InformationFieldKind.Voice => true,
                 _ => false,
             };
 
@@ -284,6 +287,7 @@
                 InformationFieldKind.SymbolLine => false,
                 InformationFieldKind.TuneTitle => false,
                 InformationFieldKind.UserDefined => true,
+                InformationFieldKind.Voice => true,
                 _ => false,
             };
 
@@ -317,6 +321,7 @@
                 InformationFieldKind.SymbolLine => InformationFieldContent.Symbols,
                 InformationFieldKind.TuneTitle => InformationFieldContent.StringContent,
                 InformationFieldKind.UserDefined => InformationFieldContent.UserDefined,
+                InformationFieldKind.Voice => InformationFieldContent.Voice,
                 _ => InformationFieldContent.Undefined,
             };
 

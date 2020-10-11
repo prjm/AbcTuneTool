@@ -128,10 +128,21 @@ namespace AbcTuneTool.Model {
                     var additionalAccidental = value.GetValueAfterWhitespace(i, out var offset3);
                     i = offset3;
 
-                    if (additionalAccidental.Length < 1 || additionalAccidental[0].AsAccidental(true) == Accidental.Invalid)
+                    if (additionalAccidental.Length < 1)
                         break;
 
-                    var addTone = additionalAccidental.AsTonePrefixAccidentals();
+                    var acc = additionalAccidental[0].AsAccidental(true);
+
+                    if (acc == Accidental.Invalid)
+                        break;
+
+                    var name = additionalAccidental;
+                    if (acc == Accidental.Natural && i + 1 < value.Length && value[i + 1].Length > 0) {
+                        name = value[i + 1];
+                        i++;
+                    }
+
+                    var addTone = additionalAccidental.AsTonePrefixAccidentals(name);
                     isValid = isValid && result.Tones.AddAccidental(addTone);
                     offset1 = offset3 + 1;
                 }

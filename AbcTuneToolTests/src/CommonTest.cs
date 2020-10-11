@@ -87,6 +87,13 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static VoiceField ParseVoiceField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as VoiceField;
+            Assert.NotNull(result);
+            return result;
+        }
+
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 

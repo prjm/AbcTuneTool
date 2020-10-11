@@ -64,6 +64,11 @@
         ///     user defined symbol shortcut
         /// </summary>
         UserDefined = 11,
+
+        /// <summary>
+        ///     voice information
+        /// </summary>
+        Voice = 12,
     }
 
 

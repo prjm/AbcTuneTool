@@ -18,10 +18,10 @@ namespace AbcTuneTool.Model {
 
             var value = fieldValues.GetValueAfterWhitespace(0);
 
-            if (value.StartsWith(KnownStrings.CLine, System.StringComparison.OrdinalIgnoreCase))
+            if (value.StartsWith(KnownStrings.CLine, StringComparison.OrdinalIgnoreCase))
                 MeterValue = new Meter(new Fraction(2, 2));
 
-            else if (value.StartsWith(KnownStrings.C, System.StringComparison.OrdinalIgnoreCase))
+            else if (value.StartsWith(KnownStrings.C, StringComparison.OrdinalIgnoreCase))
                 MeterValue = new Meter(new Fraction(4, 4));
 
 

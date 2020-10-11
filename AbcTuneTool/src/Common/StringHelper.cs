@@ -38,14 +38,14 @@ namespace AbcTuneTool.Common {
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Tone AsTonePrefixAccidentals(this string data) {
-            if (data.Length < 1)
+        /// <param name="name"></param>
+        public static Tone AsTonePrefixAccidentals(this string data, string name) {
+            if (data.Length < 1 || name.Length < 1)
                 return new Tone(' ', ' ');
 
-            var name = data[^1];
             var a = Accidental.Undefined;
 
-            if (data.Length > 1) {
+            if (data.Length > 0) {
                 var a1 = data[0].AsAccidental();
                 var a2 = Accidental.Undefined;
 
@@ -66,7 +66,7 @@ namespace AbcTuneTool.Common {
                     a = a1;
             }
 
-            return new Tone(name, a);
+            return new Tone(name[^1], a);
         }
 
     }

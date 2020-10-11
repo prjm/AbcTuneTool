@@ -70,6 +70,7 @@ namespace AbcTuneTool.FileIo {
                 var cache = Tokenizer.Tokenizer.Cache;
                 var pool = Tokenizer.Tokenizer.StringBuilderPool;
                 var fieldValues = new Terminal(values);
+
                 return kind switch
                 {
                     InformationFieldKind.Instruction
@@ -99,11 +100,31 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.UserDefined
                         => ParseUserDefinedField(header, fieldValues),
 
+                    InformationFieldKind.Voice
+                        => ParseVoiceField(header, fieldValues),
+
                     _ => new InformationField(header, new Terminal(values), kind),
                 };
             }
 
             return default;
+        }
+
+        private VoiceField ParseVoiceField(Terminal header, Terminal fieldValues) {
+            var id = fieldValues.GetValueAfterWhitespace(0, out var index);
+            var name = string.Empty;
+
+            for (index++; index + 2 < fieldValues.Length; index++) {
+
+                var property = fieldValues[index];
+                var eq = fieldValues[index + 1];
+                var value = fieldValues[index + 2];
+
+                if (string.Equals(property, "name", StringComparison.OrdinalIgnoreCase))
+                    name = value[1..^1];
+            }
+
+            return new VoiceField(header, fieldValues, id, name);
         }
 
         private UserDefinedField ParseUserDefinedField(Terminal header, Terminal fieldValues) {

@@ -55,7 +55,7 @@ namespace AbcTuneToolTests {
 
         [TestMethod]
         public void TestTone()
-            => Assert.AreEqual(" a".AsTonePrefixAccidentals(), new Tone('a', Accidental.Undefined));
+            => Assert.AreEqual(" ".AsTonePrefixAccidentals("a"), new Tone('a', Accidental.Undefined));
 
         [TestMethod]
         public void TestMajorScale() {

@@ -218,6 +218,31 @@ namespace AbcTuneTool.FileIo {
             return true;
         }
 
+        private bool ReadWhitespaceOrEqualsSeparatedInfoField(char value) {
+            using var sb = StringBuilderPool.Rent();
+            var wasWhitespace = value.IsWhitespace();
+
+            sb.Item.Append(value);
+
+            while (value != '=' && ReadChar(out var nextValue)) {
+
+                var isWhitespace = nextValue.IsWhitespace();
+
+                if (nextValue.IsLinebreak() || nextValue == '=' || isWhitespace != wasWhitespace) {
+                    buffer.Enqueue(nextValue);
+                    break;
+                }
+                else {
+                    sb.Item.Append(nextValue);
+                }
+            }
+
+            var headerData = Cache.ForStringBuilder(sb.Item);
+            SetToken(headerData, headerData, TokenKind.Char);
+            return true;
+        }
+
+
         private bool ReadSymbolInfoField(char value) {
             using var sb = StringBuilderPool.Rent();
             var wasWhitespace = value.IsWhitespace();
@@ -334,7 +359,7 @@ namespace AbcTuneTool.FileIo {
                 return isInInfoField.GetContentType() switch
                 {
                     InformationFieldContent.Instruction => ReadWhitespaceSeparatedInfoField(value),
-                    InformationFieldContent.Key => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Key => ReadWhitespaceOrEqualsSeparatedInfoField(value),
                     InformationFieldContent.NoteLength => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Meter => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Macro => ReadWhitespaceSeparatedInfoField(value),
@@ -342,6 +367,7 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldContent.Tempo => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Symbols => ReadSymbolInfoField(value),
                     InformationFieldContent.UserDefined => ReadWhitespaceSeparatedInfoField(value),
+                    InformationFieldContent.Voice => ReadWhitespaceOrEqualsSeparatedInfoField(value),
                     _ => ReadDefaultInfoField(value),
                 };
             }

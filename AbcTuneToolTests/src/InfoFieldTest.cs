@@ -305,7 +305,6 @@ namespace AbcTuneToolTests {
 
         [TestMethod]
         public void Test_K_Explicit_Key() {
-            //static Tone t(char c, char a) => new Tone(c, a.AsAccidental());
             static Tone[] a(string k) => ParseKeyField("K:" + k).KeyValue.Tones.Accidentals.ToArray();
 
             Assert.AreEqualSeq(StringToTones("bb", "eb"), a("D Phr"));
@@ -626,6 +625,22 @@ namespace AbcTuneToolTests {
             field = ParseUserDefinedField("U:p = !nil!");
             Assert.AreEqual("p", field.Alias);
             Assert.AreEqual(new UndefinedTuneSymbol(), field.Symbol);
+        }
+
+        [TestMethod]
+        public void Test_V_Voice() {
+            var field = ParseVoiceField("V:3");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Voice);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), true);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Voice);
+
+            Assert.AreEqual("3", field.Id);
+
+            field = ParseVoiceField("V:3 name=\"q\" ");
+            Assert.AreEqual("q", field.Name);
         }
 
     }
