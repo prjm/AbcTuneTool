@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     set of information fields

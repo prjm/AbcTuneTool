@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Text;
 using AbcTuneTool.Common;
+using AbcTuneTool.Model.Fields;
 
 namespace AbcTuneTool.Model {
 

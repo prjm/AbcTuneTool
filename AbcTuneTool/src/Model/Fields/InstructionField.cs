@@ -1,6 +1,6 @@
 ﻿using AbcTuneTool.Common;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     special information field for instructions

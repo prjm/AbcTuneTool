@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Fields;
 
 namespace AbcTuneTool.FileIo {
 

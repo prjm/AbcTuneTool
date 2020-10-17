@@ -1,4 +1,4 @@
-﻿namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     information fields for headers

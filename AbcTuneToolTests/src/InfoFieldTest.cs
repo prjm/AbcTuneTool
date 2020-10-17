@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
+using AbcTuneTool.Model.Fields;
 using AbcTuneTool.Model.Symbolic;
 using AbcTuneTool.Model.TuneElements;
 
@@ -641,6 +642,25 @@ namespace AbcTuneToolTests {
 
             field = ParseVoiceField("V:3 name=\"q\" ");
             Assert.AreEqual("q", field.Name);
+
+            field = ParseVoiceField("V:3 nm=\"q\" ");
+            Assert.AreEqual("q", field.Name);
+
+            field = ParseVoiceField("V:3 subname=\"q\" ");
+            Assert.AreEqual("q", field.Subname);
+
+            field = ParseVoiceField("V:3 snm=\"q\" ");
+            Assert.AreEqual("q", field.Subname);
+
+            field = ParseVoiceField("V:3 stem=up ");
+            Assert.AreEqual(StemDirection.Up, field.StemDirection);
+
+            field = ParseVoiceField("V:3 stem=DOWN ");
+            Assert.AreEqual(StemDirection.Down, field.StemDirection);
+
+            field = ParseVoiceField("V:3 clef=alto ");
+            Assert.AreEqual(ClefMode.Alto, field.Clef.Clef);
+
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using AbcTuneTool.Model.Fields;
 using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneTool.Model {

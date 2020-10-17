@@ -244,5 +244,40 @@
         ///     nil symbol
         /// </summary>
         public const string Nil = "nil";
+
+        /// <summary>
+        ///     name
+        /// </summary>
+        public const string Name = "name";
+
+        /// <summary>
+        ///     name
+        /// </summary>
+        public const string Nm = "nm";
+
+        /// <summary>
+        ///     subname
+        /// </summary>
+        public const string Subname = "subname";
+
+        /// <summary>
+        ///     subname
+        /// </summary>
+        public const string Snm = "snm";
+
+        /// <summary>
+        ///     stem
+        /// </summary>
+        public const string Stem = "stem";
+
+        /// <summary>
+        ///     upwards stem
+        /// </summary>
+        public const string Up = "up";
+
+        /// <summary>
+        ///     downwards stem
+        /// </summary>
+        public const string Down = "down";
     }
 }

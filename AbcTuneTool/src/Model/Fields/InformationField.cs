@@ -1,6 +1,6 @@
 ﻿using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     information field
