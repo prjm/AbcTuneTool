@@ -14,6 +14,7 @@ namespace AbcTuneToolTests {
         private class MIN : MinorKeyTable { }
         private class MIX : MixolydianKeyTable { }
         private class DOR : DorianKeyTable { }
+        private class PHR : PhrygianKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -133,7 +134,6 @@ namespace AbcTuneToolTests {
 
             TestKey<DOR>("A ", "f#", "a ", "b ", "c ", "d ", "e ", "f#", "g ", "a ");
             TestKey<DOR>("E ", "f#c#", "e ", "f#", "g ", "a ", "b ", "c#", "d ", "e ");
-            TestKey<DOR>("E ", "f#c#", "e ", "f#", "g ", "a ", "b ", "c#", "d ", "e ");
             TestKey<DOR>("B ", "f#c#g#", "b ", "c#", "d ", "e ", "f#", "g#", "a ", "b ");
             TestKey<DOR>("F#", "f#c#g#d#", "f#", "g#", "a ", "b ", "c#", "d#", "e ", "f#");
             TestKey<DOR>("C#", "f#c#g#d#a#", "c#", "d#", "e ", "f#", "g#", "a#", "b ", "c#");
@@ -147,6 +147,29 @@ namespace AbcTuneToolTests {
             TestKey<DOR>("Eb", "bbebabdbgb", "eb", "f ", "gb", "ab", "bb", "c ", "db", "eb");
             TestKey<DOR>("Ab", "bbebabdbgbcb", "ab", "bb", "cb", "db", "eb", "f ", "gb", "ab");
             TestKey<DOR>("Db", "bbebabdbgbcbfb", "db", "eb", "fb", "gb", "ab", "bb", "cb", "db");
+
+        }
+
+        [TestMethod]
+        public void TestPhrygianScale() {
+
+            TestKey<PHR>("E ", "", "e ", "f ", "g ", "a ", "b ", "c ", "d ", "e ");
+
+            TestKey<PHR>("B ", "f#", "b ", "c ", "d ", "e ", "f#", "g ", "a ", "b ");
+            TestKey<PHR>("F#", "f#c#", "f#", "g ", "a ", "b ", "c#", "d ", "e ", "f#");
+            TestKey<PHR>("C#", "f#c#g#", "c#", "d ", "e ", "f#", "g#", "a ", "b ", "c#");
+            TestKey<PHR>("G#", "f#c#g#d#", "g#", "a ", "b ", "c#", "d#", "e ", "f#", "g#");
+            TestKey<PHR>("D#", "f#c#g#d#a#", "d#", "e ", "f#", "g#", "a#", "b ", "c#", "d#");
+            TestKey<PHR>("A#", "f#c#g#d#a#e#", "a#", "b ", "c#", "d#", "e#", "f#", "g#", "a#");
+            TestKey<PHR>("E#", "f#c#g#d#a#e#b#", "e#", "f#", "g#", "a#", "b#", "c#", "d#", "e#");
+
+            TestKey<PHR>("A ", "bb", "a ", "bb", "c ", "d ", "e ", "f ", "g ", "a ");
+            TestKey<PHR>("D ", "bbeb", "d ", "eb", "f ", "g ", "a ", "bb", "c ", "d ");
+            TestKey<PHR>("G ", "bbebab", "g ", "ab", "bb", "c ", "d ", "eb", "f ", "g ");
+            TestKey<PHR>("C ", "bbebabdb", "c ", "db", "eb", "f ", "g ", "ab", "bb", "c ");
+            TestKey<PHR>("F ", "bbebabdbgb", "f ", "gb", "ab", "bb", "c ", "db", "eb", "f ");
+            TestKey<PHR>("Bb", "bbebabdbgbcb", "bb", "cb", "db", "eb", "f ", "gb", "ab", "bb");
+            TestKey<PHR>("Eb", "bbebabdbgbcbfb", "eb", "fb", "gb", "ab", "bb", "cb", "db", "eb");
 
 
         }
