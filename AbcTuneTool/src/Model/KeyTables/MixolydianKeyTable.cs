@@ -1,4 +1,4 @@
-﻿namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.KeyTables {
 
     /// <summary>
     ///     mixolydian key table

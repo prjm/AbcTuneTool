@@ -1,7 +1,6 @@
-﻿using AbcTuneTool.Model.Fields;
-using AbcTuneTool.Model.Symbolic;
+﻿using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     note length field

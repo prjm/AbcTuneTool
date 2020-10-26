@@ -1,4 +1,4 @@
-﻿namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     instruction kind

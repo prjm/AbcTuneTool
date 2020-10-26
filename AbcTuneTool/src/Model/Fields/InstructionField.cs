@@ -1,4 +1,5 @@
 ﻿using AbcTuneTool.Common;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.Model.Fields {
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.KeyTables {
 
     /// <summary>
     ///     key definition

@@ -1,6 +1,6 @@
 ﻿using System;
 using AbcTuneTool.Common;
-using AbcTuneTool.Model;
+using AbcTuneTool.Model.KeyTables;
 
 namespace AbcTuneSampleApp {
     class Program {

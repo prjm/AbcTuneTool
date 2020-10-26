@@ -1,7 +1,7 @@
-﻿using AbcTuneTool.Model.Fields;
+﻿using AbcTuneTool.Model.KeyTables;
 using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     key field
