@@ -660,8 +660,30 @@ namespace AbcTuneToolTests {
 
             field = ParseVoiceField("V:3 clef=alto ");
             Assert.AreEqual(ClefMode.Alto, field.Clef.Clef);
-
         }
+
+        [TestMethod]
+        public void Test_W_Words() {
+            var field = ParseInfoField("W:words");
+            Assert.AreEqual(field.Kind, InformationFieldKind.WordsAfterTune);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Words);
+        }
+
+        [TestMethod]
+        public void Test_w_Words() {
+            var field = ParseInfoField("w:words");
+            Assert.AreEqual(field.Kind, InformationFieldKind.WordsInTune);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneBody(), true);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Words);
+        }
+
 
     }
 }

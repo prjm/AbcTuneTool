@@ -69,6 +69,11 @@
         ///     voice information
         /// </summary>
         Voice = 12,
+
+        /// <summary>
+        ///     words
+        /// </summary>
+        Words = 13,
     }
 
 

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using AbcTuneToolWpf.ViewModel;
 
 namespace AbcTuneToolWpf {
 
@@ -10,7 +9,7 @@ namespace AbcTuneToolWpf {
 
         public MainWindow() {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
+
     }
 }
