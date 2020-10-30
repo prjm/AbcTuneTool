@@ -15,6 +15,7 @@ namespace AbcTuneToolTests {
         private class MIX : MixolydianKeyTable { }
         private class DOR : DorianKeyTable { }
         private class PHR : PhrygianKeyTable { }
+        private class LYD : LydianKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -170,9 +171,28 @@ namespace AbcTuneToolTests {
             TestKey<PHR>("F ", "bbebabdbgb", "f ", "gb", "ab", "bb", "c ", "db", "eb", "f ");
             TestKey<PHR>("Bb", "bbebabdbgbcb", "bb", "cb", "db", "eb", "f ", "gb", "ab", "bb");
             TestKey<PHR>("Eb", "bbebabdbgbcbfb", "eb", "fb", "gb", "ab", "bb", "cb", "db", "eb");
-
-
         }
 
+        [TestMethod]
+        public void TestLydianScale() {
+
+            TestKey<LYD>("F ", "", "f ", "g ", "a ", "b ", "c ", "d ", "e ", "f ");
+
+            TestKey<LYD>("C ", "f#", "c ", "d ", "e ", "f#", "g ", "a ", "b ", "c ");
+            TestKey<LYD>("G ", "f#c#", "g ", "a ", "b ", "c#", "d ", "e ", "f#", "g ");
+            TestKey<LYD>("D ", "f#c#g#", "d ", "e ", "f#", "g#", "a ", "b ", "c#", "d ");
+            TestKey<LYD>("A ", "f#c#g#d#", "a ", "b ", "c#", "d#", "e ", "f#", "g#", "a ");
+            TestKey<LYD>("E ", "f#c#g#d#a#", "e ", "f#", "g#", "a#", "b ", "c#", "d#", "e ");
+            TestKey<LYD>("B ", "f#c#g#d#a#e#", "b ", "c#", "d#", "e#", "f#", "g#", "a#", "b ");
+            TestKey<LYD>("F#", "f#c#g#d#a#e#b#", "f#", "g#", "a#", "b#", "c#", "d#", "e#", "f#");
+
+            TestKey<LYD>("Bb", "bb", "bb", "c ", "d ", "e ", "f ", "g ", "a ", "bb");
+            TestKey<LYD>("Eb", "bbeb", "eb", "f ", "g ", "a ", "bb", "c ", "d ", "eb");
+            TestKey<LYD>("Ab", "bbebab", "ab", "bb", "c ", "d ", "eb", "f ", "g ", "ab");
+            TestKey<LYD>("Db", "bbebabdb", "db", "eb", "f ", "g ", "ab", "bb", "c ", "db");
+            TestKey<LYD>("Gb", "bbebabdbgb", "gb", "ab", "bb", "c ", "db", "eb", "f ", "gb");
+            TestKey<LYD>("Cb", "bbebabdbgbcb", "cb", "db", "eb", "f ", "gb", "ab", "bb", "cb");
+            TestKey<LYD>("Fb", "bbebabdbgbcbfb", "fb", "gb", "ab", "bb", "cb", "db", "eb", "fb");
+        }
     }
 }
