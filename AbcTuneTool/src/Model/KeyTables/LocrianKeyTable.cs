@@ -18,13 +18,14 @@
             AddKey(+6, 'E', '#', new Tone('e', '#'));
             AddKey(+7, 'B', '#', new Tone('b', '#'));
             AddKey(+0, 'B', ' ');
-            AddKey(-1, 'E', ' ');
-            AddKey(-2, 'A', ' ');
-            AddKey(-3, 'D', ' ');
-            AddKey(-4, 'G', ' ');
-            AddKey(-5, 'C', ' ');
-            AddKey(-6, 'F', ' ');
-            AddKey(-7, 'B', 'b', new Tone('b', 'b'));
+
+            AddKey(-1, 'E', ' ', new Tone('b', 'b'));
+            AddKey(-2, 'A', ' ', new Tone('e', 'b'));
+            AddKey(-3, 'D', ' ', new Tone('a', 'b'));
+            AddKey(-4, 'G', ' ', new Tone('d', 'b'));
+            AddKey(-5, 'C', ' ', new Tone('g', 'b'));
+            AddKey(-6, 'F', ' ', new Tone('c', 'b'));
+            AddKey(-7, 'B', 'b', new Tone('f', 'b'));
 
         }
 

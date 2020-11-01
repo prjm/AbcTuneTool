@@ -5,6 +5,7 @@ using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Fields;
+using AbcTuneTool.src.Model.Fields;
 
 namespace AbcTuneToolTests {
 
@@ -93,6 +94,11 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static ReferenceNumberField ParseRefNumberField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as ReferenceNumberField;
+            Assert.NotNull(result);
+            return result;
+        }
 
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);

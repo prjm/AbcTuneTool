@@ -74,6 +74,11 @@
         ///     words
         /// </summary>
         Words = 13,
+
+        /// <summary>
+        ///     reference number
+        /// </summary>
+        RefNumber = 14,
     }
 
 

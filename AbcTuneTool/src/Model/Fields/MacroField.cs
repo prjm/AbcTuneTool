@@ -1,6 +1,4 @@
-﻿using AbcTuneTool.Model.Fields;
-
-namespace AbcTuneTool.Model {
+﻿namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     macro definition

@@ -16,6 +16,7 @@ namespace AbcTuneToolTests {
         private class DOR : DorianKeyTable { }
         private class PHR : PhrygianKeyTable { }
         private class LYD : LydianKeyTable { }
+        private class LOC : LocrianKeyTable { }
 
         private void TestKey<T>(string key, string accidentals, params string[] tones) where T : KeyTable, new() {
             var k = new T();
@@ -194,5 +195,28 @@ namespace AbcTuneToolTests {
             TestKey<LYD>("Cb", "bbebabdbgbcb", "cb", "db", "eb", "f ", "gb", "ab", "bb", "cb");
             TestKey<LYD>("Fb", "bbebabdbgbcbfb", "fb", "gb", "ab", "bb", "cb", "db", "eb", "fb");
         }
+
+        [TestMethod]
+        public void TestLocrianScale() {
+
+            TestKey<LOC>("B ", "", "b ", "c ", "d ", "e ", "f ", "g ", "a ", "b ");
+
+            TestKey<LOC>("F#", "f#", "f#", "g ", "a ", "b ", "c ", "d ", "e ", "f#");
+            TestKey<LOC>("C#", "f#c#", "c#", "d ", "e ", "f#", "g ", "a ", "b ", "c#");
+            TestKey<LOC>("G#", "f#c#g#", "g#", "a ", "b ", "c#", "d ", "e ", "f#", "g#");
+            TestKey<LOC>("D#", "f#c#g#d#", "d#", "e ", "f#", "g#", "a ", "b ", "c#", "d#");
+            TestKey<LOC>("A#", "f#c#g#d#a#", "a#", "b ", "c#", "d#", "e ", "f#", "g#", "a#");
+            TestKey<LOC>("E#", "f#c#g#d#a#e#", "e#", "f#", "g#", "a#", "b ", "c#", "d#", "e#");
+            TestKey<LOC>("B#", "f#c#g#d#a#e#b#", "b#", "c#", "d#", "e#", "f#", "g#", "a#", "b#");
+
+            TestKey<LOC>("E ", "bb", "e ", "f ", "g ", "a ", "bb", "c ", "d ", "e ");
+            TestKey<LOC>("A ", "bbeb", "a ", "bb", "c ", "d ", "eb", "f ", "g ", "a ");
+            TestKey<LOC>("D ", "bbebab", "d ", "eb", "f ", "g ", "ab", "bb", "c ", "d ");
+            TestKey<LOC>("G ", "bbebabdb", "g ", "ab", "bb", "c ", "db", "eb", "f ", "g ");
+            TestKey<LOC>("C ", "bbebabdbgb", "c ", "db", "eb", "f ", "gb", "ab", "bb", "c ");
+            TestKey<LOC>("F ", "bbebabdbgbcb", "f ", "gb", "ab", "bb", "cb", "db", "eb", "f ");
+            TestKey<LOC>("Bb", "bbebabdbgbcbfb", "bb", "cb", "db", "eb", "fb", "gb", "ab", "bb");
+        }
+
     }
 }

@@ -684,6 +684,23 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Words);
         }
 
+        [TestMethod]
+        public void Test_X_ReferenceNumber() {
+            var field = ParseInfoField("X:123");
+            Assert.AreEqual(field.Kind, InformationFieldKind.RefNumber);
+            Assert.AreEqual(field.Kind.InFileHeader(), false);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), false);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.RefNumber);
+
+            var f = ParseRefNumberField("X:123");
+            Assert.AreEqual(123ul, f?.Number);
+
+            f = ParseRefNumberField("X:");
+            Assert.AreEqual(null, f?.Number);
+        }
+
 
     }
 }

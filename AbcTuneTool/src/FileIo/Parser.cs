@@ -6,6 +6,7 @@ using AbcTuneTool.Model.Fields;
 using AbcTuneTool.Model.KeyTables;
 using AbcTuneTool.Model.Symbolic;
 using AbcTuneTool.Model.TuneElements;
+using AbcTuneTool.src.Model.Fields;
 
 namespace AbcTuneTool.FileIo {
 
@@ -103,6 +104,9 @@ namespace AbcTuneTool.FileIo {
 
                     InformationFieldKind.Voice
                         => ParseVoiceField(header, fieldValues),
+
+                    InformationFieldKind.RefNumber
+                        => new ReferenceNumberField(header, fieldValues),
 
                     _ => new InformationField(header, new Terminal(values), kind),
                 };

@@ -188,6 +188,7 @@
                 InformationFieldKind.Voice => false,
                 InformationFieldKind.WordsAfterTune => false,
                 InformationFieldKind.WordsInTune => false,
+                InformationFieldKind.RefNumber => false,
                 _ => false,
             };
 
@@ -224,6 +225,7 @@
                 InformationFieldKind.Voice => true,
                 InformationFieldKind.WordsAfterTune => true,
                 InformationFieldKind.WordsInTune => false,
+                InformationFieldKind.RefNumber => true,
                 _ => false,
             };
 
@@ -260,6 +262,7 @@
                 InformationFieldKind.Voice => true,
                 InformationFieldKind.WordsAfterTune => true,
                 InformationFieldKind.WordsInTune => true,
+                InformationFieldKind.RefNumber => false,
                 _ => false,
             };
 
@@ -296,6 +299,7 @@
                 InformationFieldKind.Voice => true,
                 InformationFieldKind.WordsAfterTune => false,
                 InformationFieldKind.WordsInTune => false,
+                InformationFieldKind.RefNumber => false,
                 _ => false,
             };
 
@@ -332,6 +336,7 @@
                 InformationFieldKind.Voice => InformationFieldContent.Voice,
                 InformationFieldKind.WordsAfterTune => InformationFieldContent.Words,
                 InformationFieldKind.WordsInTune => InformationFieldContent.Words,
+                InformationFieldKind.RefNumber => InformationFieldContent.RefNumber,
                 _ => InformationFieldContent.Undefined,
             };
 

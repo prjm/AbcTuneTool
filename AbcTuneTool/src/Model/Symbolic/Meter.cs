@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
-using AbcTuneTool.Model.Symbolic;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.Symbolic {
 
     /// <summary>
     ///     meter definition
