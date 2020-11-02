@@ -701,6 +701,24 @@ namespace AbcTuneToolTests {
             Assert.AreEqual(null, f?.Number);
         }
 
+        [TestMethod]
+        public void Test_Z_Transcription() {
+            var field = ParseInfoField("Z:demo");
+            Assert.AreEqual(field.Kind, InformationFieldKind.Transcription);
+            Assert.AreEqual(field.Kind.InFileHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneHeader(), true);
+            Assert.AreEqual(field.Kind.InTuneBody(), false);
+            Assert.AreEqual(field.Kind.InInline(), false);
+            Assert.AreEqual(field.Kind.GetContentType(), InformationFieldContent.Transcription);
 
+            var f = ParseTranscriptionField("Z:abc-transcription xx");
+            Assert.AreEqual(TranscriptionKind.Transcription, f.TranscriptionKind);
+
+            f = ParseTranscriptionField("Z:abc-edited-by xx");
+            Assert.AreEqual(TranscriptionKind.Edited, f.TranscriptionKind);
+
+            f = ParseTranscriptionField("Z:abc-copyright xx");
+            Assert.AreEqual(TranscriptionKind.Copyright, f.TranscriptionKind);
+        }
     }
 }

@@ -369,6 +369,7 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldContent.Symbols => ReadSymbolInfoField(value),
                     InformationFieldContent.UserDefined => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Voice => ReadWhitespaceOrEqualsSeparatedInfoField(value),
+                    InformationFieldContent.Transcription => ReadWhitespaceSeparatedInfoField(value),
                     _ => ReadDefaultInfoField(value),
                 };
             }

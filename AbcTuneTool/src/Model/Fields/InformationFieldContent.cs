@@ -79,6 +79,11 @@
         ///     reference number
         /// </summary>
         RefNumber = 14,
+
+        /// <summary>
+        ///     transcription notice
+        /// </summary>
+        Transcription = 15,
     }
 
 

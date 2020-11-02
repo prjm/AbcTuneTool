@@ -100,6 +100,12 @@ namespace AbcTuneToolTests {
             return result;
         }
 
+        protected static TranscriptionField ParseTranscriptionField(string source) {
+            var result = Symbol(source, (Parser p) => p.ParseInformationField()) as TranscriptionField;
+            Assert.NotNull(result);
+            return result;
+        }
+
         protected static Tone[] StringToTones(params string[] tones)
             => StringToTones((IEnumerable<string>)tones);
 

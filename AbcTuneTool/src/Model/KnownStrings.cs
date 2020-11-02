@@ -279,5 +279,21 @@
         ///     downwards stem
         /// </summary>
         public const string Down = "down";
+
+        /// <summary>
+        ///     transcription
+        /// </summary>
+        public const string AbcTranscription = "abc-transcription";
+
+        /// <summary>
+        ///     edited by
+        /// </summary>
+        public const string AbcEditedBy = "abc-edited-by";
+
+        /// <summary>
+        ///     copyrighh
+        /// </summary>
+        public const string AbcCopyright = "abc-copyright";
+
     }
 }

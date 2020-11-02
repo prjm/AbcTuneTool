@@ -108,7 +108,10 @@ namespace AbcTuneTool.FileIo {
                     InformationFieldKind.RefNumber
                         => new ReferenceNumberField(header, fieldValues),
 
-                    _ => new InformationField(header, new Terminal(values), kind),
+                    InformationFieldKind.Transcription
+                        => new TranscriptionField(header, fieldValues),
+
+                    _ => new InformationField(header, fieldValues, kind),
                 };
             }
 
