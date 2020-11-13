@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Fields;
@@ -73,8 +74,7 @@ namespace AbcTuneTool.FileIo {
                 var pool = Tokenizer.Tokenizer.StringBuilderPool;
                 var fieldValues = new Terminal(values);
 
-                return kind switch
-                {
+                return kind switch {
                     InformationFieldKind.Instruction
                         => new InstructionField(header, fieldValues, cache, pool),
 
@@ -287,8 +287,7 @@ namespace AbcTuneTool.FileIo {
                 }
             }
 
-            var status = (hasKey, isValid) switch
-            {
+            var status = (hasKey, isValid) switch {
                 (false, _) => KeyStatus.NoKey,
                 (true, false) => KeyStatus.Invalidkey,
                 (true, true) => KeyStatus.ValidKey
@@ -480,8 +479,7 @@ namespace AbcTuneTool.FileIo {
                 if (clefTranspose != ClefTranspose.Undefined)
                     lineIndex -= 2;
                 if (lineIndex < name.Length)
-                    clefLine = name[lineIndex] switch
-                    {
+                    clefLine = name[lineIndex] switch {
                         '1' => 1,
                         '2' => 2,
                         '3' => 3,
@@ -570,22 +568,47 @@ namespace AbcTuneTool.FileIo {
         ///     parse a single tune
         /// </summary>
         /// <returns></returns>
-        public Tune ParseTune() {
+        public Tune ParseTune(bool isFirst, InformationFields fileHeader, out bool hasHeader) {
             var header = InformationFields.Empty;
             var otherLines = ParseLinesBeforeHeader();
 
             if (Matches(TokenKind.InformationFieldHeader)) {
                 header = ParseInformationFields();
+                hasHeader = true;
+            }
+            else {
+                header = fileHeader;
+                hasHeader = false;
             }
 
+            return new Tune(otherLines, header, ParseTuneBody());
+        }
+
+        /// <summary>
+        ///     parse tune body
+        /// </summary>
+        /// <returns></returns>
+        public TuneBody ParseTuneBody() {
+            using var items = ListPools.ObjectLists.Rent();
+
             while (!Matches(TokenKind.Eof, TokenKind.EmptyLine)) {
+
+                if (Matches(TokenKind.Char) && CurrentToken.Value[0].IsNoteLetter())
+                    items.Add(ParseNote());
+
                 Tokenizer.NextToken();
             }
 
-            return new Tune(otherLines, header);
+            return new TuneBody(items.ToImmutableArray<TuneElement>());
         }
 
-        internal string ExtractVersion(Token token) {
+        private Note ParseNote() {
+            var letter = CurrentToken.Value[0];
+
+            return new Note(letter, 0);
+        }
+
+        private string ExtractVersion(Token token) {
             var dashIndex = token.OriginalValue.IndexOf("-") + 1;
             if (dashIndex != KnownStrings.VersionComment.Length)
                 return KnownStrings.UndefinedVersion;
@@ -598,30 +621,36 @@ namespace AbcTuneTool.FileIo {
         /// <returns></returns>
         public TuneBook ParseTuneBook() {
             var hasFileHeader = false;
-            var version = KnownStrings.UndefinedVersion;
             var fileHeader = InformationFields.Empty;
             using var list = ListPools.ObjectLists.Rent();
-
-            if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
-                version = ExtractVersion(CurrentToken);
-            }
+            var version = ExtractVersion();
 
             while (!Matches(TokenKind.Eof)) {
 
                 var otherLines = ParseLinesBeforeHeader();
 
-                if (Matches(TokenKind.InformationFieldHeader)) {
-                    if (!hasFileHeader) {
-                        fileHeader = ParseInformationFields();
-                        hasFileHeader = true;
-                        continue;
-                    }
-                    list.Add(ParseTune());
+                if (Matches(TokenKind.InformationFieldHeader) && !hasFileHeader) {
+                    fileHeader = ParseInformationFields();
+                    hasFileHeader = true;
                 }
+
+                list.Add(ParseTune(list.Item.Count < 1, fileHeader, out var hasHeader));
+
+                if (list.Item.Count == 1 && !hasHeader)
+                    fileHeader = InformationFields.Empty;
 
             }
 
             return new TuneBook(version, fileHeader, list.ToImmutableArray<Tune>());
+        }
+
+        private string ExtractVersion() {
+            var version = KnownStrings.UndefinedVersion;
+            if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
+                version = ExtractVersion(CurrentToken);
+            }
+
+            return version;
         }
 
         private bool Matches(TokenKind kind1, TokenKind kind2)

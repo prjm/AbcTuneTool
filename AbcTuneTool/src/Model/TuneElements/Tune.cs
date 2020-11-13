@@ -1,6 +1,6 @@
 ﻿using AbcTuneTool.Model.Fields;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     tune
@@ -14,14 +14,21 @@ namespace AbcTuneTool.Model {
         /// </summary>
         /// <param name="header"></param>
         /// <param name="otherLines"></param>
-        public Tune(OtherLines otherLines, InformationFields header) {
+        /// <param name="tuneBody">body</param>
+        public Tune(OtherLines otherLines, InformationFields header, TuneBody tuneBody) {
             this.otherLines = otherLines;
             Header = header;
+            Body = tuneBody;
         }
 
         /// <summary>
         ///     field header
         /// </summary>
         public InformationFields Header { get; }
+
+        /// <summary>
+        ///     body
+        /// </summary>
+        public TuneBody Body { get; }
     }
 }

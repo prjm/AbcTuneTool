@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using AbcTuneTool.Model.Fields;
 
-namespace AbcTuneTool.Model {
+namespace AbcTuneTool.Model.TuneElements {
 
     /// <summary>
     ///     model for a tune book

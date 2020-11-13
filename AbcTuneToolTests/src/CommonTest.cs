@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
 using AbcTuneTool.Common;
 using AbcTuneTool.FileIo;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Fields;
+using AbcTuneTool.Model.TuneElements;
 using AbcTuneTool.src.Model.Fields;
 
 namespace AbcTuneToolTests {
@@ -26,6 +29,19 @@ namespace AbcTuneToolTests {
         protected static T Symbol<T>(string toParse, Func<Parser, T> f)
             => RunParserTest(toParse, (Parser p) => f(p));
 
+        protected TuneBody ParseTuneBody(string data) {
+            var source = data.Replace("§", Environment.NewLine);
+            var result = Symbol(source, (Parser p) => p.ParseTuneBody());
+            Assert.NotNull(result);
+            return result;
+        }
+
+        protected TuneBook ParseTuneBook(string data) {
+            var source = data.Replace("§", Environment.NewLine);
+            var result = Symbol(source, (Parser p) => p.ParseTuneBook());
+            Assert.NotNull(result);
+            return result;
+        }
 
         protected InformationField ParseInfoField(string source) {
             var result = Symbol(source, (Parser p) => p.ParseInformationField());
@@ -123,6 +139,24 @@ namespace AbcTuneToolTests {
             }
 
             return t.ToArray();
+        }
+
+        protected static IEnumerable<string> Split(string str, int chunkSize)
+            => Enumerable.Range(0, str.Length / chunkSize).Select(i => str.Substring(i * chunkSize, chunkSize));
+
+        protected static Note[] StringToNotes(string notes)
+            => StringToNotes(Split(notes, 1));
+
+        protected static Note[] StringToNotes(IEnumerable<string> notes) {
+            var result = new Note[notes.Count()];
+            var i = 0;
+
+            foreach (var note in notes) {
+                result[i] = new Note(note[0], 0);
+                i++;
+            }
+
+            return result;
         }
 
     }

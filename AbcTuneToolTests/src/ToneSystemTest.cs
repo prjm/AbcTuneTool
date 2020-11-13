@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.KeyTables;
@@ -32,9 +31,6 @@ namespace AbcTuneToolTests {
             Assert.AreEqualSeq(t, k.Tones.MainTones.ToArray());
             Assert.AreEqualSeq(x, k.Tones.Accidentals.ToArray());
         }
-
-        private static IEnumerable<string> Split(string str, int chunkSize)
-            => Enumerable.Range(0, str.Length / chunkSize).Select(i => str.Substring(i * chunkSize, chunkSize));
 
         [TestMethod]
         public void TestAccidentals() {
