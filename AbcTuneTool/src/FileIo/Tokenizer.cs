@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+
 using AbcTuneTool.Common;
 using AbcTuneTool.Model;
 using AbcTuneTool.Model.Fields;
@@ -133,8 +134,7 @@ namespace AbcTuneTool.FileIo {
 
             isEmptyLine = false;
 
-            return value switch
-            {
+            return value switch {
                 '\\' => ReadMnemonic(),
                 '&' => ReadEntity(),
                 '$' => ReadFontSize(),
@@ -357,8 +357,7 @@ namespace AbcTuneTool.FileIo {
         /// <returns></returns>
         private bool ReadDefault(char value) {
             if (isInInfoField != InformationFieldKind.Undefined) {
-                return isInInfoField.GetContentType() switch
-                {
+                return isInInfoField.GetContentType() switch {
                     InformationFieldContent.Instruction => ReadWhitespaceSeparatedInfoField(value),
                     InformationFieldContent.Key => ReadWhitespaceOrEqualsSeparatedInfoField(value),
                     InformationFieldContent.NoteLength => ReadWhitespaceSeparatedInfoField(value),
@@ -375,7 +374,14 @@ namespace AbcTuneTool.FileIo {
             }
 
             var tokenValue = Cache.ForChar(value);
-            SetToken(tokenValue, tokenValue, TokenKind.Char);
+
+            var kind = value switch {
+                ',' => TokenKind.Comma,
+                '\'' => TokenKind.Apostrophe,
+                _ => TokenKind.Char,
+            };
+
+            SetToken(tokenValue, tokenValue, kind);
             return true;
         }
 

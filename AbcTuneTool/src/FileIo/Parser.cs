@@ -596,7 +596,6 @@ namespace AbcTuneTool.FileIo {
                 if (Matches(TokenKind.Char) && CurrentToken.Value[0].IsNoteLetter())
                     items.Add(ParseNote());
 
-                Tokenizer.NextToken();
             }
 
             return new TuneBody(items.ToImmutableArray<TuneElement>());
@@ -604,8 +603,19 @@ namespace AbcTuneTool.FileIo {
 
         private Note ParseNote() {
             var letter = CurrentToken.Value[0];
+            var level = letter.IsLowercaseNoteLetter() ? 0 : -1;
+            NextToken();
 
-            return new Note(letter, 0);
+            while (Matches(TokenKind.Comma, TokenKind.Apostrophe)) {
+                level += CurrentToken.Kind switch {
+                    TokenKind.Comma => -1,
+                    TokenKind.Apostrophe => +1,
+                    _ => 0
+                };
+                NextToken();
+            }
+
+            return new Note(letter, level);
         }
 
         private string ExtractVersion(Token token) {

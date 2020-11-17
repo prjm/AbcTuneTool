@@ -94,5 +94,15 @@
         ///     header continuation
         /// </summary>
         HeaderContinuation = 17,
+
+        /// <summary>
+        ///     comma
+        /// </summary>
+        Comma = 18,
+
+        /// <summary>
+        ///     apostrophe
+        /// </summary>
+        Apostrophe = 19,
     }
 }

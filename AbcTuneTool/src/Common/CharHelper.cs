@@ -116,8 +116,7 @@ namespace AbcTuneTool.Common {
         /// <param name="defaultValue"></param>
         /// <returns></returns>
         public static Accidental AsAccidental(this char c, bool onlyPrefix = false, Accidental defaultValue = Accidental.Invalid)
-            => (c, onlyPrefix) switch
-            {
+            => (c, onlyPrefix) switch {
                 ('^', _) => Accidental.Sharp,
                 ('_', _) => Accidental.Flat,
                 ('=', _) => Accidental.Natural,
@@ -135,8 +134,7 @@ namespace AbcTuneTool.Common {
         /// <param name="c"></param>
         /// <returns></returns>
         public static AnnotationPosition AsPosition(this char c)
-            => c switch
-            {
+            => c switch {
                 '@' => AnnotationPosition.Automatic,
                 '<' => AnnotationPosition.Before,
                 '>' => AnnotationPosition.After,
@@ -151,8 +149,7 @@ namespace AbcTuneTool.Common {
         /// <param name="c"></param>
         /// <returns></returns>
         public static ToneInterval AsToneInterval(this char c)
-            => c switch
-            {
+            => c switch {
                 'R' => ToneInterval.Root,
                 'H' => ToneInterval.HalfStep,
                 'W' => ToneInterval.WholeStep,
@@ -186,6 +183,15 @@ namespace AbcTuneTool.Common {
         public static bool IsNoteLetter(this char c) =>
             c >= 'A' && c < 'H' ||
             c >= 'a' && c < 'h';
+
+        /// <summary>
+        ///     test if a char can be a note
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static bool IsLowercaseNoteLetter(this char c) =>
+            c >= 'a' && c < 'h';
+
 
     }
 }
