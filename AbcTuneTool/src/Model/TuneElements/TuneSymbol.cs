@@ -14,6 +14,14 @@ namespace AbcTuneTool.Model.TuneElements {
         public TuneSymbol(DecorationSymbol symbol) => Symbol = symbol;
 
         /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public override bool Accept(ISyntaxTreeVisitor visitor) =>
+            visitor.StartVisitNode(this) &&
+            visitor.EndVisitNode(this);
+
+        /// <summary>
         ///     symbol kind
         /// </summary>
         public DecorationSymbol Symbol { get; }

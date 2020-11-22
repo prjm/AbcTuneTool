@@ -14,7 +14,7 @@ namespace AbcTuneToolTests {
 
     public abstract class CommonTest {
 
-        protected static T RunParserTest<T>(string toParse, Func<Parser, T> tester) {
+        protected static T RunParserTest<T>(string toParse, Func<Parser, T?> tester) where T : class, ISyntaxTreeElement {
             var cache = new StringCache();
             var pool = new StringBuilderPool();
             var logger = new Logger();
@@ -23,10 +23,16 @@ namespace AbcTuneToolTests {
             using var tokenizer = new Tokenizer(reader, cache, pool, logger);
             using var bufferedTokenizer = new BufferedAbcTokenizer(tokenizer);
             using var parser = new Parser(bufferedTokenizer, listPool);
-            return tester(parser);
+            var result = tester(parser);
+            Assert.NotNull(result);
+
+            var source = TerminalVisitor.GetSource(result);
+            Assert.AreEqual(toParse, source);
+
+            return result;
         }
 
-        protected static T Symbol<T>(string toParse, Func<Parser, T> f)
+        protected static T Symbol<T>(string toParse, Func<Parser, T?> f) where T : class, ISyntaxTreeElement
             => RunParserTest(toParse, (Parser p) => f(p));
 
         protected TuneBody ParseTuneBody(string data) {

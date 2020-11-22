@@ -23,6 +23,14 @@ namespace AbcTuneTool.Model.TuneElements {
         public AnnotationPosition Position { get; }
 
         /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public override bool Accept(ISyntaxTreeVisitor visitor) =>
+            visitor.StartVisitNode(this) &&
+            visitor.EndVisitNode(this);
+
+        /// <summary>
         ///     annotation text
         /// </summary>
         public string Text { get; }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using AbcTuneTool.Model.Symbolic;
 
 namespace AbcTuneTool.Model.TuneElements {
@@ -23,6 +24,14 @@ namespace AbcTuneTool.Model.TuneElements {
             BassNote = bassNote;
             BassAccidental = bassAccidental;
         }
+
+        /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public override bool Accept(ISyntaxTreeVisitor visitor) =>
+            visitor.StartVisitNode(this) &&
+            visitor.EndVisitNode(this);
 
         /// <summary>
         ///     note

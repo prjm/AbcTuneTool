@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+
 using AbcTuneTool.Model.Fields;
 
 namespace AbcTuneTool.Model.TuneElements {
@@ -6,7 +7,7 @@ namespace AbcTuneTool.Model.TuneElements {
     /// <summary>
     ///     model for a tune book
     /// </summary>
-    public class TuneBook {
+    public class TuneBook : ISyntaxTreeElement {
 
         /// <summary>
         ///     create a new tune book
@@ -34,5 +35,27 @@ namespace AbcTuneTool.Model.TuneElements {
         ///     tunes
         /// </summary>
         public ImmutableArray<Tune> Tunes { get; }
+
+        /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public bool Accept(ISyntaxTreeVisitor visitor) {
+            var result = visitor.StartVisitNode(this);
+            result &= FileHeader.Accept(visitor);
+
+            for (var i = 0; i < Tunes.Length; i++) {
+                var tune = Tunes[i];
+                result &= tune.Header.Accept(visitor);
+                result &= tune.Body.Accept(visitor);
+
+                if (!result)
+                    return false;
+            }
+
+            result &= visitor.EndVisitNode(this);
+            return result;
+        }
+
     }
 }

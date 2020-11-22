@@ -5,7 +5,7 @@ namespace AbcTuneTool.Model.TuneElements {
     /// <summary>
     ///     tune body
     /// </summary>
-    public class TuneBody {
+    public class TuneBody : ISyntaxTreeElement {
 
         /// <summary>
         ///     create a new tune body
@@ -18,5 +18,19 @@ namespace AbcTuneTool.Model.TuneElements {
         ///     tune items
         /// </summary>
         public ImmutableArray<TuneElement> Items { get; }
+
+        /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public bool Accept(ISyntaxTreeVisitor visitor) {
+            var result = visitor.StartVisitNode(this);
+
+            for (var i = 0; i < Items.Length; i++)
+                result &= Items[i].Accept(visitor);
+
+            result &= visitor.EndVisitNode(this);
+            return result;
+        }
     }
 }

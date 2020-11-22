@@ -1,11 +1,12 @@
 ﻿using AbcTuneTool.Model.Symbolic;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.Model.Fields {
 
     /// <summary>
     ///     information field
     /// </summary>
-    public class InformationField {
+    public class InformationField : ISyntaxTreeElement {
 
         /// <summary>
         ///     create a new information field
@@ -25,8 +26,7 @@ namespace AbcTuneTool.Model.Fields {
         /// <param name="firstChar"></param>
         /// <returns></returns>
         public static InformationFieldKind GetKindFor(char firstChar) =>
-            firstChar switch
-            {
+            firstChar switch {
                 'A' => InformationFieldKind.Area,
                 'B' => InformationFieldKind.Book,
                 'C' => InformationFieldKind.Composer,
@@ -78,6 +78,16 @@ namespace AbcTuneTool.Model.Fields {
         /// <param name="value"></param>
         protected static Fraction ParseFraction(string value)
             => new Fraction(value);
+
+        /// <summary>
+        ///     accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public bool Accept(ISyntaxTreeVisitor visitor) =>
+            visitor.StartVisitNode(this) &&
+            Header.Accept(visitor) &&
+            Value.Accept(visitor) &&
+            visitor.EndVisitNode(this);
 
     }
 }

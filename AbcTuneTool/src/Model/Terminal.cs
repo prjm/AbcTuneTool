@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+
 using AbcTuneTool.Common;
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.Model {
 
@@ -11,7 +13,7 @@ namespace AbcTuneTool.Model {
     ///     terminal syntax part
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class Terminal {
+    public class Terminal : ISyntaxTreeElement {
 
         /// <summary>
         ///     terminal values
@@ -265,5 +267,12 @@ namespace AbcTuneTool.Model {
         public string ToNewString()
             => string.Concat(tokens);
 
+        /// <summary>
+        ///     accept an visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public bool Accept(ISyntaxTreeVisitor visitor)
+            => visitor.StartVisitNode(this) &&
+               visitor.EndVisitNode(this);
     }
 }

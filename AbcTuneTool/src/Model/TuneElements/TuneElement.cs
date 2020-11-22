@@ -5,7 +5,7 @@ namespace AbcTuneTool.Model.TuneElements {
     /// <summary>
     ///     base class for tune elements
     /// </summary>
-    public abstract class TuneElement : IEquatable<TuneElement> {
+    public abstract class TuneElement : IEquatable<TuneElement>, ISyntaxTreeElement {
 
         /// <summary>
         ///     check for equality
@@ -28,5 +28,10 @@ namespace AbcTuneTool.Model.TuneElements {
         public override bool Equals(object? obj)
             => obj is TuneElement e && Equals(e);
 
+        /// <summary>
+        ///    accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        public abstract bool Accept(ISyntaxTreeVisitor visitor);
     }
 }
