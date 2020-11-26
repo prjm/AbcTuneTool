@@ -1,0 +1,18 @@
+<Project>
+
+    <PropertyGroup>
+        <LangVersion>9.0</LangVersion>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionSuffix>0</VersionSuffix>
+        <DocumentationFile>bin\$(Platform)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+        <Authors>Bastian Turcs</Authors>
+        <Copyright>© 2020</Copyright>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+</Project>

@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <Import Project="../Common.targets" />
+
     <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Nullable>enable</Nullable>
-        <LangVersion>8.0</LangVersion>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Description>Class model for abc tune files.</Description>
+        <Product>AbcTuneTool</Product>
     </PropertyGroup>
 
     <ItemGroup>

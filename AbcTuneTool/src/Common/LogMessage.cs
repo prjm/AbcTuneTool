@@ -3,7 +3,7 @@
     /// <summary>
     ///     log message numbers
     /// </summary>
-    public class LogMessage {
+    public static class LogMessage {
 
         /// <summary>
         ///     invalid mnemonic: only backslash

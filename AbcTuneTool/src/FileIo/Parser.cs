@@ -344,9 +344,9 @@ namespace AbcTuneTool.FileIo {
                 var symbols = text[1..^1];
                 if (Symbols.Symbols.TryGetValue(symbols, out var symbol))
                     element = new TuneSymbol(symbol);
-                else if (string.Equals(symbols, KnownStrings.None, StringComparison.CurrentCultureIgnoreCase))
+                else if (string.Equals(symbols, KnownStrings.None, StringComparison.OrdinalIgnoreCase))
                     element = new UndefinedTuneSymbol();
-                else if (string.Equals(symbols, KnownStrings.Nil, StringComparison.CurrentCultureIgnoreCase))
+                else if (string.Equals(symbols, KnownStrings.Nil, StringComparison.OrdinalIgnoreCase))
                     element = new UndefinedTuneSymbol();
             }
 
@@ -622,7 +622,7 @@ namespace AbcTuneTool.FileIo {
         }
 
         private VersionComment ExtractVersion(Token token) {
-            var dashIndex = token.OriginalValue.IndexOf("-") + 1;
+            var dashIndex = token.OriginalValue.IndexOf("-", StringComparison.Ordinal) + 1;
             var terminal = new Terminal(token);
 
             if (dashIndex != KnownStrings.VersionComment.Length) {
@@ -662,7 +662,7 @@ namespace AbcTuneTool.FileIo {
         }
 
         private VersionComment ExtractVersion() {
-            if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
+            if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment, StringComparison.OrdinalIgnoreCase)) {
                 return ExtractVersion(CurrentToken);
             }
 

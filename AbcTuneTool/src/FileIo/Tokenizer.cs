@@ -394,7 +394,7 @@ namespace AbcTuneTool.FileIo {
             bool isLinebreak;
 
             using var sb = StringBuilderPool.Rent();
-            sb.Item.Append("%");
+            sb.Item.Append('%');
 
             do {
                 if (!ReadChar(out value))
@@ -500,7 +500,7 @@ namespace AbcTuneTool.FileIo {
 
             if (decorator.IsLinebreak() || decorator == ' ' || char.IsWhiteSpace(decorator)) {
                 using var sb = StringBuilderPool.Rent();
-                sb.Item.Append("\\");
+                sb.Item.Append('\\');
                 sb.Item.Append(decorator);
 
                 while (!decorator.IsLinebreak()) {
@@ -576,7 +576,7 @@ namespace AbcTuneTool.FileIo {
 
                 if (len >= 4) {
                     var charString = chars.Slice(0, 4).ToString();
-                    var charValue = int.Parse(charString, NumberStyles.HexNumber);
+                    var charValue = int.Parse(charString, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
                     SetToken(char.ConvertFromUtf32(charValue), "\\" + decorator + charString, TokenKind.FixedUnicody2Byte);
                     return true;
                 }

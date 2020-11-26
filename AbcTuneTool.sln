@@ -11,11 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		AbcTuneTool.sln.vsspell = AbcTuneTool.sln.vsspell
+		Common.targets = Common.targets
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbcTuneSampleApp", "AbcTuneSampleApp\AbcTuneSampleApp.csproj", "{538B71A4-A293-49D7-970F-E94781CA7513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcTuneToolWpf", "AbcTuneToolWpf\AbcTuneToolWpf.csproj", "{C84E5162-728F-4179-8D1A-BBD337DB4F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbcTuneToolWpf", "AbcTuneToolWpf\AbcTuneToolWpf.csproj", "{C84E5162-728F-4179-8D1A-BBD337DB4F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
