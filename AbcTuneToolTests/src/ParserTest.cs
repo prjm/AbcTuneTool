@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+
 using AbcTuneTool.FileIo;
 using AbcTuneTool.Model;
 
@@ -10,12 +11,12 @@ namespace AbcTuneToolTests {
             var source = "%abc-2.1";
             var tunebook = Symbol(source, (Parser p) => p.ParseTuneBook());
             Assert.NotNull(tunebook);
-            Assert.AreEqual("2.1", tunebook.Version);
+            Assert.AreEqual("2.1", tunebook.Version?.Version);
 
-            source = "dfsfsf";
+            source = "abcd";
             tunebook = Symbol(source, (Parser p) => p.ParseTuneBook());
             Assert.NotNull(tunebook);
-            Assert.AreEqual(KnownStrings.UndefinedVersion, tunebook.Version);
+            Assert.AreEqual(KnownStrings.UndefinedVersion, tunebook.Version?.Version);
         }
 
         [TestMethod]

@@ -10,12 +10,19 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <summary>
         ///     create a new note
         /// </summary>
+        /// <param name="terminal"></param>
         /// <param name="name"></param>
         /// <param name="level"></param>
-        public Note(char name, int level) {
+        public Note(Terminal terminal, char name, int level) {
+            Terminal = terminal;
             Name = name;
             Level = level;
         }
+
+        /// <summary>
+        ///     terminal
+        /// </summary>
+        public Terminal Terminal { get; }
 
         /// <summary>
         ///     note name
@@ -33,6 +40,7 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <param name="visitor"></param>
         public override bool Accept(ISyntaxTreeVisitor visitor) =>
             visitor.StartVisitNode(this) &&
+            Terminal.Accept(visitor) &&
             visitor.EndVisitNode(this);
 
         /// <summary>

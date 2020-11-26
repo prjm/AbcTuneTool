@@ -604,9 +604,12 @@ namespace AbcTuneTool.FileIo {
         private Note ParseNote() {
             var letter = CurrentToken.Value[0];
             var level = letter.IsLowercaseNoteLetter() ? 0 : -1;
+            using var tokens = ListPools.TokenLists.Rent();
+            tokens.Add(CurrentToken);
             NextToken();
 
             while (Matches(TokenKind.Comma, TokenKind.Apostrophe)) {
+                tokens.Add(CurrentToken);
                 level += CurrentToken.Kind switch {
                     TokenKind.Comma => -1,
                     TokenKind.Apostrophe => +1,
@@ -615,14 +618,18 @@ namespace AbcTuneTool.FileIo {
                 NextToken();
             }
 
-            return new Note(letter, level);
+            return new Note(new Terminal(tokens.ToImmutableArray()), letter, level);
         }
 
-        private string ExtractVersion(Token token) {
+        private VersionComment ExtractVersion(Token token) {
             var dashIndex = token.OriginalValue.IndexOf("-") + 1;
-            if (dashIndex != KnownStrings.VersionComment.Length)
-                return KnownStrings.UndefinedVersion;
-            return token.OriginalValue.Substring(dashIndex);
+            var terminal = new Terminal(token);
+
+            if (dashIndex != KnownStrings.VersionComment.Length) {
+                return new VersionComment(terminal, KnownStrings.UndefinedVersion);
+            }
+
+            return new VersionComment(terminal, token.OriginalValue[dashIndex..]);
         }
 
         /// <summary>
@@ -654,13 +661,12 @@ namespace AbcTuneTool.FileIo {
             return new TuneBook(version, fileHeader, list.ToImmutableArray<Tune>());
         }
 
-        private string ExtractVersion() {
-            var version = KnownStrings.UndefinedVersion;
+        private VersionComment ExtractVersion() {
             if (Matches(TokenKind.Comment) && CurrentToken.OriginalValue.StartsWith(KnownStrings.VersionComment)) {
-                version = ExtractVersion(CurrentToken);
+                return ExtractVersion(CurrentToken);
             }
 
-            return version;
+            return new VersionComment(new Terminal(new Token()), KnownStrings.UndefinedVersion);
         }
 
         private bool Matches(TokenKind kind1, TokenKind kind2)

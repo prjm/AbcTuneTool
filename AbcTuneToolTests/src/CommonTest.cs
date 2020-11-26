@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -160,7 +161,7 @@ namespace AbcTuneToolTests {
             foreach (var note in notes) {
                 var ups = note.Count(c => c == '\'');
                 var downs = note.Count(c => c == ',');
-                result[i] = new Note(note[0], ups - downs);
+                result[i] = new Note(new Terminal(ImmutableArray<Token>.Empty), note[0], ups - downs);
                 i++;
             }
 

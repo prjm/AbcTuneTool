@@ -15,7 +15,7 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <param name="fileHeader"></param>
         /// <param name="immutableArrays"></param>
         /// <param name="version">tune book version</param>
-        public TuneBook(string version, InformationFields fileHeader, ImmutableArray<Tune> immutableArrays) {
+        public TuneBook(VersionComment version, InformationFields fileHeader, ImmutableArray<Tune> immutableArrays) {
             Version = version;
             FileHeader = fileHeader;
             Tunes = immutableArrays;
@@ -24,7 +24,7 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <summary>
         ///     version information
         /// </summary>
-        public string Version { get; }
+        public VersionComment Version { get; }
 
         /// <summary>
         ///     file header
@@ -42,6 +42,7 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <param name="visitor"></param>
         public bool Accept(ISyntaxTreeVisitor visitor) {
             var result = visitor.StartVisitNode(this);
+            result &= Version.Accept(visitor);
             result &= FileHeader.Accept(visitor);
 
             for (var i = 0; i < Tunes.Length; i++) {
