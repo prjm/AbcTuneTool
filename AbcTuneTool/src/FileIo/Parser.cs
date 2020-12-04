@@ -556,21 +556,20 @@ namespace AbcTuneTool.FileIo {
         /// </summary>
         /// <returns></returns>
         public OtherLines ParseLinesBeforeHeader() {
-            using var values = ListPools.GetObjectList();
+            using var values = ListPools.GetTokenList();
 
             while (!Matches(TokenKind.Eof, TokenKind.InformationFieldHeader)) {
                 values.Add(GetCurrentTokenAndFetchNext());
             }
-            return new OtherLines(values.ToImmutableArray<Token>());
+            return new OtherLines(new Terminal(values.Item.ToImmutableArray<Token>()));
         }
 
         /// <summary>
         ///     parse a single tune
         /// </summary>
         /// <returns></returns>
-        public Tune ParseTune(bool isFirst, InformationFields fileHeader, out bool hasHeader) {
+        public Tune ParseTune(OtherLines otherLines, bool isFirst, InformationFields fileHeader, out bool hasHeader) {
             var header = InformationFields.Empty;
-            var otherLines = ParseLinesBeforeHeader();
 
             if (Matches(TokenKind.InformationFieldHeader)) {
                 header = ParseInformationFields();
@@ -629,6 +628,7 @@ namespace AbcTuneTool.FileIo {
                 return new VersionComment(terminal, KnownStrings.UndefinedVersion);
             }
 
+            NextToken();
             return new VersionComment(terminal, token.OriginalValue[dashIndex..]);
         }
 
@@ -651,7 +651,7 @@ namespace AbcTuneTool.FileIo {
                     hasFileHeader = true;
                 }
 
-                list.Add(ParseTune(list.Item.Count < 1, fileHeader, out var hasHeader));
+                list.Add(ParseTune(otherLines, list.Item.Count < 1, fileHeader, out var hasHeader));
 
                 if (list.Item.Count == 1 && !hasHeader)
                     fileHeader = InformationFields.Empty;

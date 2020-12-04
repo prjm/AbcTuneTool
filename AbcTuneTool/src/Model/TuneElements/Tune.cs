@@ -5,9 +5,7 @@ namespace AbcTuneTool.Model.TuneElements {
     /// <summary>
     ///     tune
     /// </summary>
-    public class Tune {
-
-        readonly OtherLines otherLines;
+    public class Tune : ISyntaxTreeElement {
 
         /// <summary>
         ///     create a new tune
@@ -16,7 +14,7 @@ namespace AbcTuneTool.Model.TuneElements {
         /// <param name="otherLines"></param>
         /// <param name="tuneBody">body</param>
         public Tune(OtherLines otherLines, InformationFields header, TuneBody tuneBody) {
-            this.otherLines = otherLines;
+            OtherLines = otherLines;
             Header = header;
             Body = tuneBody;
         }
@@ -30,5 +28,19 @@ namespace AbcTuneTool.Model.TuneElements {
         ///     body
         /// </summary>
         public TuneBody Body { get; }
+
+        /// <summary>
+        ///     other lines before the header
+        /// </summary>
+        public OtherLines OtherLines { get; }
+
+        public bool Accept(ISyntaxTreeVisitor visitor) {
+            var result = visitor.StartVisitNode(this);
+            result &= OtherLines.Accept(visitor);
+            result &= Header.Accept(visitor);
+            result &= Body.Accept(visitor);
+            result &= visitor.EndVisitNode(this);
+            return result;
+        }
     }
 }

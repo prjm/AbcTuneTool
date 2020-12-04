@@ -46,10 +46,7 @@ namespace AbcTuneTool.Model.TuneElements {
             result &= FileHeader.Accept(visitor);
 
             for (var i = 0; i < Tunes.Length; i++) {
-                var tune = Tunes[i];
-                result &= tune.Header.Accept(visitor);
-                result &= tune.Body.Accept(visitor);
-
+                result &= Tunes[i].Accept(visitor);
                 if (!result)
                     return false;
             }

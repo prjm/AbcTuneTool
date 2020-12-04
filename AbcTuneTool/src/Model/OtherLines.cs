@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿
+using AbcTuneTool.Model.TuneElements;
 
 namespace AbcTuneTool.Model {
 
@@ -6,18 +7,26 @@ namespace AbcTuneTool.Model {
     /// <summary>
     ///     other lines
     /// </summary>
-    public class OtherLines {
+    public class OtherLines : ISyntaxTreeElement {
 
         /// <summary>
         ///     create a new set of other lines
         /// </summary>
         /// <param name="lines"></param>
-        public OtherLines(ImmutableArray<Token> lines)
+        public OtherLines(Terminal lines)
             => Lines = lines;
 
         /// <summary>
         ///     lines
         /// </summary>
-        public ImmutableArray<Token> Lines { get; }
+        public Terminal Lines { get; }
+
+        /// <summary>
+        ///  accept a visitor
+        /// </summary>
+        /// <param name="visitor"></param>
+        /// <returns></returns>
+        public bool Accept(ISyntaxTreeVisitor visitor)
+            => visitor.StartVisitNode(this) && Lines.Accept(visitor) && visitor.EndVisitNode(this);
     }
 }
