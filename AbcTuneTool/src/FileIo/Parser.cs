@@ -548,7 +548,13 @@ namespace AbcTuneTool.FileIo {
                     values.Add(field);
             }
 
-            return new InformationFields(values.ToImmutableArray<InformationField>());
+            var line = default(Terminal);
+            if (Matches(TokenKind.EmptyLine))
+                line = new Terminal(GetCurrentTokenAndFetchNext());
+            else
+                line = new Terminal(new Token());
+
+            return new InformationFields(values.ToImmutableArray<InformationField>(), line);
         }
 
         /// <summary>
@@ -590,7 +596,7 @@ namespace AbcTuneTool.FileIo {
         public TuneBody ParseTuneBody() {
             using var items = ListPools.ObjectLists.Rent();
 
-            while (!Matches(TokenKind.Eof, TokenKind.EmptyLine)) {
+            while (!Matches(TokenKind.Eof, TokenKind.EmptyLine, TokenKind.InformationFieldHeader)) {
 
                 if (Matches(TokenKind.Char) && CurrentToken.Value[0].IsNoteLetter())
                     items.Add(ParseNote());
@@ -668,6 +674,9 @@ namespace AbcTuneTool.FileIo {
 
             return new VersionComment(new Terminal(new Token()), KnownStrings.UndefinedVersion);
         }
+
+        private bool Matches(TokenKind kind1, TokenKind kind2, TokenKind kind3)
+            => CurrentToken.Kind == kind1 || CurrentToken.Kind == kind2 || CurrentToken.Kind == kind3;
 
         private bool Matches(TokenKind kind1, TokenKind kind2)
             => CurrentToken.Kind == kind1 || CurrentToken.Kind == kind2;

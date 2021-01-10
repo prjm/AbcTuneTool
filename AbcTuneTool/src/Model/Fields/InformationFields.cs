@@ -13,7 +13,7 @@ namespace AbcTuneTool.Model.Fields {
         ///     empty set of fields
         /// </summary>
         public static readonly InformationFields Empty
-                = new InformationFields(ImmutableArray<InformationField>.Empty);
+                = new InformationFields(ImmutableArray<InformationField>.Empty, new Terminal(new Token()));
 
         /// <summary>
         ///     fields
@@ -21,11 +21,19 @@ namespace AbcTuneTool.Model.Fields {
         public ImmutableArray<InformationField> Fields { get; }
 
         /// <summary>
+        ///     separator
+        /// </summary>
+        public Terminal Line { get; }
+
+        /// <summary>
         ///     create a new set of information fields
         /// </summary>
         /// <param name="fields"></param>
-        public InformationFields(ImmutableArray<InformationField> fields)
-            => Fields = fields;
+        /// <param name="line">separating line</param>
+        public InformationFields(ImmutableArray<InformationField> fields, Terminal line) {
+            Fields = fields;
+            Line = line;
+        }
 
         /// <summary>
         ///     accept a visitor
@@ -36,6 +44,8 @@ namespace AbcTuneTool.Model.Fields {
 
             for (var index = 0; index < Fields.Length; index++)
                 result &= Fields[index].Accept(visitor);
+
+            Line.Accept(visitor);
 
             result &= visitor.EndVisitNode(this);
             return result;
