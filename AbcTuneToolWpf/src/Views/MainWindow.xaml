@@ -4,23 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AbcTuneToolWpf"
+        xmlns:o="clr-namespace:AbcTuneToolWpf.Other"
         xmlns:vm="clr-namespace:AbcTuneToolWpf.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top" ItemsSource="{Binding MenuItems}">
-            <Menu.Resources>
-                <Style TargetType="{x:Type MenuItem}">
-                    <Setter Property="Header" Value="{Binding Path=Header}"/>
-                    <Setter Property="Command" Value="{Binding Path=Command}"/>
-                </Style>
-                <HierarchicalDataTemplate
-                 DataType="{x:Type vm:MenuItemViewModel}"
-                 ItemsSource="{Binding SubItems}">
-                </HierarchicalDataTemplate>
-            </Menu.Resources>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{o:Translate MainWindow.FileMenu}">
+            </MenuItem>
         </Menu>
         <DockPanel></DockPanel>
     </DockPanel>

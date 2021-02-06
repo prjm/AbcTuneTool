@@ -33,12 +33,12 @@ namespace AbcTuneToolWpf.ViewModel {
 
         private MenuItemViewModel CreateFileMenu() {
             var result = new MenuItemViewModel() {
-                Header = "File",
+                HeaderId = "test",
             };
 
-            result.AddSubitem(new MenuItemViewModel() { Header = "New" });
-            result.AddSubitem(new MenuItemViewModel() { Header = "Open" });
-            result.AddSubitem(new MenuItemViewModel() { Header = "Close" });
+            result.AddSubitem(new MenuItemViewModel() { HeaderId = "test" });
+            result.AddSubitem(new MenuItemViewModel() { HeaderId = "test" });
+            result.AddSubitem(new MenuItemViewModel() { HeaderId = "test" });
 
             return result;
         }

@@ -6,13 +6,17 @@ namespace AbcTuneToolWpf.ViewModel {
     /// <summary>
     ///     view model for menus
     /// </summary>
-    public class MenuItemViewModel {
+    public class MenuItemViewModel : BaseViewModel {
+
+        private string headerId = string.Empty;
 
         /// <summary>
         ///     header text
         /// </summary>
-        public string Header { get; set; }
-                = string.Empty;
+        public string HeaderId {
+            get => headerId;
+            set => SetProperty(ref headerId, value);
+        }
 
         /// <summary>
         ///     menu command
